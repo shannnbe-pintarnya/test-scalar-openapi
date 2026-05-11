@@ -2,141 +2,365 @@ openapi: 3.1.0
 info:
   title: Cortes API
   description: |
-    Cortes API serves two platforms from a single Go codebase: the App platform for mobile clients and the Intools platform for internal staff tools. The API is organized by domain (auth, loan, payment, wallet, ppob, and others) with platform-specific endpoints grouped under `/api` and `/intools`.
+    Cortes API serves two platforms from a single Go codebase: the App platform for mobile clients and the Intools platform for internal staff tools.
 
-    ## Platforms
+    ## API Summary
 
-    - **App platform**: Public mobile API endpoints (prefix: `/api`)
-    - **Intools platform**: Internal administrative endpoints (prefix: `/intools`)
-
-    ## Domains
-
-    The surface area is split into business domains such as authentication, customer, loan, payment, wallet, gold/points rewards, and PPOB. Each domain exposes a small set of resources and operations, and related endpoints share common response schemas.
-
-    ## Versioning
-
-    Versioned routes (e.g., `/api/v1`, `/api/v2`, `/intools/v1`) allow platform evolution without breaking existing clients. When a capability changes, a new version is introduced while older versions remain available until deprecation.
-
-    ## Architecture
-
-    The service follows a clean architecture style (controller → service → repository) with shared domain modules and platform-specific implementations where needed.
+    | Platform | Prefix | Audience | Description |
+    |---|---|---|---|
+    | **App** | `/api` | Mobile clients | Customer-facing endpoints for auth, loans, payments, wallet, gold, points, and PPOB |
+    | **Intools** | `/intools` | Internal staff | Back-office tools for loan management, customers, cash, inventory, and reporting |
+    | **Internal** | `/internal` | Internal services | Service-to-service endpoints |
+    | **Landing** | `/landing` | Public website | Public endpoints for branches, banners, promos, and appointments |
+    | **Webhook** | `/webhook` | Third-party providers | Incoming webhooks from payment providers and PPOB |
 
     ## Authentication
 
-    Authentication is JWT-based with refresh tokens; some endpoints are public while others require authorization.
+    | Type | Used By | How |
+    |---|---|---|
+    | JWT Bearer token | App, Intools | `Authorization: Bearer <token>` header |
+    | Refresh token | App, Intools | POST to `/api/v1/auth/refresh` |
+    | Public (no auth) | Landing, some Webhooks | No header required |
+    | PIN login | App | POST to `/api/v1/auth/pin/login` |
+    | OTP | App | Request via `/api/v1/auth/otp/request` |
+
+    ## Domains
+
+    | Domain | Platforms | Description |
+    |---|---|---|
+    | **Auth** | App, Intools | Login, OTP, PIN, refresh tokens |
+    | **Loan** | App, Intools | Loan lifecycle, payments, calculations |
+    | **Payment** | App, Intools | Payment links, verification, webhooks |
+    | **Wallet** | App | Withdraw, transactions, account inquiry |
+    | **Gold** | App, Intools | Gold rewards, redemptions, prices |
+    | **Point** | App, Intools | Point rewards, redemptions, transactions |
+    | **PPOB** | App | Electricity, mobile prepaid, PDAM bills |
+    | **Customer** | App, Intools | Customer state, prospects, verification |
+    | **Branch** | App, Intools, Landing | Branch listing and details |
+    | **Banner** | App, Intools, Landing | Banner management |
+    | **Pricing Engine** | App, Intools | Loan pricing calculations |
+    | **Webhook** | External | DOKU, Xendit, OY, Alterra, Pintarnya |
 
     ## Environments
 
-    The service runs in multiple environments (local, staging, production, and internal production). Configuration is loaded from environment-specific YAML files, while sensitive values are provided via AWS secrets and parameter stores.
+    | Environment | Description |
+    |---|---|
+    | `local` | Local development |
+    | `staging` | Testing and QA |
+    | `production` | Live app traffic |
+    | `internal-production` | Internal tools on production data |
 
-    ## Operational Endpoints
+    ## Response Format
 
-    - Health check: `/api/v1/health`
-    - Webhooks: `/webhook/...`
-  version: 0.0.0
+    All endpoints return JSON. Successful responses follow this general shape:
+
+    ## Response Envelope
+
+    Every endpoint returns a consistent JSON envelope:
+
+    | Field | Type | Description |
+    |---|---|---|
+    | `header.server_time_ms` | `integer` | Unix timestamp (ms) when the server processed the request |
+    | `header.process_time_ms` | `integer` | Time taken (ms) to process the request |
+    | `header.request_id` | `string` | Unique UUID for tracing/debugging this request |
+
+    ```json
+    {
+      "header": {
+        "server_time_ms": 1741535480,
+        "process_time_ms": 5064,
+        "request_id": "8ceb138a-375a-4118-9d47-035e824d6597"
+      },
+      "data": { ... }
+    }
+    ```
+
+    ## Architecture
+
+    | Layer | Description |
+    |---|---|
+    | Controller | Handles HTTP routing and request/response |
+    | Service | Business logic |
+    | Repository | Database and external service calls |
+    | Shared modules | Common domain logic across platforms |
+  version: 0.0.1
+tags:
+  - name: api-active-payments
+    x-displayName: Active Payments
+    description: Endpoints related to active payment links (Xendit/OY) for customers, including retrieval of currently active payment links and their details.
+  - name: api-admin-fee
+    x-displayName: Admin Fee
+  - name: api-assets
+    x-displayName: Assets
+  - name: api-auth
+    x-displayName: Auth
+  - name: api-balance
+    x-displayName: Balance
+  - name: api-banner
+    x-displayName: Banner
+  - name: api-branch
+    x-displayName: Branch
+  - name: api-customer-prospect
+    x-displayName: Customer Prospect
+  - name: api-customer-state
+    x-displayName: Customer State
+  - name: api-feedback
+    x-displayName: Feedback
+  - name: api-gold-reward-prices
+    x-displayName: Gold Reward Prices
+  - name: api-gold
+    x-displayName: Gold
+  - name: api-health
+    x-displayName: Health
+  - name: api-last-approved-cuan-emas
+    x-displayName: Last Approved Cuan Emas
+  - name: api-loan
+    x-displayName: Loan
+  - name: api-location
+    x-displayName: Location
+  - name: api-mission
+    x-displayName: Mission
+  - name: api-payment
+    x-displayName: Payment
+  - name: api-point
+    x-displayName: Point
+  - name: api-ppob
+    x-displayName: PPOB
+  - name: api-pricing-engine
+    x-displayName: Pricing Engine
+  - name: api-user
+    x-displayName: User
+  - name: api-wallet
+    x-displayName: Wallet
+  - name: api-webhook
+    x-displayName: Webhook
+  - name: api-whoami
+    x-displayName: Whoami
+  - name: api-last-approved-cuan-pandai
+    x-displayName: Last Approved Cuan Pandai
+  - name: intools-access-user-fl-performance
+    x-displayName: Access User Fl Performance
+  - name: intools-account-codes
+    x-displayName: Account Codes
+  - name: intools-appointments
+    x-displayName: Appointments
+  - name: intools-approval
+    x-displayName: Approval
+  - name: intools-auth
+    x-displayName: Auth
+  - name: intools-banner
+    x-displayName: Banner
+  - name: intools-branch
+    x-displayName: Branch
+  - name: intools-cash-management-stats
+    x-displayName: Cash Management Stats
+  - name: intools-cash-managements
+    x-displayName: Cash Managements
+  - name: intools-check-referral-codes
+    x-displayName: Check Referral Codes
+  - name: intools-check-stock-opname-statuses
+    x-displayName: Check Stock Opname Statuses
+  - name: intools-collateral-items
+    x-displayName: Collateral Items
+  - name: intools-customer-lists
+    x-displayName: Customer Lists
+  - name: intools-customer-prospect
+    x-displayName: Customer Prospect
+  - name: intools-customers
+    x-displayName: Customers
+  - name: intools-customers-waiting-approvals
+    x-displayName: Customers Waiting Approvals
+  - name: intools-dashboard
+    x-displayName: Dashboard
+  - name: intools-event-scheduler
+    x-displayName: Event Scheduler
+  - name: intools-gold-rewards
+    x-displayName: Gold Rewards
+  - name: intools-gold
+    x-displayName: Gold
+  - name: intools-guest-book-lists
+    x-displayName: Guest Book Lists
+  - name: intools-guest-books
+    x-displayName: Guest Books
+  - name: intools-inventory-report-stats
+    x-displayName: Inventory Report Stats
+  - name: intools-inventory-reports
+    x-displayName: Inventory Reports
+  - name: intools-loan-lists
+    x-displayName: Loan Lists
+  - name: intools-loan-payment-link-transactions
+    x-displayName: Loan Payment Link Transactions
+  - name: intools-loan
+    x-displayName: Loan
+  - name: intools-menus
+    x-displayName: Menus
+  - name: intools-metabase
+    x-displayName: Metabase
+  - name: intools-offloads
+    x-displayName: Offloads
+  - name: intools-petty-cash
+    x-displayName: Petty Cash
+  - name: intools-petty-cash-balance
+    x-displayName: Petty Cash Balance
+  - name: intools-plombir
+    x-displayName: Plombir
+  - name: intools-point-rewards
+    x-displayName: Point Rewards
+  - name: intools-point
+    x-displayName: Point
+  - name: intools-price-references
+    x-displayName: Price References
+  - name: intools-prices
+    x-displayName: Prices
+  - name: intools-pricing-engine
+    x-displayName: Pricing Engine
+  - name: intools-print
+    x-displayName: Print
+  - name: intools-promotion-redemptions
+    x-displayName: Promotion Redemptions
+  - name: intools-promotion
+    x-displayName: Promotion
+  - name: intools-stock-opname-configs
+    x-displayName: Stock Opname Configs
+  - name: intools-stock-opname-open-access-categories
+    x-displayName: Stock Opname Open Access Categories
+  - name: intools-stock-opnames
+    x-displayName: Stock Opnames
+  - name: intools-talenta
+    x-displayName: Talenta
+  - name: intools-transaction-report-stats
+    x-displayName: Transaction Report Stats
+  - name: intools-transactions
+    x-displayName: Transactions
+  - name: intools-update-customer-lists
+    x-displayName: Update Customer Lists
+  - name: intools-visitor-verification
+    x-displayName: Visitor Verification
+  - name: internal-user
+    x-displayName: User
+  - name: landing-appointments
+    x-displayName: Appointments
+  - name: landing-banner
+    x-displayName: Banner
+  - name: landing-branch
+    x-displayName: Branch
+  - name: landing-price-references
+    x-displayName: Price References
+  - name: landing-promos
+    x-displayName: Promos
+  - name: landing-referrer
+    x-displayName: Referrer
+  - name: webhook-payment
+    x-displayName: Payment
+  - name: webhook-payout
+    x-displayName: Payout
+  - name: webhook-pintarnya
+    x-displayName: Pintarnya
+  - name: webhook-ppob
+    x-displayName: PPOB
+
 x-tagGroups:
-  - name: api
+  - name: App
     tags:
-      - active-payments
-      - admin-fee
-      - assets
-      - auth
-      - balance
-      - banner
-      - branch
-      - customer-prospect
-      - customer-state
-      - feedback
-      - gold-reward-prices
-      - gold
-      - health
-      - last-approved-cuan-emas
-      - loan
-      - location
-      - mission
-      - payment
-      - point
-      - ppob
-      - pricing-engine
-      - user
-      - wallet
-      - webhook
-      - whoami
-      - last-approved-cuan-pandai
-  - name: intools
+      - api-active-payments
+      - api-admin-fee
+      - api-assets
+      - api-auth
+      - api-balance
+      - api-banner
+      - api-branch
+      - api-customer-prospect
+      - api-customer-state
+      - api-feedback
+      - api-gold-reward-prices
+      - api-gold
+      - api-health
+      - api-last-approved-cuan-emas
+      - api-loan
+      - api-location
+      - api-mission
+      - api-payment
+      - api-point
+      - api-ppob
+      - api-pricing-engine
+      - api-user
+      - api-wallet
+      - api-webhook
+      - api-whoami
+      - api-last-approved-cuan-pandai
+  - name: Intools
     tags:
-      - access-user-fl-performance
-      - account-codes
-      - appointments
-      - approval
-      - auth
-      - banner
-      - branch
-      - cash-management-stats
-      - cash-managements
-      - check-referral-codes
-      - check-stock-opname-statuses
-      - collateral-items
-      - customer-lists
-      - customer-prospect
-      - customers
-      - customers-waiting-approvals
-      - dashboard
-      - event-scheduler
-      - gold-rewards
-      - gold
-      - guest-book-lists
-      - guest-books
-      - inventory-report-stats
-      - inventory-reports
-      - loan-lists
-      - loan-payment-link-transactions
-      - loan
-      - menus
-      - metabase
-      - offloads
-      - petty-cash
-      - petty-cash-balance
-      - plombir
-      - point-rewards
-      - point
-      - price-references
-      - prices
-      - pricing-engine
-      - print
-      - promotion-redemptions
-      - promotion
-      - stock-opname-configs
-      - stock-opname-open-access-categories
-      - stock-opnames
-      - talenta
-      - transaction-report-stats
-      - transactions
-      - update-customer-lists
-      - visitor-verification
-  - name: internal
+      - intools-access-user-fl-performance
+      - intools-account-codes
+      - intools-appointments
+      - intools-approval
+      - intools-auth
+      - intools-banner
+      - intools-branch
+      - intools-cash-management-stats
+      - intools-cash-managements
+      - intools-check-referral-codes
+      - intools-check-stock-opname-statuses
+      - intools-collateral-items
+      - intools-customer-lists
+      - intools-customer-prospect
+      - intools-customers
+      - intools-customers-waiting-approvals
+      - intools-dashboard
+      - intools-event-scheduler
+      - intools-gold-rewards
+      - intools-gold
+      - intools-guest-book-lists
+      - intools-guest-books
+      - intools-inventory-report-stats
+      - intools-inventory-reports
+      - intools-loan-lists
+      - intools-loan-payment-link-transactions
+      - intools-loan
+      - intools-menus
+      - intools-metabase
+      - intools-offloads
+      - intools-petty-cash
+      - intools-petty-cash-balance
+      - intools-plombir
+      - intools-point-rewards
+      - intools-point
+      - intools-price-references
+      - intools-prices
+      - intools-pricing-engine
+      - intools-print
+      - intools-promotion-redemptions
+      - intools-promotion
+      - intools-stock-opname-configs
+      - intools-stock-opname-open-access-categories
+      - intools-stock-opnames
+      - intools-talenta
+      - intools-transaction-report-stats
+      - intools-transactions
+      - intools-update-customer-lists
+      - intools-visitor-verification
+  - name: Internal
     tags:
-      - user
-  - name: landing
+      - internal-user
+  - name: Landing
     tags:
-      - appointments
-      - banner
-      - branch
-      - price-references
-      - promos
-      - referrer
-  - name: webhook
+      - landing-appointments
+      - landing-banner
+      - landing-branch
+      - landing-price-references
+      - landing-promos
+      - landing-referrer
+  - name: Webhook
     tags:
-      - payment
-      - payout
-      - pintarnya
-      - ppob
+      - webhook-payment
+      - webhook-payout
+      - webhook-pintarnya
+      - webhook-ppob
 paths:
-  # /api
   /api/v1/active-payments:
     get:
       tags:
-        - active-payments
+        - api-active-payments
       summary: Get active payment link
       description: Returns the currently active payment link for the authenticated customer, if any.
       operationId: get_api_v1_active_payments
@@ -150,7 +374,7 @@ paths:
   /api/v1/admin-fee:
     get:
       tags:
-        - admin-fee
+        - api-admin-fee
       description: ""
       operationId: get_api_v1_admin_fee
       responses:
@@ -163,7 +387,7 @@ paths:
   /api/v1/assets:
     get:
       tags:
-        - assets
+        - api-assets
       description: ""
       operationId: get_api_v1_assets
       responses:
@@ -176,7 +400,7 @@ paths:
   /api/v1/auth/info:
     get:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: get_api_v1_auth_info
       responses:
@@ -189,7 +413,7 @@ paths:
   /api/v1/auth/logout:
     post:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: post_api_v1_auth_logout
       responses:
@@ -202,7 +426,7 @@ paths:
   /api/v1/auth/otp/request:
     post:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: post_api_v1_auth_otp_request
       requestBody:
@@ -221,7 +445,7 @@ paths:
   /api/v1/auth/otp/verify:
     post:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: post_api_v1_auth_otp_verify
       requestBody:
@@ -240,7 +464,7 @@ paths:
   /api/v1/auth/pin/create:
     post:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: post_api_v1_auth_pin_create
       requestBody:
@@ -259,7 +483,7 @@ paths:
   /api/v1/auth/pin/login:
     post:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: post_api_v1_auth_pin_login
       requestBody:
@@ -278,7 +502,7 @@ paths:
   /api/v1/auth/pin/reset:
     post:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: post_api_v1_auth_pin_reset
       requestBody:
@@ -297,7 +521,7 @@ paths:
   /api/v1/auth/refresh:
     post:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: post_api_v1_auth_refresh
       requestBody:
@@ -316,7 +540,7 @@ paths:
   /api/v1/auth/user/verify:
     post:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: post_api_v1_auth_user_verify
       requestBody:
@@ -335,7 +559,7 @@ paths:
   /api/v1/auth/verify-phone:
     post:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: post_api_v1_auth_verify_phone
       requestBody:
@@ -354,7 +578,7 @@ paths:
   /api/v1/balances:
     get:
       tags:
-        - balance
+        - api-balance
       description: ""
       operationId: get_api_v1_balances
       responses:
@@ -367,7 +591,7 @@ paths:
   /api/v1/banners:
     get:
       tags:
-        - banner
+        - api-banner
       description: ""
       operationId: get_api_v1_banners
       responses:
@@ -380,7 +604,7 @@ paths:
   /api/v1/branches:
     get:
       tags:
-        - branch
+        - api-branch
       description: ""
       operationId: get_api_v1_branches
       responses:
@@ -393,7 +617,7 @@ paths:
   /api/v1/customer-prospects/segments:
     post:
       tags:
-        - customer-prospect
+        - api-customer-prospect
       description: ""
       operationId: post_api_v1_customer_prospects_segments
       responses:
@@ -406,7 +630,7 @@ paths:
   /api/v1/customer-state:
     get:
       tags:
-        - customer-state
+        - api-customer-state
       description: ""
       operationId: get_api_v1_customer_state
       responses:
@@ -418,7 +642,7 @@ paths:
                 $ref: '#/components/schemas/customer_state_GetCustomerStateResponse'
     post:
       tags:
-        - customer-state
+        - api-customer-state
       description: ""
       operationId: post_api_v1_customer_state
       requestBody:
@@ -437,7 +661,7 @@ paths:
   /api/v1/feedback/send:
     post:
       tags:
-        - feedback
+        - api-feedback
       description: ""
       operationId: post_api_v1_feedback_send
       responses:
@@ -450,7 +674,7 @@ paths:
   /api/v1/feedback/{id}:
     get:
       tags:
-        - feedback
+        - api-feedback
       description: ""
       operationId: get_api_v1_feedback_param
       parameters:
@@ -468,7 +692,7 @@ paths:
                 type: object
     put:
       tags:
-        - feedback
+        - api-feedback
       description: ""
       operationId: put_api_v1_feedback_param
       parameters:
@@ -487,7 +711,7 @@ paths:
   /api/v1/feedbacks/{uuid}:
     get:
       tags:
-        - feedback
+        - api-feedback
       description: ""
       operationId: get_api_v1_feedbacks_param
       parameters:
@@ -505,7 +729,7 @@ paths:
                 type: object
     post:
       tags:
-        - feedback
+        - api-feedback
       description: ""
       operationId: post_api_v1_feedbacks_param
       parameters:
@@ -524,7 +748,7 @@ paths:
   /api/v1/gold-reward-prices:
     get:
       tags:
-        - gold-reward-prices
+        - api-gold-reward-prices
       description: ""
       operationId: get_api_v1_gold_reward_prices
       responses:
@@ -537,7 +761,7 @@ paths:
   /api/v1/golds/check-claim-status:
     get:
       tags:
-        - gold
+        - api-gold
       description: ""
       operationId: get_api_v1_golds_check_claim_status
       responses:
@@ -550,7 +774,7 @@ paths:
   /api/v1/golds/claim-rewards:
     post:
       tags:
-        - gold
+        - api-gold
       description: ""
       operationId: post_api_v1_golds_claim_rewards
       requestBody:
@@ -569,7 +793,7 @@ paths:
   /api/v1/golds/conversions:
     post:
       tags:
-        - gold
+        - api-gold
       description: ""
       operationId: post_api_v1_golds_conversions
       requestBody:
@@ -588,7 +812,7 @@ paths:
   /api/v1/golds/prices:
     get:
       tags:
-        - gold
+        - api-gold
       description: ""
       operationId: get_api_v1_golds_prices
       responses:
@@ -601,7 +825,7 @@ paths:
   /api/v1/golds/redemptions:
     post:
       tags:
-        - gold
+        - api-gold
       description: ""
       operationId: post_api_v1_golds_redemptions
       requestBody:
@@ -620,7 +844,7 @@ paths:
   /api/v1/golds/rewards:
     get:
       tags:
-        - gold
+        - api-gold
       description: ""
       operationId: get_api_v1_golds_rewards
       responses:
@@ -633,7 +857,7 @@ paths:
   /api/v1/golds/rupiah-conversion:
     post:
       tags:
-        - gold
+        - api-gold
       description: ""
       operationId: post_api_v1_golds_rupiah_conversion
       requestBody:
@@ -652,7 +876,7 @@ paths:
   /api/v1/golds/transactions:
     get:
       tags:
-        - gold
+        - api-gold
       description: ""
       operationId: get_api_v1_golds_transactions
       responses:
@@ -665,7 +889,7 @@ paths:
   /api/v1/golds/unclaimed-rewards:
     get:
       tags:
-        - gold
+        - api-gold
       description: ""
       operationId: get_api_v1_golds_unclaimed_rewards
       responses:
@@ -678,7 +902,7 @@ paths:
   /api/v1/health:
     get:
       tags:
-        - health
+        - api-health
       description: ""
       operationId: get_api_v1_health
       responses:
@@ -691,7 +915,7 @@ paths:
   /api/v1/last-approved-cuan-emas:
     get:
       tags:
-        - last-approved-cuan-emas
+        - api-last-approved-cuan-emas
       description: ""
       operationId: get_api_v1_last_approved_cuan_emas
       responses:
@@ -704,7 +928,7 @@ paths:
   /api/v1/loans:
     get:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: get_api_v1_loans
       responses:
@@ -717,7 +941,7 @@ paths:
   /api/v1/loans/{sbg_code}:
     get:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: get_api_v1_loans_param
       parameters:
@@ -736,7 +960,7 @@ paths:
   /api/v1/loans/{sbg_code}/calculate:
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v1_loans_param_calculate
       parameters:
@@ -755,7 +979,7 @@ paths:
   /api/v1/loans/{sbg_code}/payment:
     delete:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: delete_api_v1_loans_param_payment
       parameters:
@@ -773,7 +997,7 @@ paths:
                 type: object
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v1_loans_param_payment
       parameters:
@@ -792,7 +1016,7 @@ paths:
   /api/v1/loans/{sbg_code}/payment-verification:
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v1_loans_param_payment_verification
       parameters:
@@ -811,7 +1035,7 @@ paths:
   /api/v1/loans/{sbg_code}/payment/guest:
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v1_loans_param_payment_guest
       parameters:
@@ -830,7 +1054,7 @@ paths:
   /api/v1/locations/cities:
     get:
       tags:
-        - location
+        - api-location
       description: ""
       operationId: get_api_v1_locations_cities
       responses:
@@ -843,7 +1067,7 @@ paths:
   /api/v1/locations/districts:
     get:
       tags:
-        - location
+        - api-location
       description: ""
       operationId: get_api_v1_locations_districts
       responses:
@@ -856,7 +1080,7 @@ paths:
   /api/v1/locations/provinces:
     get:
       tags:
-        - location
+        - api-location
       description: ""
       operationId: get_api_v1_locations_provinces
       responses:
@@ -869,7 +1093,7 @@ paths:
   /api/v1/locations/sub-districts:
     get:
       tags:
-        - location
+        - api-location
       description: ""
       operationId: get_api_v1_locations_sub_districts
       responses:
@@ -882,7 +1106,7 @@ paths:
   /api/v1/missions:
     get:
       tags:
-        - mission
+        - api-mission
       description: ""
       operationId: get_api_v1_missions
       responses:
@@ -895,7 +1119,7 @@ paths:
   /api/v1/payments/{id}:
     get:
       tags:
-        - payment
+        - api-payment
       description: ""
       operationId: get_api_v1_payments_param
       parameters:
@@ -914,7 +1138,7 @@ paths:
   /api/v1/points/check-claim-status:
     get:
       tags:
-        - point
+        - api-point
       description: ""
       operationId: get_api_v1_points_check_claim_status
       responses:
@@ -927,7 +1151,7 @@ paths:
   /api/v1/points/claim-rewards:
     post:
       tags:
-        - point
+        - api-point
       description: ""
       operationId: post_api_v1_points_claim_rewards
       requestBody:
@@ -946,7 +1170,7 @@ paths:
   /api/v1/points/redemptions:
     post:
       tags:
-        - point
+        - api-point
       description: ""
       operationId: post_api_v1_points_redemptions
       requestBody:
@@ -965,7 +1189,7 @@ paths:
   /api/v1/points/redemptions/calculate:
     post:
       tags:
-        - point
+        - api-point
       description: ""
       operationId: post_api_v1_points_redemptions_calculate
       requestBody:
@@ -984,7 +1208,7 @@ paths:
   /api/v1/points/rewards:
     get:
       tags:
-        - point
+        - api-point
       description: ""
       operationId: get_api_v1_points_rewards
       responses:
@@ -997,7 +1221,7 @@ paths:
   /api/v1/points/transactions:
     get:
       tags:
-        - point
+        - api-point
       description: ""
       operationId: get_api_v1_points_transactions
       responses:
@@ -1010,7 +1234,7 @@ paths:
   /api/v1/points/unclaimed-rewards:
     get:
       tags:
-        - point
+        - api-point
       description: ""
       operationId: get_api_v1_points_unclaimed_rewards
       responses:
@@ -1023,7 +1247,7 @@ paths:
   /api/v1/ppob/electricity-prepaid/inquiries:
     post:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: post_api_v1_ppob_electricity_prepaid_inquiries
       requestBody:
@@ -1042,7 +1266,7 @@ paths:
   /api/v1/ppob/electricity-prepaid/products:
     get:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: get_api_v1_ppob_electricity_prepaid_products
       responses:
@@ -1055,7 +1279,7 @@ paths:
   /api/v1/ppob/electricity-prepaid/products/{product_id}:
     get:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: get_api_v1_ppob_electricity_prepaid_products_param
       parameters:
@@ -1074,7 +1298,7 @@ paths:
   /api/v1/ppob/electricity-prepaid/transactions:
     post:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: post_api_v1_ppob_electricity_prepaid_transactions
       requestBody:
@@ -1093,7 +1317,7 @@ paths:
   /api/v1/ppob/mobile-prepaid/products:
     get:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: get_api_v1_ppob_mobile_prepaid_products
       responses:
@@ -1106,7 +1330,7 @@ paths:
   /api/v1/ppob/mobile-prepaid/products/{product_id}:
     get:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: get_api_v1_ppob_mobile_prepaid_products_param
       parameters:
@@ -1125,7 +1349,7 @@ paths:
   /api/v1/ppob/mobile-prepaid/transactions:
     post:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: post_api_v1_ppob_mobile_prepaid_transactions
       requestBody:
@@ -1144,7 +1368,7 @@ paths:
   /api/v1/ppob/pdam/inquiries:
     post:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: post_api_v1_ppob_pdam_inquiries
       requestBody:
@@ -1163,7 +1387,7 @@ paths:
   /api/v1/ppob/pdam/operators:
     get:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: get_api_v1_ppob_pdam_operators
       responses:
@@ -1176,7 +1400,7 @@ paths:
   /api/v1/ppob/pdam/transactions:
     post:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: post_api_v1_ppob_pdam_transactions
       requestBody:
@@ -1195,7 +1419,7 @@ paths:
   /api/v1/pricing-engines/calculate/guest:
     post:
       tags:
-        - pricing-engine
+        - api-pricing-engine
       description: ""
       operationId: post_api_v1_pricing_engines_calculate_guest
       requestBody:
@@ -1214,7 +1438,7 @@ paths:
   /api/v1/users:
     delete:
       tags:
-        - user
+        - api-user
       description: ""
       operationId: delete_api_v1_users
       responses:
@@ -1226,7 +1450,7 @@ paths:
                 $ref: '#/components/schemas/httphelper_SuccessResponse'
     get:
       tags:
-        - user
+        - api-user
       description: ""
       operationId: get_api_v1_users
       responses:
@@ -1239,7 +1463,7 @@ paths:
   /api/v1/wallets/account-inquiry:
     post:
       tags:
-        - wallet
+        - api-wallet
       description: ""
       operationId: post_api_v1_wallets_account_inquiry
       requestBody:
@@ -1258,7 +1482,7 @@ paths:
   /api/v1/wallets/transaction:
     get:
       tags:
-        - wallet
+        - api-wallet
       description: ""
       operationId: get_api_v1_wallets_transaction
       responses:
@@ -1271,7 +1495,7 @@ paths:
   /api/v1/wallets/transactions/{id}:
     get:
       tags:
-        - wallet
+        - api-wallet
       description: ""
       operationId: get_api_v1_wallets_transactions_param
       parameters:
@@ -1290,7 +1514,7 @@ paths:
   /api/v1/wallets/withdraw:
     post:
       tags:
-        - wallet
+        - api-wallet
       description: ""
       operationId: post_api_v1_wallets_withdraw
       requestBody:
@@ -1309,7 +1533,7 @@ paths:
   /api/v1/wallets/withdraw/calculate:
     post:
       tags:
-        - wallet
+        - api-wallet
       description: ""
       operationId: post_api_v1_wallets_withdraw_calculate
       requestBody:
@@ -1328,7 +1552,7 @@ paths:
   /api/v1/wallets/withdrawal-config:
     get:
       tags:
-        - wallet
+        - api-wallet
       description: ""
       operationId: get_api_v1_wallets_withdrawal_config
       responses:
@@ -1341,7 +1565,7 @@ paths:
   /api/v1/webhook/infobip/whatsapp/inbound:
     post:
       tags:
-        - webhook
+        - api-webhook
       description: ""
       operationId: post_api_v1_webhook_infobip_whatsapp_inbound
       requestBody:
@@ -1360,7 +1584,7 @@ paths:
   /api/v1/whoami:
     get:
       tags:
-        - whoami
+        - api-whoami
       description: ""
       operationId: get_api_v1_whoami
       responses:
@@ -1373,7 +1597,7 @@ paths:
   /api/v2/admin-fee:
     get:
       tags:
-        - admin-fee
+        - api-admin-fee
       description: ""
       operationId: get_api_v2_admin_fee
       responses:
@@ -1386,7 +1610,7 @@ paths:
   /api/v2/auth/user/verify:
     post:
       tags:
-        - auth
+        - api-auth
       description: ""
       operationId: post_api_v2_auth_user_verify
       requestBody:
@@ -1405,7 +1629,7 @@ paths:
   /api/v2/balances:
     get:
       tags:
-        - balance
+        - api-balance
       description: ""
       operationId: get_api_v2_balances
       responses:
@@ -1418,7 +1642,7 @@ paths:
   /api/v2/customer-state:
     get:
       tags:
-        - customer-state
+        - api-customer-state
       description: ""
       operationId: get_api_v2_customer_state
       responses:
@@ -1430,7 +1654,7 @@ paths:
                 $ref: '#/components/schemas/customer_state_GetCustomerStateV2Response'
     post:
       tags:
-        - customer-state
+        - api-customer-state
       description: ""
       operationId: post_api_v2_customer_state
       requestBody:
@@ -1449,7 +1673,7 @@ paths:
   /api/v2/last-approved-cuan-pandai:
     get:
       tags:
-        - last-approved-cuan-pandai
+        - api-last-approved-cuan-pandai
       description: ""
       operationId: get_api_v2_last_approved_cuan_pandai
       responses:
@@ -1462,7 +1686,7 @@ paths:
   /api/v2/loans/pickup-histories:
     get:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: get_api_v2_loans_pickup_histories
       responses:
@@ -1475,7 +1699,7 @@ paths:
   /api/v2/loans/{sbg_code}/calculate:
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v2_loans_param_calculate
       parameters:
@@ -1494,7 +1718,7 @@ paths:
   /api/v2/loans/{sbg_code}/payment:
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v2_loans_param_payment
       parameters:
@@ -1513,7 +1737,7 @@ paths:
   /api/v2/loans/{sbg_code}/payment-verification:
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v2_loans_param_payment_verification
       parameters:
@@ -1532,7 +1756,7 @@ paths:
   /api/v2/loans/{sbg_code}/payment/guest:
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v2_loans_param_payment_guest
       parameters:
@@ -1551,7 +1775,7 @@ paths:
   /api/v2/missions:
     get:
       tags:
-        - mission
+        - api-mission
       description: ""
       operationId: get_api_v2_missions
       responses:
@@ -1564,7 +1788,7 @@ paths:
   /api/v2/ppob/electricity-prepaid/products/{product_id}:
     get:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: get_api_v2_ppob_electricity_prepaid_products_param
       parameters:
@@ -1583,7 +1807,7 @@ paths:
   /api/v2/ppob/electricity-prepaid/transactions:
     post:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: post_api_v2_ppob_electricity_prepaid_transactions
       requestBody:
@@ -1602,7 +1826,7 @@ paths:
   /api/v2/ppob/mobile-prepaid/products/{product_id}:
     get:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: get_api_v2_ppob_mobile_prepaid_products_param
       parameters:
@@ -1621,7 +1845,7 @@ paths:
   /api/v2/ppob/mobile-prepaid/transactions:
     post:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: post_api_v2_ppob_mobile_prepaid_transactions
       requestBody:
@@ -1640,7 +1864,7 @@ paths:
   /api/v2/ppob/pdam/inquiries:
     post:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: post_api_v2_ppob_pdam_inquiries
       requestBody:
@@ -1659,7 +1883,7 @@ paths:
   /api/v2/ppob/pdam/transactions:
     post:
       tags:
-        - ppob
+        - api-ppob
       description: ""
       operationId: post_api_v2_ppob_pdam_transactions
       requestBody:
@@ -1678,7 +1902,7 @@ paths:
   /api/v2/pricing-engines/calculate/guest:
     post:
       tags:
-        - pricing-engine
+        - api-pricing-engine
       description: ""
       operationId: post_api_v2_pricing_engines_calculate_guest
       requestBody:
@@ -1697,7 +1921,7 @@ paths:
   /api/v2/wallets/transaction:
     get:
       tags:
-        - wallet
+        - api-wallet
       description: ""
       operationId: get_api_v2_wallets_transaction
       responses:
@@ -1710,7 +1934,7 @@ paths:
   /api/v2/wallets/transactions/{id}:
     get:
       tags:
-        - wallet
+        - api-wallet
       description: ""
       operationId: get_api_v2_wallets_transactions_param
       parameters:
@@ -1729,7 +1953,7 @@ paths:
   /api/v2/wallets/withdraw:
     post:
       tags:
-        - wallet
+        - api-wallet
       description: ""
       operationId: post_api_v2_wallets_withdraw
       requestBody:
@@ -1748,7 +1972,7 @@ paths:
   /api/v2/wallets/withdraw/calculate:
     post:
       tags:
-        - wallet
+        - api-wallet
       description: ""
       operationId: post_api_v2_wallets_withdraw_calculate
       requestBody:
@@ -1767,7 +1991,7 @@ paths:
   /api/v3/loans/{sbg_code}:
     get:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: get_api_v3_loans_param
       parameters:
@@ -1786,7 +2010,7 @@ paths:
   /api/v3/loans/{sbg_code}/calculate:
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v3_loans_param_calculate
       parameters:
@@ -1805,7 +2029,7 @@ paths:
   /api/v3/loans/{sbg_code}/payment:
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v3_loans_param_payment
       parameters:
@@ -1824,7 +2048,7 @@ paths:
   /api/v3/loans/{sbg_code}/payment/guest:
     post:
       tags:
-        - loan
+        - api-loan
       description: ""
       operationId: post_api_v3_loans_param_payment_guest
       parameters:
@@ -1843,7 +2067,7 @@ paths:
   /api/v3/pricing-engines/calculate/guest:
     post:
       tags:
-        - pricing-engine
+        - api-pricing-engine
       description: ""
       operationId: post_api_v3_pricing_engines_calculate_guest
       requestBody:
@@ -1863,7 +2087,7 @@ paths:
   /internal/v1/user:
     post:
       tags:
-        - user
+        - internal-user
       description: ""
       operationId: post_internal_v1_user
       responses:
@@ -1877,7 +2101,7 @@ paths:
   /intools/v1/access-user-fl-performance:
     get:
       tags:
-        - access-user-fl-performance
+        - intools-access-user-fl-performance
       description: ""
       operationId: get_intools_v1_access_user_fl_performance
       responses:
@@ -1890,7 +2114,7 @@ paths:
   /intools/v1/account-codes:
     get:
       tags:
-        - account-codes
+        - intools-account-codes
       description: ""
       operationId: get_intools_v1_account_codes
       responses:
@@ -1903,7 +2127,7 @@ paths:
   /intools/v1/appointments/{booking_code}/verify:
     post:
       tags:
-        - appointments
+        - intools-appointments
       description: ""
       operationId: post_intools_v1_appointments_param_verify
       parameters:
@@ -1922,7 +2146,7 @@ paths:
   /intools/v1/approval/rejection-categories:
     get:
       tags:
-        - approval
+        - intools-approval
       description: ""
       operationId: get_intools_v1_approval_rejection_categories
       responses:
@@ -1935,7 +2159,7 @@ paths:
   /intools/v1/auth/change-password:
     post:
       tags:
-        - auth
+        - intools-auth
       description: ""
       operationId: post_intools_v1_auth_change_password
       requestBody:
@@ -1954,7 +2178,7 @@ paths:
   /intools/v1/auth/info:
     get:
       tags:
-        - auth
+        - intools-auth
       description: ""
       operationId: get_intools_v1_auth_info
       responses:
@@ -1967,7 +2191,7 @@ paths:
   /intools/v1/auth/login:
     post:
       tags:
-        - auth
+        - intools-auth
       description: ""
       operationId: post_intools_v1_auth_login
       requestBody:
@@ -1986,7 +2210,7 @@ paths:
   /intools/v1/auth/login/stg:
     post:
       tags:
-        - auth
+        - intools-auth
       description: ""
       operationId: post_intools_v1_auth_login_stg
       requestBody:
@@ -2005,7 +2229,7 @@ paths:
   /intools/v1/auth/logout:
     post:
       tags:
-        - auth
+        - intools-auth
       description: ""
       operationId: post_intools_v1_auth_logout
       requestBody:
@@ -2024,7 +2248,7 @@ paths:
   /intools/v1/auth/refresh-token:
     post:
       tags:
-        - auth
+        - intools-auth
       description: ""
       operationId: post_intools_v1_auth_refresh_token
       requestBody:
@@ -2043,7 +2267,7 @@ paths:
   /intools/v1/auth/validate-token:
     post:
       tags:
-        - auth
+        - intools-auth
       description: ""
       operationId: post_intools_v1_auth_validate_token
       responses:
@@ -2056,7 +2280,7 @@ paths:
   /intools/v1/banners:
     post:
       tags:
-        - banner
+        - intools-banner
       description: ""
       operationId: post_intools_v1_banners
       responses:
@@ -2069,7 +2293,7 @@ paths:
   /intools/v1/banners/{id}:
     get:
       tags:
-        - banner
+        - intools-banner
       description: ""
       operationId: get_intools_v1_banners_param
       parameters:
@@ -2087,7 +2311,7 @@ paths:
                 type: object
     put:
       tags:
-        - banner
+        - intools-banner
       description: ""
       operationId: put_intools_v1_banners_param
       parameters:
@@ -2106,7 +2330,7 @@ paths:
   /intools/v1/branches:
     get:
       tags:
-        - branch
+        - intools-branch
       description: ""
       operationId: get_intools_v1_branches
       responses:
@@ -2119,7 +2343,7 @@ paths:
   /intools/v1/branches/{id}/remaining-balance:
     get:
       tags:
-        - branch
+        - intools-branch
       description: ""
       operationId: get_intools_v1_branches_param_remaining_balance
       parameters:
@@ -2138,7 +2362,7 @@ paths:
   /intools/v1/cash-management-stats:
     get:
       tags:
-        - cash-management-stats
+        - intools-cash-management-stats
       description: ""
       operationId: get_intools_v1_cash_management_stats
       responses:
@@ -2151,7 +2375,7 @@ paths:
   /intools/v1/cash-managements:
     get:
       tags:
-        - cash-managements
+        - intools-cash-managements
       description: ""
       operationId: get_intools_v1_cash_managements
       responses:
@@ -2163,7 +2387,7 @@ paths:
                 type: object
     post:
       tags:
-        - cash-managements
+        - intools-cash-managements
       description: ""
       operationId: post_intools_v1_cash_managements
       responses:
@@ -2176,7 +2400,7 @@ paths:
   /intools/v1/cash-managements/{id}:
     get:
       tags:
-        - cash-managements
+        - intools-cash-managements
       description: ""
       operationId: get_intools_v1_cash_managements_param
       parameters:
@@ -2195,7 +2419,7 @@ paths:
   /intools/v1/check-referral-codes/{code}:
     get:
       tags:
-        - check-referral-codes
+        - intools-check-referral-codes
       description: ""
       operationId: get_intools_v1_check_referral_codes_param
       parameters:
@@ -2214,7 +2438,7 @@ paths:
   /intools/v1/check-stock-opname-statuses:
     get:
       tags:
-        - check-stock-opname-statuses
+        - intools-check-stock-opname-statuses
       description: ""
       operationId: get_intools_v1_check_stock_opname_statuses
       responses:
@@ -2227,7 +2451,7 @@ paths:
   /intools/v1/collateral-items/calculate-item-detail:
     post:
       tags:
-        - collateral-items
+        - intools-collateral-items
       description: ""
       operationId: post_intools_v1_collateral_items_calculate_item_detail
       responses:
@@ -2240,7 +2464,7 @@ paths:
   /intools/v1/collateral-items/{imei}/check:
     get:
       tags:
-        - collateral-items
+        - intools-collateral-items
       description: ""
       operationId: get_intools_v1_collateral_items_param_check
       parameters:
@@ -2259,7 +2483,7 @@ paths:
   /intools/v1/customer-lists:
     get:
       tags:
-        - customer-lists
+        - intools-customer-lists
       description: ""
       operationId: get_intools_v1_customer_lists
       responses:
@@ -2272,7 +2496,7 @@ paths:
   /intools/v1/customer-prospects/segments:
     post:
       tags:
-        - customer-prospect
+        - intools-customer-prospect
       description: ""
       operationId: post_intools_v1_customer_prospects_segments
       responses:
@@ -2285,7 +2509,7 @@ paths:
   /intools/v1/customers:
     post:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: post_intools_v1_customers
       responses:
@@ -2298,7 +2522,7 @@ paths:
   /intools/v1/customers-waiting-approvals:
     get:
       tags:
-        - customers-waiting-approvals
+        - intools-customers-waiting-approvals
       description: ""
       operationId: get_intools_v1_customers_waiting_approvals
       responses:
@@ -2311,7 +2535,7 @@ paths:
   /intools/v1/customers/{nik}:
     get:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: get_intools_v1_customers_param
       parameters:
@@ -2329,7 +2553,7 @@ paths:
                 type: object
     put:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: put_intools_v1_customers_param
       parameters:
@@ -2348,7 +2572,7 @@ paths:
   /intools/v1/customers/{nik}/check:
     get:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: get_intools_v1_customers_param_check
       parameters:
@@ -2367,7 +2591,7 @@ paths:
   /intools/v1/customers/{nik}/check/{phone_number}/check-phone:
     get:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: get_intools_v1_customers_param_check_param_check_phone
       parameters:
@@ -2391,7 +2615,7 @@ paths:
   /intools/v1/dashboard/important-link:
     get:
       tags:
-        - dashboard
+        - intools-dashboard
       description: ""
       operationId: get_intools_v1_dashboard_important_link
       responses:
@@ -2404,7 +2628,7 @@ paths:
   /intools/v1/event-scheduler/send-booking-reminders:
     post:
       tags:
-        - event-scheduler
+        - intools-event-scheduler
       description: ""
       operationId: post_intools_v1_event_scheduler_send_booking_reminders
       requestBody:
@@ -2423,7 +2647,7 @@ paths:
   /intools/v1/event-scheduler/send-loan-reminders:
     post:
       tags:
-        - event-scheduler
+        - intools-event-scheduler
       description: ""
       operationId: post_intools_v1_event_scheduler_send_loan_reminders
       requestBody:
@@ -2442,7 +2666,7 @@ paths:
   /intools/v1/event-scheduler/send-ppob-reminders:
     post:
       tags:
-        - event-scheduler
+        - intools-event-scheduler
       description: ""
       operationId: post_intools_v1_event_scheduler_send_ppob_reminders
       requestBody:
@@ -2461,7 +2685,7 @@ paths:
   /intools/v1/gold-rewards/process-expired-balances:
     post:
       tags:
-        - gold-rewards
+        - intools-gold-rewards
       description: ""
       operationId: post_intools_v1_gold_rewards_process_expired_balances
       requestBody:
@@ -2480,7 +2704,7 @@ paths:
   /intools/v1/gold-rewards/process-expired-claims:
     post:
       tags:
-        - gold-rewards
+        - intools-gold-rewards
       description: ""
       operationId: post_intools_v1_gold_rewards_process_expired_claims
       requestBody:
@@ -2499,7 +2723,7 @@ paths:
   /intools/v1/golds/voucher/calculate:
     post:
       tags:
-        - gold
+        - intools-gold
       description: ""
       operationId: post_intools_v1_golds_voucher_calculate
       responses:
@@ -2512,7 +2736,7 @@ paths:
   /intools/v1/golds/voucher/redeem:
     post:
       tags:
-        - gold
+        - intools-gold
       description: ""
       operationId: post_intools_v1_golds_voucher_redeem
       responses:
@@ -2525,7 +2749,7 @@ paths:
   /intools/v1/guest-book-lists:
     get:
       tags:
-        - guest-book-lists
+        - intools-guest-book-lists
       description: ""
       operationId: get_intools_v1_guest_book_lists
       responses:
@@ -2538,7 +2762,7 @@ paths:
   /intools/v1/guest-books:
     post:
       tags:
-        - guest-books
+        - intools-guest-books
       description: ""
       operationId: post_intools_v1_guest_books
       responses:
@@ -2551,7 +2775,7 @@ paths:
   /intools/v1/guest-books/{id}:
     delete:
       tags:
-        - guest-books
+        - intools-guest-books
       description: ""
       operationId: delete_intools_v1_guest_books_param
       parameters:
@@ -2569,7 +2793,7 @@ paths:
                 type: object
     get:
       tags:
-        - guest-books
+        - intools-guest-books
       description: ""
       operationId: get_intools_v1_guest_books_param
       parameters:
@@ -2587,7 +2811,7 @@ paths:
                 type: object
     put:
       tags:
-        - guest-books
+        - intools-guest-books
       description: ""
       operationId: put_intools_v1_guest_books_param
       parameters:
@@ -2606,7 +2830,7 @@ paths:
   /intools/v1/inventory-report-stats:
     get:
       tags:
-        - inventory-report-stats
+        - intools-inventory-report-stats
       description: ""
       operationId: get_intools_v1_inventory_report_stats
       responses:
@@ -2619,7 +2843,7 @@ paths:
   /intools/v1/inventory-reports:
     get:
       tags:
-        - inventory-reports
+        - intools-inventory-reports
       description: ""
       operationId: get_intools_v1_inventory_reports
       responses:
@@ -2632,7 +2856,7 @@ paths:
   /intools/v1/loan-lists:
     get:
       tags:
-        - loan-lists
+        - intools-loan-lists
       description: ""
       operationId: get_intools_v1_loan_lists
       responses:
@@ -2645,7 +2869,7 @@ paths:
   /intools/v1/loan-payment-link-transactions:
     get:
       tags:
-        - loan-payment-link-transactions
+        - intools-loan-payment-link-transactions
       description: ""
       operationId: get_intools_v1_loan_payment_link_transactions
       responses:
@@ -2658,7 +2882,7 @@ paths:
   /intools/v1/loans:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v1_loans
       requestBody:
@@ -2677,7 +2901,7 @@ paths:
   /intools/v1/loans/approval/{id}:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v1_loans_approval_param
       parameters:
@@ -2696,7 +2920,7 @@ paths:
   /intools/v1/loans/payment-status/{id}:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v1_loans_payment_status_param
       parameters:
@@ -2715,7 +2939,7 @@ paths:
   /intools/v1/loans/payment/{sbg_code}:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v1_loans_payment_param
       parameters:
@@ -2734,7 +2958,7 @@ paths:
   /intools/v1/loans/referral/{id}:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v1_loans_referral_param
       parameters:
@@ -2753,7 +2977,7 @@ paths:
   /intools/v1/loans/{id}:
     get:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: get_intools_v1_loans_param
       parameters:
@@ -2772,7 +2996,7 @@ paths:
   /intools/v1/menus:
     get:
       tags:
-        - menus
+        - intools-menus
       description: ""
       operationId: get_intools_v1_menus
       responses:
@@ -2785,7 +3009,7 @@ paths:
   /intools/v1/metabase/dashboard-branch/{id}:
     get:
       tags:
-        - metabase
+        - intools-metabase
       description: ""
       operationId: get_intools_v1_metabase_dashboard_branch_param
       parameters:
@@ -2804,7 +3028,7 @@ paths:
   /intools/v1/metabase/dashboard-fl/{id}:
     get:
       tags:
-        - metabase
+        - intools-metabase
       description: ""
       operationId: get_intools_v1_metabase_dashboard_fl_param
       parameters:
@@ -2823,7 +3047,7 @@ paths:
   /intools/v1/metabase/dashboard/{id}:
     get:
       tags:
-        - metabase
+        - intools-metabase
       description: ""
       operationId: get_intools_v1_metabase_dashboard_param
       parameters:
@@ -2842,7 +3066,7 @@ paths:
   /intools/v1/offloads/analytics/transactions:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_analytics_transactions
       responses:
@@ -2855,7 +3079,7 @@ paths:
   /intools/v1/offloads/buyers:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_buyers
       responses:
@@ -2867,7 +3091,7 @@ paths:
                 type: object
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_buyers
       responses:
@@ -2880,7 +3104,7 @@ paths:
   /intools/v1/offloads/items:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_items
       responses:
@@ -2893,7 +3117,7 @@ paths:
   /intools/v1/offloads/items-export:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_items_export
       responses:
@@ -2906,7 +3130,7 @@ paths:
   /intools/v1/offloads/items-status:
     patch:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: patch_intools_v1_offloads_items_status
       responses:
@@ -2919,7 +3143,7 @@ paths:
   /intools/v1/offloads/items-to-pack:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_items_to_pack
       responses:
@@ -2932,7 +3156,7 @@ paths:
   /intools/v1/offloads/items/qr-print:
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_items_qr_print
       responses:
@@ -2945,7 +3169,7 @@ paths:
   /intools/v1/offloads/items/{id}:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_items_param
       parameters:
@@ -2964,7 +3188,7 @@ paths:
   /intools/v1/offloads/items/{id}/event-history:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_items_param_event_history
       parameters:
@@ -2983,7 +3207,7 @@ paths:
   /intools/v1/offloads/items/{id}/found:
     put:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: put_intools_v1_offloads_items_param_found
       parameters:
@@ -3002,7 +3226,7 @@ paths:
   /intools/v1/offloads/pickups:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_pickups
       responses:
@@ -3014,7 +3238,7 @@ paths:
                 type: object
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_pickups
       responses:
@@ -3027,7 +3251,7 @@ paths:
   /intools/v1/offloads/qcs:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_qcs
       responses:
@@ -3040,7 +3264,7 @@ paths:
   /intools/v1/offloads/qcs/{sbg_code}:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_qcs_param
       parameters:
@@ -3059,7 +3283,7 @@ paths:
   /intools/v1/offloads/qcs/{sbg_code}/collateral/calculate:
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_qcs_param_collateral_calculate
       parameters:
@@ -3078,7 +3302,7 @@ paths:
   /intools/v1/offloads/qcs/{sbg_code}/collateral/submit:
     put:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: put_intools_v1_offloads_qcs_param_collateral_submit
       parameters:
@@ -3097,7 +3321,7 @@ paths:
   /intools/v1/offloads/stock-opnames:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_stock_opnames
       responses:
@@ -3110,7 +3334,7 @@ paths:
   /intools/v1/offloads/stock-opnames/draft:
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_stock_opnames_draft
       responses:
@@ -3123,7 +3347,7 @@ paths:
   /intools/v1/offloads/stock-opnames/{opname_code}/items:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_stock_opnames_param_items
       parameters:
@@ -3142,7 +3366,7 @@ paths:
   /intools/v1/offloads/stock-opnames/{opname_code}/items/{id}:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_stock_opnames_param_items_param
       parameters:
@@ -3165,7 +3389,7 @@ paths:
                 type: object
     put:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: put_intools_v1_offloads_stock_opnames_param_items_param
       parameters:
@@ -3189,7 +3413,7 @@ paths:
   /intools/v1/offloads/stock-opnames/{opname_code}/submit:
     put:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: put_intools_v1_offloads_stock_opnames_param_submit
       parameters:
@@ -3208,7 +3432,7 @@ paths:
   /intools/v1/offloads/transactions:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_transactions
       responses:
@@ -3220,7 +3444,7 @@ paths:
                 type: object
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_transactions
       responses:
@@ -3233,7 +3457,7 @@ paths:
   /intools/v1/offloads/transactions-export:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_transactions_export
       responses:
@@ -3246,7 +3470,7 @@ paths:
   /intools/v1/offloads/transactions/{id}:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_transactions_param
       parameters:
@@ -3264,7 +3488,7 @@ paths:
                 type: object
     patch:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: patch_intools_v1_offloads_transactions_param
       parameters:
@@ -3283,7 +3507,7 @@ paths:
   /intools/v1/offloads/transactions/{id}/approval-status:
     patch:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: patch_intools_v1_offloads_transactions_param_approval_status
       parameters:
@@ -3302,7 +3526,7 @@ paths:
   /intools/v1/offloads/transactions/{id}/items:
     patch:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: patch_intools_v1_offloads_transactions_param_items
       parameters:
@@ -3321,7 +3545,7 @@ paths:
   /intools/v1/offloads/transactions/{id}/items-export:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_transactions_param_items_export
       parameters:
@@ -3340,7 +3564,7 @@ paths:
   /intools/v1/offloads/transactions/{id}/items-import:
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_transactions_param_items_import
       parameters:
@@ -3359,7 +3583,7 @@ paths:
   /intools/v1/offloads/transactions/{id}/payment-attempt/{attempt_id}/retry:
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_transactions_param_payment_attempt_param_retry
       parameters:
@@ -3383,7 +3607,7 @@ paths:
   /intools/v1/offloads/transactions/{id}/subtotal:
     patch:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: patch_intools_v1_offloads_transactions_param_subtotal
       parameters:
@@ -3402,7 +3626,7 @@ paths:
   /intools/v1/offloads/transactions/{id}/transitions:
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_transactions_param_transitions
       parameters:
@@ -3421,7 +3645,7 @@ paths:
   /intools/v1/offloads/warehouse/deliveries:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_warehouse_deliveries
       responses:
@@ -3433,7 +3657,7 @@ paths:
                 type: object
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_warehouse_deliveries
       responses:
@@ -3446,7 +3670,7 @@ paths:
   /intools/v1/offloads/warehouse/deliveries/{id}:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_warehouse_deliveries_param
       parameters:
@@ -3465,7 +3689,7 @@ paths:
   /intools/v1/offloads/warehouse/deliveries/{id}/delivery-status:
     patch:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: patch_intools_v1_offloads_warehouse_deliveries_param_delivery_status
       parameters:
@@ -3484,7 +3708,7 @@ paths:
   /intools/v1/offloads/warehouse/deliveries/{id}/items:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_warehouse_deliveries_param_items
       parameters:
@@ -3503,7 +3727,7 @@ paths:
   /intools/v1/offloads/warehouse/deliveries/{id}/items/confirm:
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_warehouse_deliveries_param_items_confirm
       parameters:
@@ -3522,7 +3746,7 @@ paths:
   /intools/v1/offloads/warehouse/deliveries/{id}/items/confirm-investigation:
     post:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: post_intools_v1_offloads_warehouse_deliveries_param_items_confirm_investigation
       parameters:
@@ -3541,7 +3765,7 @@ paths:
   /intools/v1/offloads/warehouse/deliveries/{id}/qr/print:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_warehouse_deliveries_param_qr_print
       parameters:
@@ -3560,7 +3784,7 @@ paths:
   /intools/v1/offloads/warehouse/delivery-locations:
     get:
       tags:
-        - offloads
+        - intools-offloads
       description: ""
       operationId: get_intools_v1_offloads_warehouse_delivery_locations
       responses:
@@ -3573,7 +3797,7 @@ paths:
   /intools/v1/petty-cash:
     get:
       tags:
-        - petty-cash
+        - intools-petty-cash
       description: ""
       operationId: get_intools_v1_petty_cash
       responses:
@@ -3585,7 +3809,7 @@ paths:
                 type: object
     post:
       tags:
-        - petty-cash
+        - intools-petty-cash
       description: ""
       operationId: post_intools_v1_petty_cash
       responses:
@@ -3598,7 +3822,7 @@ paths:
   /intools/v1/petty-cash-balance/{id}:
     get:
       tags:
-        - petty-cash-balance
+        - intools-petty-cash-balance
       description: ""
       operationId: get_intools_v1_petty_cash_balance_param
       parameters:
@@ -3617,7 +3841,7 @@ paths:
   /intools/v1/petty-cash/{id}:
     get:
       tags:
-        - petty-cash
+        - intools-petty-cash
       description: ""
       operationId: get_intools_v1_petty_cash_param
       parameters:
@@ -3636,7 +3860,7 @@ paths:
   /intools/v1/petty-cash/{id}/approval:
     post:
       tags:
-        - petty-cash
+        - intools-petty-cash
       description: ""
       operationId: post_intools_v1_petty_cash_param_approval
       parameters:
@@ -3655,7 +3879,7 @@ paths:
   /intools/v1/petty-cash/{id}/print:
     get:
       tags:
-        - petty-cash
+        - intools-petty-cash
       description: ""
       operationId: get_intools_v1_petty_cash_param_print
       parameters:
@@ -3674,7 +3898,7 @@ paths:
   /intools/v1/plombir/find:
     get:
       tags:
-        - plombir
+        - intools-plombir
       description: ""
       operationId: get_intools_v1_plombir_find
       responses:
@@ -3687,7 +3911,7 @@ paths:
   /intools/v1/point-rewards/process-expired-balances:
     post:
       tags:
-        - point-rewards
+        - intools-point-rewards
       description: ""
       operationId: post_intools_v1_point_rewards_process_expired_balances
       requestBody:
@@ -3706,7 +3930,7 @@ paths:
   /intools/v1/point-rewards/process-expired-claims:
     post:
       tags:
-        - point-rewards
+        - intools-point-rewards
       description: ""
       operationId: post_intools_v1_point_rewards_process_expired_claims
       requestBody:
@@ -3725,7 +3949,7 @@ paths:
   /intools/v1/points/voucher/calculate:
     post:
       tags:
-        - point
+        - intools-point
       description: ""
       operationId: post_intools_v1_points_voucher_calculate
       responses:
@@ -3738,7 +3962,7 @@ paths:
   /intools/v1/points/voucher/redeem:
     post:
       tags:
-        - point
+        - intools-point
       description: ""
       operationId: post_intools_v1_points_voucher_redeem
       responses:
@@ -3751,7 +3975,7 @@ paths:
   /intools/v1/price-references:
     get:
       tags:
-        - price-references
+        - intools-price-references
       description: ""
       operationId: get_intools_v1_price_references
       responses:
@@ -3764,7 +3988,7 @@ paths:
   /intools/v1/price-references/{uuid}/photos:
     post:
       tags:
-        - price-references
+        - intools-price-references
       description: ""
       operationId: post_intools_v1_price_references_param_photos
       parameters:
@@ -3783,7 +4007,7 @@ paths:
   /intools/v1/prices/gold-redemption:
     get:
       tags:
-        - prices
+        - intools-prices
       description: ""
       operationId: get_intools_v1_prices_gold_redemption
       responses:
@@ -3796,7 +4020,7 @@ paths:
   /intools/v1/pricing-engines/calculate:
     post:
       tags:
-        - pricing-engine
+        - intools-pricing-engine
       description: ""
       operationId: post_intools_v1_pricing_engines_calculate
       requestBody:
@@ -3815,7 +4039,7 @@ paths:
   /intools/v1/print/inventory-reports:
     get:
       tags:
-        - print
+        - intools-print
       description: ""
       operationId: get_intools_v1_print_inventory_reports
       responses:
@@ -3828,7 +4052,7 @@ paths:
   /intools/v1/print/plombir/{loan_id}:
     get:
       tags:
-        - print
+        - intools-print
       description: ""
       operationId: get_intools_v1_print_plombir_param
       parameters:
@@ -3847,7 +4071,7 @@ paths:
   /intools/v1/print/receipt/{loan_id}:
     get:
       tags:
-        - print
+        - intools-print
       description: ""
       operationId: get_intools_v1_print_receipt_param
       parameters:
@@ -3866,7 +4090,7 @@ paths:
   /intools/v1/print/sbg/{loan_id}:
     get:
       tags:
-        - print
+        - intools-print
       description: ""
       operationId: get_intools_v1_print_sbg_param
       parameters:
@@ -3885,7 +4109,7 @@ paths:
   /intools/v1/promotion-redemptions:
     put:
       tags:
-        - promotion-redemptions
+        - intools-promotion-redemptions
       description: ""
       operationId: put_intools_v1_promotion_redemptions
       requestBody:
@@ -3904,7 +4128,7 @@ paths:
   /intools/v1/promotion/get-eligible-promos:
     post:
       tags:
-        - promotion
+        - intools-promotion
       description: ""
       operationId: post_intools_v1_promotion_get_eligible_promos
       responses:
@@ -3917,7 +4141,7 @@ paths:
   /intools/v1/stock-opname-configs:
     get:
       tags:
-        - stock-opname-configs
+        - intools-stock-opname-configs
       description: ""
       operationId: get_intools_v1_stock_opname_configs
       responses:
@@ -3930,7 +4154,7 @@ paths:
   /intools/v1/stock-opname-open-access-categories:
     get:
       tags:
-        - stock-opname-open-access-categories
+        - intools-stock-opname-open-access-categories
       description: ""
       operationId: get_intools_v1_stock_opname_open_access_categories
       responses:
@@ -3943,7 +4167,7 @@ paths:
   /intools/v1/stock-opnames:
     get:
       tags:
-        - stock-opnames
+        - intools-stock-opnames
       description: ""
       operationId: get_intools_v1_stock_opnames
       responses:
@@ -3955,7 +4179,7 @@ paths:
                 type: object
     post:
       tags:
-        - stock-opnames
+        - intools-stock-opnames
       description: ""
       operationId: post_intools_v1_stock_opnames
       responses:
@@ -3968,7 +4192,7 @@ paths:
   /intools/v1/stock-opnames/{id}:
     get:
       tags:
-        - stock-opnames
+        - intools-stock-opnames
       description: ""
       operationId: get_intools_v1_stock_opnames_param
       parameters:
@@ -3986,7 +4210,7 @@ paths:
                 type: object
     put:
       tags:
-        - stock-opnames
+        - intools-stock-opnames
       description: ""
       operationId: put_intools_v1_stock_opnames_param
       parameters:
@@ -4005,7 +4229,7 @@ paths:
   /intools/v1/stock-opnames/{id}/open-access:
     post:
       tags:
-        - stock-opnames
+        - intools-stock-opnames
       description: ""
       operationId: post_intools_v1_stock_opnames_param_open_access
       parameters:
@@ -4024,7 +4248,7 @@ paths:
   /intools/v1/talenta/attendances-export:
     post:
       tags:
-        - talenta
+        - intools-talenta
       description: ""
       operationId: post_intools_v1_talenta_attendances_export
       responses:
@@ -4037,7 +4261,7 @@ paths:
   /intools/v1/talenta/attendances-report-import:
     post:
       tags:
-        - talenta
+        - intools-talenta
       description: ""
       operationId: post_intools_v1_talenta_attendances_report_import
       responses:
@@ -4050,7 +4274,7 @@ paths:
   /intools/v1/talenta/employees-export:
     post:
       tags:
-        - talenta
+        - intools-talenta
       description: ""
       operationId: post_intools_v1_talenta_employees_export
       responses:
@@ -4063,7 +4287,7 @@ paths:
   /intools/v1/talenta/users/{id}:
     put:
       tags:
-        - talenta
+        - intools-talenta
       description: ""
       operationId: put_intools_v1_talenta_users_param
       parameters:
@@ -4082,7 +4306,7 @@ paths:
   /intools/v1/transaction-report-stats:
     get:
       tags:
-        - transaction-report-stats
+        - intools-transaction-report-stats
       description: ""
       operationId: get_intools_v1_transaction_report_stats
       responses:
@@ -4095,7 +4319,7 @@ paths:
   /intools/v1/transactions:
     post:
       tags:
-        - transactions
+        - intools-transactions
       description: ""
       operationId: post_intools_v1_transactions
       requestBody:
@@ -4114,7 +4338,7 @@ paths:
   /intools/v1/update-customer-lists:
     get:
       tags:
-        - update-customer-lists
+        - intools-update-customer-lists
       description: ""
       operationId: get_intools_v1_update_customer_lists
       responses:
@@ -4127,7 +4351,7 @@ paths:
   /intools/v1/visitor-verification:
     post:
       tags:
-        - visitor-verification
+        - intools-visitor-verification
       description: ""
       operationId: post_intools_v1_visitor_verification
       requestBody:
@@ -4146,7 +4370,7 @@ paths:
   /intools/v2/auth/login:
     post:
       tags:
-        - auth
+        - intools-auth
       description: ""
       operationId: post_intools_v2_auth_login
       requestBody:
@@ -4165,7 +4389,7 @@ paths:
   /intools/v2/check-referral-codes/{code}:
     get:
       tags:
-        - check-referral-codes
+        - intools-check-referral-codes
       description: ""
       operationId: get_intools_v2_check_referral_codes_param
       parameters:
@@ -4184,7 +4408,7 @@ paths:
   /intools/v2/collateral-items/calculate-item-detail:
     post:
       tags:
-        - collateral-items
+        - intools-collateral-items
       description: ""
       operationId: post_intools_v2_collateral_items_calculate_item_detail
       responses:
@@ -4197,7 +4421,7 @@ paths:
   /intools/v2/collateral-items/check:
     get:
       tags:
-        - collateral-items
+        - intools-collateral-items
       description: ""
       operationId: get_intools_v2_collateral_items_check
       responses:
@@ -4210,7 +4434,7 @@ paths:
   /intools/v2/customers/{cif}:
     get:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: get_intools_v2_customers_param
       parameters:
@@ -4228,7 +4452,7 @@ paths:
                 type: object
     put:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: put_intools_v2_customers_param
       parameters:
@@ -4247,7 +4471,7 @@ paths:
   /intools/v2/customers/{cif}/blacklist:
     post:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: post_intools_v2_customers_param_blacklist
       parameters:
@@ -4266,7 +4490,7 @@ paths:
   /intools/v2/customers/{cif}/gold-balance:
     get:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: get_intools_v2_customers_param_gold_balance
       parameters:
@@ -4285,7 +4509,7 @@ paths:
   /intools/v2/customers/{cif}/point-balance:
     get:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: get_intools_v2_customers_param_point_balance
       parameters:
@@ -4304,7 +4528,7 @@ paths:
   /intools/v2/customers/{cif}/update:
     post:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: post_intools_v2_customers_param_update
       parameters:
@@ -4323,7 +4547,7 @@ paths:
   /intools/v2/customers/{cif}/update/{id}:
     get:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: get_intools_v2_customers_param_update_param
       parameters:
@@ -4347,7 +4571,7 @@ paths:
   /intools/v2/customers/{cif}/update/{id}/approval:
     post:
       tags:
-        - customers
+        - intools-customers
       description: ""
       operationId: post_intools_v2_customers_param_update_param_approval
       parameters:
@@ -4371,7 +4595,7 @@ paths:
   /intools/v2/loans:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v2_loans
       responses:
@@ -4384,7 +4608,7 @@ paths:
   /intools/v2/loans/{id}:
     get:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: get_intools_v2_loans_param
       parameters:
@@ -4403,7 +4627,7 @@ paths:
   /intools/v2/loans/{id}/approval:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v2_loans_param_approval
       parameters:
@@ -4422,7 +4646,7 @@ paths:
   /intools/v2/loans/{id}/pickup-approval:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v2_loans_param_pickup_approval
       parameters:
@@ -4441,7 +4665,7 @@ paths:
   /intools/v2/loans/{id}/pickup-request:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v2_loans_param_pickup_request
       parameters:
@@ -4460,7 +4684,7 @@ paths:
   /intools/v2/price-references:
     get:
       tags:
-        - price-references
+        - intools-price-references
       description: ""
       operationId: get_intools_v2_price_references
       responses:
@@ -4473,7 +4697,7 @@ paths:
   /intools/v2/pricing-engines/calculate:
     post:
       tags:
-        - pricing-engine
+        - intools-pricing-engine
       description: ""
       operationId: post_intools_v2_pricing_engines_calculate
       requestBody:
@@ -4492,7 +4716,7 @@ paths:
   /intools/v2/print/receipt/{loan_id}:
     get:
       tags:
-        - print
+        - intools-print
       description: ""
       operationId: get_intools_v2_print_receipt_param
       parameters:
@@ -4511,7 +4735,7 @@ paths:
   /intools/v2/transactions:
     post:
       tags:
-        - transactions
+        - intools-transactions
       description: ""
       operationId: post_intools_v2_transactions
       responses:
@@ -4524,7 +4748,7 @@ paths:
   /intools/v3/collateral-items/check:
     get:
       tags:
-        - collateral-items
+        - intools-collateral-items
       description: ""
       operationId: get_intools_v3_collateral_items_check
       responses:
@@ -4537,7 +4761,7 @@ paths:
   /intools/v3/loans:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v3_loans
       responses:
@@ -4550,7 +4774,7 @@ paths:
   /intools/v3/loans/{id}/approval:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v3_loans_param_approval
       parameters:
@@ -4569,7 +4793,7 @@ paths:
   /intools/v3/pricing-engines/calculate:
     post:
       tags:
-        - pricing-engine
+        - intools-pricing-engine
       description: ""
       operationId: post_intools_v3_pricing_engines_calculate
       requestBody:
@@ -4588,7 +4812,7 @@ paths:
   /intools/v3/transactions:
     post:
       tags:
-        - transactions
+        - intools-transactions
       description: ""
       operationId: post_intools_v3_transactions
       responses:
@@ -4601,7 +4825,7 @@ paths:
   /intools/v4/loans:
     post:
       tags:
-        - loan
+        - intools-loan
       description: ""
       operationId: post_intools_v4_loans
       responses:
@@ -4614,7 +4838,7 @@ paths:
   /intools/v4/pricing-engines/calculate:
     post:
       tags:
-        - pricing-engine
+        - intools-pricing-engine
       description: ""
       operationId: post_intools_v4_pricing_engines_calculate
       requestBody:
@@ -4633,7 +4857,7 @@ paths:
   /intools/v4/transactions:
     post:
       tags:
-        - transactions
+        - intools-transactions
       description: ""
       operationId: post_intools_v4_transactions
       responses:
@@ -4647,7 +4871,7 @@ paths:
   /landing/v1/appointments:
     get:
       tags:
-        - appointments
+        - landing-appointments
       description: ""
       operationId: get_landing_v1_appointments
       responses:
@@ -4659,7 +4883,7 @@ paths:
                 type: object
     post:
       tags:
-        - appointments
+        - landing-appointments
       description: ""
       operationId: post_landing_v1_appointments
       responses:
@@ -4672,7 +4896,7 @@ paths:
   /landing/v1/banners:
     get:
       tags:
-        - banner
+        - landing-banner
       description: ""
       operationId: get_landing_v1_banners
       responses:
@@ -4685,7 +4909,7 @@ paths:
   /landing/v1/branches:
     get:
       tags:
-        - branch
+        - landing-branch
       description: ""
       operationId: get_landing_v1_branches
       responses:
@@ -4698,7 +4922,7 @@ paths:
   /landing/v1/price-references:
     get:
       tags:
-        - price-references
+        - landing-price-references
       description: ""
       operationId: get_landing_v1_price_references
       responses:
@@ -4711,7 +4935,7 @@ paths:
   /landing/v1/promos:
     get:
       tags:
-        - promos
+        - landing-promos
       description: ""
       operationId: get_landing_v1_promos
       responses:
@@ -4724,7 +4948,7 @@ paths:
   /landing/v1/referrer/{code}/validate:
     get:
       tags:
-        - referrer
+        - landing-referrer
       description: ""
       operationId: get_landing_v1_referrer_param_validate
       parameters:
@@ -4744,7 +4968,7 @@ paths:
   /webhook/v1/payments/doku:
     post:
       tags:
-        - payment
+        - webhook-payment
       description: ""
       operationId: post_webhook_v1_payments_doku
       responses:
@@ -4757,7 +4981,7 @@ paths:
   /webhook/v1/payments/oy:
     post:
       tags:
-        - payment
+        - webhook-payment
       description: ""
       operationId: post_webhook_v1_payments_oy
       requestBody:
@@ -4776,7 +5000,7 @@ paths:
   /webhook/v1/payments/xendit:
     post:
       tags:
-        - payment
+        - webhook-payment
       description: ""
       operationId: post_webhook_v1_payments_xendit
       requestBody:
@@ -4795,7 +5019,7 @@ paths:
   /webhook/v1/payout/doku/refund:
     post:
       tags:
-        - payout
+        - webhook-payout
       description: ""
       operationId: post_webhook_v1_payout_doku_refund
       responses:
@@ -4808,7 +5032,7 @@ paths:
   /webhook/v1/payout/doku/unpaid:
     post:
       tags:
-        - payout
+        - webhook-payout
       description: ""
       operationId: post_webhook_v1_payout_doku_unpaid
       requestBody:
@@ -4827,7 +5051,7 @@ paths:
   /webhook/v1/pintarnya/account-links:
     post:
       tags:
-        - pintarnya
+        - webhook-pintarnya
       description: ""
       operationId: post_webhook_v1_pintarnya_account_links
       responses:
@@ -4840,7 +5064,7 @@ paths:
   /webhook/v1/pintarnya/delete-accounts:
     post:
       tags:
-        - pintarnya
+        - webhook-pintarnya
       description: ""
       operationId: post_webhook_v1_pintarnya_delete_accounts
       responses:
@@ -4853,7 +5077,7 @@ paths:
   /webhook/v1/pintarnya/mission-approvals:
     post:
       tags:
-        - pintarnya
+        - webhook-pintarnya
       description: ""
       operationId: post_webhook_v1_pintarnya_mission_approvals
       responses:
@@ -4866,7 +5090,7 @@ paths:
   /webhook/v1/ppob/alterra:
     post:
       tags:
-        - ppob
+        - webhook-ppob
       description: ""
       operationId: post_webhook_v1_ppob_alterra
       requestBody:
@@ -6423,19 +6647,19 @@ components:
       properties:
         sbg_code:
           type: string
-          description: Loan code associated with the payment link.
+          description: Loan code associated with the payment link. It prefixes with Branch ID followed by the Loan ID.
           examples:
-            - SBG-2024-001234
+            - 999999900002679
         created_at:
           type: string
           format: date-time
-          description: Timestamp when the payment link was created.
+          description: Timestamp when the payment link was created (RFC3339).
           examples:
             - 2024-01-15T09:30:00Z
         expired_at:
           type: string
           format: date-time
-          description: Timestamp when the payment link expires.
+          description: Timestamp when the payment link expires (RFC3339).
           examples:
             - 2024-01-16T09:30:00Z
         payment_amount:
@@ -6447,7 +6671,9 @@ components:
           type: string
           description: Current status of the payment link.
           examples:
-            - active
+            - CREATED
+            - EXPIRED
+            - PAID
     payment_PaymentInformationResponse:
       type: object
       properties:
