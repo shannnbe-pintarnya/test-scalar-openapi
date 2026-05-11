@@ -1,0 +1,6957 @@
+openapi: 3.1.0
+info:
+  title: Cortes API
+  version: 0.0.0
+paths:
+  /api/v1/active-payments:
+    get:
+      description: ""
+      operationId: get_api_v1_active_payments
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment_GetActiveCustomerPaymentLinkResponse'
+  /api/v1/admin-fee:
+    get:
+      description: ""
+      operationId: get_api_v1_admin_fee
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/assets:
+    get:
+      description: ""
+      operationId: get_api_v1_assets
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/collateral_AssetListResponse'
+  /api/v1/auth/info:
+    get:
+      description: ""
+      operationId: get_api_v1_auth_info
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_GetAuthInfoResponse'
+  /api/v1/auth/logout:
+    post:
+      description: ""
+      operationId: post_api_v1_auth_logout
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/httphelper_SuccessResponse'
+  /api/v1/auth/otp/request:
+    post:
+      description: ""
+      operationId: post_api_v1_auth_otp_request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_RequestOTPRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_RequestOTPResponse'
+  /api/v1/auth/otp/verify:
+    post:
+      description: ""
+      operationId: post_api_v1_auth_otp_verify
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_VerifyOTPRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_VerifyOTPResponse'
+  /api/v1/auth/pin/create:
+    post:
+      description: ""
+      operationId: post_api_v1_auth_pin_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_CreatePINRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_CreatePINResponse'
+  /api/v1/auth/pin/login:
+    post:
+      description: ""
+      operationId: post_api_v1_auth_pin_login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_LoginPINRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_LoginPINResponse'
+  /api/v1/auth/pin/reset:
+    post:
+      description: ""
+      operationId: post_api_v1_auth_pin_reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_ResetPINRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_TokenResponse'
+  /api/v1/auth/refresh:
+    post:
+      description: ""
+      operationId: post_api_v1_auth_refresh
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_RefreshTokenRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_TokenResponse'
+  /api/v1/auth/user/verify:
+    post:
+      description: ""
+      operationId: post_api_v1_auth_user_verify
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_VerifyUserRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_VerifyUserResponse'
+  /api/v1/auth/verify-phone:
+    post:
+      description: ""
+      operationId: post_api_v1_auth_verify_phone
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_VerifyPhoneRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_VerifyPhoneResponse'
+  /api/v1/balances:
+    get:
+      description: ""
+      operationId: get_api_v1_balances
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/banners:
+    get:
+      description: ""
+      operationId: get_api_v1_banners
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/banner_GetBannersResponse'
+  /api/v1/branches:
+    get:
+      description: ""
+      operationId: get_api_v1_branches
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/branch_BranchesResponse'
+  /api/v1/customer-prospects/segments:
+    post:
+      description: ""
+      operationId: post_api_v1_customer_prospects_segments
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/customer-state:
+    get:
+      description: ""
+      operationId: get_api_v1_customer_state
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer_state_GetCustomerStateResponse'
+    post:
+      description: ""
+      operationId: post_api_v1_customer_state
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customer_state_UpdateCustomerStateRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer_state_UpdateCustomerStateResponse'
+  /api/v1/feedback/send:
+    post:
+      description: ""
+      operationId: post_api_v1_feedback_send
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/feedback/{id}:
+    get:
+      description: ""
+      operationId: get_api_v1_feedback_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      description: ""
+      operationId: put_api_v1_feedback_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/feedbacks/{uuid}:
+    get:
+      description: ""
+      operationId: get_api_v1_feedbacks_param
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      description: ""
+      operationId: post_api_v1_feedbacks_param
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/gold-reward-prices:
+    get:
+      description: ""
+      operationId: get_api_v1_gold_reward_prices
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/golds/check-claim-status:
+    get:
+      description: ""
+      operationId: get_api_v1_golds_check_claim_status
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gold_reward_CheckClaimStatusResponse'
+  /api/v1/golds/claim-rewards:
+    post:
+      description: ""
+      operationId: post_api_v1_golds_claim_rewards
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/gold_reward_ClaimRewardsRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/golds/conversions:
+    post:
+      description: ""
+      operationId: post_api_v1_golds_conversions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/gold_redemption_CalculateConversionRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/golds/prices:
+    get:
+      description: ""
+      operationId: get_api_v1_golds_prices
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/golds/redemptions:
+    post:
+      description: ""
+      operationId: post_api_v1_golds_redemptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/gold_redemption_RedeemGoldRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gold_redemption_RedeemGoldResponse'
+  /api/v1/golds/rewards:
+    get:
+      description: ""
+      operationId: get_api_v1_golds_rewards
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/golds/rupiah-conversion:
+    post:
+      description: ""
+      operationId: post_api_v1_golds_rupiah_conversion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/gold_reward_ConvertIDRToMGRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/golds/transactions:
+    get:
+      description: ""
+      operationId: get_api_v1_golds_transactions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/golds/unclaimed-rewards:
+    get:
+      description: ""
+      operationId: get_api_v1_golds_unclaimed_rewards
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/health:
+    get:
+      description: ""
+      operationId: get_api_v1_health
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/last-approved-cuan-emas:
+    get:
+      description: ""
+      operationId: get_api_v1_last_approved_cuan_emas
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/loans:
+    get:
+      description: ""
+      operationId: get_api_v1_loans
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/loans/{sbg_code}:
+    get:
+      description: ""
+      operationId: get_api_v1_loans_param
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/loans/{sbg_code}/calculate:
+    post:
+      description: ""
+      operationId: post_api_v1_loans_param_calculate
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/loans/{sbg_code}/payment:
+    delete:
+      description: ""
+      operationId: delete_api_v1_loans_param_payment
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      description: ""
+      operationId: post_api_v1_loans_param_payment
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/loans/{sbg_code}/payment-verification:
+    post:
+      description: ""
+      operationId: post_api_v1_loans_param_payment_verification
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/loans/{sbg_code}/payment/guest:
+    post:
+      description: ""
+      operationId: post_api_v1_loans_param_payment_guest
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/locations/cities:
+    get:
+      description: ""
+      operationId: get_api_v1_locations_cities
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/location_LocationCityResponse'
+  /api/v1/locations/districts:
+    get:
+      description: ""
+      operationId: get_api_v1_locations_districts
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/location_LocationDistrictResponse'
+  /api/v1/locations/provinces:
+    get:
+      description: ""
+      operationId: get_api_v1_locations_provinces
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/location_LocationProvinceResponse'
+  /api/v1/locations/sub-districts:
+    get:
+      description: ""
+      operationId: get_api_v1_locations_sub_districts
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/location_LocationSubDistrictResponse'
+  /api/v1/missions:
+    get:
+      description: ""
+      operationId: get_api_v1_missions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mission_GetMissionsResponse'
+  /api/v1/payments/{id}:
+    get:
+      description: ""
+      operationId: get_api_v1_payments_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/points/check-claim-status:
+    get:
+      description: ""
+      operationId: get_api_v1_points_check_claim_status
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/point_reward_CheckClaimStatusResponse'
+  /api/v1/points/claim-rewards:
+    post:
+      description: ""
+      operationId: post_api_v1_points_claim_rewards
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/point_reward_ClaimRewardsRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/points/redemptions:
+    post:
+      description: ""
+      operationId: post_api_v1_points_redemptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/point_redemption_RedeemRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/point_redemption_RedeemResponse'
+  /api/v1/points/redemptions/calculate:
+    post:
+      description: ""
+      operationId: post_api_v1_points_redemptions_calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/point_redemption_CalculateRedemptionRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/points/rewards:
+    get:
+      description: ""
+      operationId: get_api_v1_points_rewards
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/points/transactions:
+    get:
+      description: ""
+      operationId: get_api_v1_points_transactions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/points/unclaimed-rewards:
+    get:
+      description: ""
+      operationId: get_api_v1_points_unclaimed_rewards
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/ppob/electricity-prepaid/inquiries:
+    post:
+      description: ""
+      operationId: post_api_v1_ppob_electricity_prepaid_inquiries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ppob_InquiryElectricityCustomerRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/ppob/electricity-prepaid/products:
+    get:
+      description: ""
+      operationId: get_api_v1_ppob_electricity_prepaid_products
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/ppob/electricity-prepaid/products/{product_id}:
+    get:
+      description: ""
+      operationId: get_api_v1_ppob_electricity_prepaid_products_param
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/ppob/electricity-prepaid/transactions:
+    post:
+      description: ""
+      operationId: post_api_v1_ppob_electricity_prepaid_transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ppob_CreateElectricityPrepaidTransactionRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/ppob/mobile-prepaid/products:
+    get:
+      description: ""
+      operationId: get_api_v1_ppob_mobile_prepaid_products
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/ppob/mobile-prepaid/products/{product_id}:
+    get:
+      description: ""
+      operationId: get_api_v1_ppob_mobile_prepaid_products_param
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/ppob/mobile-prepaid/transactions:
+    post:
+      description: ""
+      operationId: post_api_v1_ppob_mobile_prepaid_transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ppob_CreateMobilePrepaidTransactionRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/ppob/pdam/inquiries:
+    post:
+      description: ""
+      operationId: post_api_v1_ppob_pdam_inquiries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ppob_InquiryPDAMBillRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/ppob/pdam/operators:
+    get:
+      description: ""
+      operationId: get_api_v1_ppob_pdam_operators
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/ppob/pdam/transactions:
+    post:
+      description: ""
+      operationId: post_api_v1_ppob_pdam_transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ppob_CreatePDAMTransactionRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/pricing-engines/calculate/guest:
+    post:
+      description: ""
+      operationId: post_api_v1_pricing_engines_calculate_guest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pricing_engine_CalculatePricingGuestRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pricing_engine_CalculatePricingGuestResponse'
+  /api/v1/users:
+    delete:
+      description: ""
+      operationId: delete_api_v1_users
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/httphelper_SuccessResponse'
+    get:
+      description: ""
+      operationId: get_api_v1_users
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/wallets/account-inquiry:
+    post:
+      description: ""
+      operationId: post_api_v1_wallets_account_inquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_AccountInquiryRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/wallets/transaction:
+    get:
+      description: ""
+      operationId: get_api_v1_wallets_transaction
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/wallets/transactions/{id}:
+    get:
+      description: ""
+      operationId: get_api_v1_wallets_transactions_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/wallets/withdraw:
+    post:
+      description: ""
+      operationId: post_api_v1_wallets_withdraw
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_WithdrawRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/wallets/withdraw/calculate:
+    post:
+      description: ""
+      operationId: post_api_v1_wallets_withdraw_calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_CalculateWithdrawRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/wallets/withdrawal-config:
+    get:
+      description: ""
+      operationId: get_api_v1_wallets_withdrawal_config
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/webhook/infobip/whatsapp/inbound:
+    post:
+      description: ""
+      operationId: post_api_v1_webhook_infobip_whatsapp_inbound
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/webhook_InfobipWhatsappInboundRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/whoami:
+    get:
+      description: ""
+      operationId: get_api_v1_whoami
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/admin-fee:
+    get:
+      description: ""
+      operationId: get_api_v2_admin_fee
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/auth/user/verify:
+    post:
+      description: ""
+      operationId: post_api_v2_auth_user_verify
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_VerifyUserRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth_VerifyUserV2Response'
+  /api/v2/balances:
+    get:
+      description: ""
+      operationId: get_api_v2_balances
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/customer-state:
+    get:
+      description: ""
+      operationId: get_api_v2_customer_state
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer_state_GetCustomerStateV2Response'
+    post:
+      description: ""
+      operationId: post_api_v2_customer_state
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customer_state_UpdateCustomerStateRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer_state_UpdateCustomerStateV2Response'
+  /api/v2/last-approved-cuan-pandai:
+    get:
+      description: ""
+      operationId: get_api_v2_last_approved_cuan_pandai
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cuan_pandai_LastApprovedCuanPandaiResponse'
+  /api/v2/loans/pickup-histories:
+    get:
+      description: ""
+      operationId: get_api_v2_loans_pickup_histories
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loan_GetCollectedCollateral'
+  /api/v2/loans/{sbg_code}/calculate:
+    post:
+      description: ""
+      operationId: post_api_v2_loans_param_calculate
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/loans/{sbg_code}/payment:
+    post:
+      description: ""
+      operationId: post_api_v2_loans_param_payment
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/loans/{sbg_code}/payment-verification:
+    post:
+      description: ""
+      operationId: post_api_v2_loans_param_payment_verification
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/loans/{sbg_code}/payment/guest:
+    post:
+      description: ""
+      operationId: post_api_v2_loans_param_payment_guest
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/missions:
+    get:
+      description: ""
+      operationId: get_api_v2_missions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mission_GetMissionsV2Response'
+  /api/v2/ppob/electricity-prepaid/products/{product_id}:
+    get:
+      description: ""
+      operationId: get_api_v2_ppob_electricity_prepaid_products_param
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/ppob/electricity-prepaid/transactions:
+    post:
+      description: ""
+      operationId: post_api_v2_ppob_electricity_prepaid_transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ppob_CreateElectricityPrepaidTransactionRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/ppob/mobile-prepaid/products/{product_id}:
+    get:
+      description: ""
+      operationId: get_api_v2_ppob_mobile_prepaid_products_param
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/ppob/mobile-prepaid/transactions:
+    post:
+      description: ""
+      operationId: post_api_v2_ppob_mobile_prepaid_transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ppob_CreateMobilePrepaidTransactionRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/ppob/pdam/inquiries:
+    post:
+      description: ""
+      operationId: post_api_v2_ppob_pdam_inquiries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ppob_InquiryPDAMBillRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/ppob/pdam/transactions:
+    post:
+      description: ""
+      operationId: post_api_v2_ppob_pdam_transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ppob_CreatePDAMTransactionRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/pricing-engines/calculate/guest:
+    post:
+      description: ""
+      operationId: post_api_v2_pricing_engines_calculate_guest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pricing_engine_CalculatePricingGuestRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pricing_engine_CalculatePricingGuestResponse'
+  /api/v2/wallets/transaction:
+    get:
+      description: ""
+      operationId: get_api_v2_wallets_transaction
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/wallets/transactions/{id}:
+    get:
+      description: ""
+      operationId: get_api_v2_wallets_transactions_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/wallets/withdraw:
+    post:
+      description: ""
+      operationId: post_api_v2_wallets_withdraw
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_WithdrawV2Request'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v2/wallets/withdraw/calculate:
+    post:
+      description: ""
+      operationId: post_api_v2_wallets_withdraw_calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_CalculateWithdrawRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/loans/{sbg_code}:
+    get:
+      description: ""
+      operationId: get_api_v3_loans_param
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/loans/{sbg_code}/calculate:
+    post:
+      description: ""
+      operationId: post_api_v3_loans_param_calculate
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/loans/{sbg_code}/payment:
+    post:
+      description: ""
+      operationId: post_api_v3_loans_param_payment
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/loans/{sbg_code}/payment/guest:
+    post:
+      description: ""
+      operationId: post_api_v3_loans_param_payment_guest
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/pricing-engines/calculate/guest:
+    post:
+      description: ""
+      operationId: post_api_v3_pricing_engines_calculate_guest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pricing_engine_CalculatePricingGuestRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pricing_engine_CalculatePricingGuestV3Response'
+  /internal/v1/user:
+    post:
+      description: ""
+      operationId: post_internal_v1_user
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/access-user-fl-performance:
+    get:
+      description: ""
+      operationId: get_intools_v1_access_user_fl_performance
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/account-codes:
+    get:
+      description: ""
+      operationId: get_intools_v1_account_codes
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/appointments/{booking_code}/verify:
+    post:
+      description: ""
+      operationId: post_intools_v1_appointments_param_verify
+      parameters:
+        - name: booking_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/approval/rejection-categories:
+    get:
+      description: ""
+      operationId: get_intools_v1_approval_rejection_categories
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/auth/change-password:
+    post:
+      description: ""
+      operationId: post_intools_v1_auth_change_password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authintools_ChangePasswordRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authintools_ChangePasswordResponse'
+  /intools/v1/auth/info:
+    get:
+      description: ""
+      operationId: get_intools_v1_auth_info
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authintools_AuthInfoResponse'
+  /intools/v1/auth/login:
+    post:
+      description: ""
+      operationId: post_intools_v1_auth_login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authintools_GetAccessUserRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authintools_GetAccessUserResponse'
+  /intools/v1/auth/login/stg:
+    post:
+      description: ""
+      operationId: post_intools_v1_auth_login_stg
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authintools_LoginAuthStagingRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authintools_GetAccessUserResponse'
+  /intools/v1/auth/logout:
+    post:
+      description: ""
+      operationId: post_intools_v1_auth_logout
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authintools_LogoutRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authintools_LogoutResponse'
+  /intools/v1/auth/refresh-token:
+    post:
+      description: ""
+      operationId: post_intools_v1_auth_refresh_token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authintools_RefreshTokenRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authintools_RefreshTokenResponse'
+  /intools/v1/auth/validate-token:
+    post:
+      description: ""
+      operationId: post_intools_v1_auth_validate_token
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/banners:
+    post:
+      description: ""
+      operationId: post_intools_v1_banners
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/banners/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_banners_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      description: ""
+      operationId: put_intools_v1_banners_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/branches:
+    get:
+      description: ""
+      operationId: get_intools_v1_branches
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/branch_BranchesResponse'
+  /intools/v1/branches/{id}/remaining-balance:
+    get:
+      description: ""
+      operationId: get_intools_v1_branches_param_remaining_balance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/cash-management-stats:
+    get:
+      description: ""
+      operationId: get_intools_v1_cash_management_stats
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/cash-managements:
+    get:
+      description: ""
+      operationId: get_intools_v1_cash_managements
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      description: ""
+      operationId: post_intools_v1_cash_managements
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/cash-managements/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_cash_managements_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/check-referral-codes/{code}:
+    get:
+      description: ""
+      operationId: get_intools_v1_check_referral_codes_param
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/check-stock-opname-statuses:
+    get:
+      description: ""
+      operationId: get_intools_v1_check_stock_opname_statuses
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/collateral-items/calculate-item-detail:
+    post:
+      description: ""
+      operationId: post_intools_v1_collateral_items_calculate_item_detail
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/collateral-items/{imei}/check:
+    get:
+      description: ""
+      operationId: get_intools_v1_collateral_items_param_check
+      parameters:
+        - name: imei
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/customer-lists:
+    get:
+      description: ""
+      operationId: get_intools_v1_customer_lists
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/customer-prospects/segments:
+    post:
+      description: ""
+      operationId: post_intools_v1_customer_prospects_segments
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/customers:
+    post:
+      description: ""
+      operationId: post_intools_v1_customers
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/customers-waiting-approvals:
+    get:
+      description: ""
+      operationId: get_intools_v1_customers_waiting_approvals
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/customers/{nik}:
+    get:
+      description: ""
+      operationId: get_intools_v1_customers_param
+      parameters:
+        - name: nik
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      description: ""
+      operationId: put_intools_v1_customers_param
+      parameters:
+        - name: nik
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/customers/{nik}/check:
+    get:
+      description: ""
+      operationId: get_intools_v1_customers_param_check
+      parameters:
+        - name: nik
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/customers/{nik}/check/{phone_number}/check-phone:
+    get:
+      description: ""
+      operationId: get_intools_v1_customers_param_check_param_check_phone
+      parameters:
+        - name: nik
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: phone_number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/dashboard/important-link:
+    get:
+      description: ""
+      operationId: get_intools_v1_dashboard_important_link
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/event-scheduler/send-booking-reminders:
+    post:
+      description: ""
+      operationId: post_intools_v1_event_scheduler_send_booking_reminders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/event_scheduler_SendBookingReminderEventsRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/event_scheduler_SendBookingReminderEventsResponse'
+  /intools/v1/event-scheduler/send-loan-reminders:
+    post:
+      description: ""
+      operationId: post_intools_v1_event_scheduler_send_loan_reminders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/event_scheduler_SendLoanReminderEventsRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/event_scheduler_SendLoanReminderEventsResponse'
+  /intools/v1/event-scheduler/send-ppob-reminders:
+    post:
+      description: ""
+      operationId: post_intools_v1_event_scheduler_send_ppob_reminders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/event_scheduler_SendPPOBReminderEventsRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/event_scheduler_SendPPOBReminderEventsResponse'
+  /intools/v1/gold-rewards/process-expired-balances:
+    post:
+      description: ""
+      operationId: post_intools_v1_gold_rewards_process_expired_balances
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/gold_reward_ProcessExpiredBalancesRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gold_reward_ProcessExpiredBalancesResponse'
+  /intools/v1/gold-rewards/process-expired-claims:
+    post:
+      description: ""
+      operationId: post_intools_v1_gold_rewards_process_expired_claims
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/gold_reward_ProcessExpiredClaimsRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gold_reward_ProcessExpiredClaimsResponse'
+  /intools/v1/golds/voucher/calculate:
+    post:
+      description: ""
+      operationId: post_intools_v1_golds_voucher_calculate
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/golds/voucher/redeem:
+    post:
+      description: ""
+      operationId: post_intools_v1_golds_voucher_redeem
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/guest-book-lists:
+    get:
+      description: ""
+      operationId: get_intools_v1_guest_book_lists
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/guest-books:
+    post:
+      description: ""
+      operationId: post_intools_v1_guest_books
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/guest-books/{id}:
+    delete:
+      description: ""
+      operationId: delete_intools_v1_guest_books_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    get:
+      description: ""
+      operationId: get_intools_v1_guest_books_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      description: ""
+      operationId: put_intools_v1_guest_books_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/inventory-report-stats:
+    get:
+      description: ""
+      operationId: get_intools_v1_inventory_report_stats
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/inventory-reports:
+    get:
+      description: ""
+      operationId: get_intools_v1_inventory_reports
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/loan-lists:
+    get:
+      description: ""
+      operationId: get_intools_v1_loan_lists
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/loan-payment-link-transactions:
+    get:
+      description: ""
+      operationId: get_intools_v1_loan_payment_link_transactions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/loans:
+    post:
+      description: ""
+      operationId: post_intools_v1_loans
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loan_SaveLoanV1Request'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loan_SaveLoanResponse'
+  /intools/v1/loans/approval/{id}:
+    post:
+      description: ""
+      operationId: post_intools_v1_loans_approval_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/loans/payment-status/{id}:
+    post:
+      description: ""
+      operationId: post_intools_v1_loans_payment_status_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/loans/payment/{sbg_code}:
+    post:
+      description: ""
+      operationId: post_intools_v1_loans_payment_param
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/loans/referral/{id}:
+    post:
+      description: ""
+      operationId: post_intools_v1_loans_referral_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/loans/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_loans_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/menus:
+    get:
+      description: ""
+      operationId: get_intools_v1_menus
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/metabase/dashboard-branch/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_metabase_dashboard_branch_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/metabase/dashboard-fl/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_metabase_dashboard_fl_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/metabase/dashboard/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_metabase_dashboard_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/analytics/transactions:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_analytics_transactions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/buyers:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_buyers
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_buyers
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/items:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_items
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/items-export:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_items_export
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/items-status:
+    patch:
+      description: ""
+      operationId: patch_intools_v1_offloads_items_status
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/items-to-pack:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_items_to_pack
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/items/qr-print:
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_items_qr_print
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/items/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_items_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/items/{id}/event-history:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_items_param_event_history
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/items/{id}/found:
+    put:
+      description: ""
+      operationId: put_intools_v1_offloads_items_param_found
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/pickups:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_pickups
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_pickups
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/qcs:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_qcs
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/qcs/{sbg_code}:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_qcs_param
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/qcs/{sbg_code}/collateral/calculate:
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_qcs_param_collateral_calculate
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/qcs/{sbg_code}/collateral/submit:
+    put:
+      description: ""
+      operationId: put_intools_v1_offloads_qcs_param_collateral_submit
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/stock-opnames:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_stock_opnames
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/stock-opnames/draft:
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_stock_opnames_draft
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/stock-opnames/{opname_code}/items:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_stock_opnames_param_items
+      parameters:
+        - name: opname_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/stock-opnames/{opname_code}/items/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_stock_opnames_param_items_param
+      parameters:
+        - name: opname_code
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      description: ""
+      operationId: put_intools_v1_offloads_stock_opnames_param_items_param
+      parameters:
+        - name: opname_code
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/stock-opnames/{opname_code}/submit:
+    put:
+      description: ""
+      operationId: put_intools_v1_offloads_stock_opnames_param_submit
+      parameters:
+        - name: opname_code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/transactions:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_transactions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_transactions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/transactions-export:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_transactions_export
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/transactions/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_transactions_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    patch:
+      description: ""
+      operationId: patch_intools_v1_offloads_transactions_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/transactions/{id}/approval-status:
+    patch:
+      description: ""
+      operationId: patch_intools_v1_offloads_transactions_param_approval_status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/transactions/{id}/items:
+    patch:
+      description: ""
+      operationId: patch_intools_v1_offloads_transactions_param_items
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/transactions/{id}/items-export:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_transactions_param_items_export
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/transactions/{id}/items-import:
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_transactions_param_items_import
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/transactions/{id}/payment-attempt/{attempt_id}/retry:
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_transactions_param_payment_attempt_param_retry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: attempt_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/transactions/{id}/subtotal:
+    patch:
+      description: ""
+      operationId: patch_intools_v1_offloads_transactions_param_subtotal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/transactions/{id}/transitions:
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_transactions_param_transitions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/warehouse/deliveries:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_warehouse_deliveries
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_warehouse_deliveries
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/warehouse/deliveries/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_warehouse_deliveries_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/warehouse/deliveries/{id}/delivery-status:
+    patch:
+      description: ""
+      operationId: patch_intools_v1_offloads_warehouse_deliveries_param_delivery_status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/warehouse/deliveries/{id}/items:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_warehouse_deliveries_param_items
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/warehouse/deliveries/{id}/items/confirm:
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_warehouse_deliveries_param_items_confirm
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/warehouse/deliveries/{id}/items/confirm-investigation:
+    post:
+      description: ""
+      operationId: post_intools_v1_offloads_warehouse_deliveries_param_items_confirm_investigation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/warehouse/deliveries/{id}/qr/print:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_warehouse_deliveries_param_qr_print
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/offloads/warehouse/delivery-locations:
+    get:
+      description: ""
+      operationId: get_intools_v1_offloads_warehouse_delivery_locations
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/petty-cash:
+    get:
+      description: ""
+      operationId: get_intools_v1_petty_cash
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      description: ""
+      operationId: post_intools_v1_petty_cash
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/petty-cash-balance/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_petty_cash_balance_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/petty-cash/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_petty_cash_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/petty-cash/{id}/approval:
+    post:
+      description: ""
+      operationId: post_intools_v1_petty_cash_param_approval
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/petty-cash/{id}/print:
+    get:
+      description: ""
+      operationId: get_intools_v1_petty_cash_param_print
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/plombir/find:
+    get:
+      description: ""
+      operationId: get_intools_v1_plombir_find
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/point-rewards/process-expired-balances:
+    post:
+      description: ""
+      operationId: post_intools_v1_point_rewards_process_expired_balances
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/point_reward_ProcessExpiredBalancesRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/point_reward_ProcessExpiredBalancesResponse'
+  /intools/v1/point-rewards/process-expired-claims:
+    post:
+      description: ""
+      operationId: post_intools_v1_point_rewards_process_expired_claims
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/point_reward_ProcessExpiredClaimsRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/point_reward_ProcessExpiredClaimsResponse'
+  /intools/v1/points/voucher/calculate:
+    post:
+      description: ""
+      operationId: post_intools_v1_points_voucher_calculate
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/points/voucher/redeem:
+    post:
+      description: ""
+      operationId: post_intools_v1_points_voucher_redeem
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/price-references:
+    get:
+      description: ""
+      operationId: get_intools_v1_price_references
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/price-references/{uuid}/photos:
+    post:
+      description: ""
+      operationId: post_intools_v1_price_references_param_photos
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/prices/gold-redemption:
+    get:
+      description: ""
+      operationId: get_intools_v1_prices_gold_redemption
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/pricing-engines/calculate:
+    post:
+      description: ""
+      operationId: post_intools_v1_pricing_engines_calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pricing_engine_CalculatePricingRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pricing_engine_CalculatePricingResponse'
+  /intools/v1/print/inventory-reports:
+    get:
+      description: ""
+      operationId: get_intools_v1_print_inventory_reports
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/print/plombir/{loan_id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_print_plombir_param
+      parameters:
+        - name: loan_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/print/receipt/{loan_id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_print_receipt_param
+      parameters:
+        - name: loan_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/print/sbg/{loan_id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_print_sbg_param
+      parameters:
+        - name: loan_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/promotion-redemptions:
+    put:
+      description: ""
+      operationId: put_intools_v1_promotion_redemptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pricing_engine_SavePromotionRedemptionRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/promotion/get-eligible-promos:
+    post:
+      description: ""
+      operationId: post_intools_v1_promotion_get_eligible_promos
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/stock-opname-configs:
+    get:
+      description: ""
+      operationId: get_intools_v1_stock_opname_configs
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/stock-opname-open-access-categories:
+    get:
+      description: ""
+      operationId: get_intools_v1_stock_opname_open_access_categories
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/stock-opnames:
+    get:
+      description: ""
+      operationId: get_intools_v1_stock_opnames
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      description: ""
+      operationId: post_intools_v1_stock_opnames
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/stock-opnames/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v1_stock_opnames_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      description: ""
+      operationId: put_intools_v1_stock_opnames_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/stock-opnames/{id}/open-access:
+    post:
+      description: ""
+      operationId: post_intools_v1_stock_opnames_param_open_access
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/talenta/attendances-export:
+    post:
+      description: ""
+      operationId: post_intools_v1_talenta_attendances_export
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/talenta/attendances-report-import:
+    post:
+      description: ""
+      operationId: post_intools_v1_talenta_attendances_report_import
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/talenta/employees-export:
+    post:
+      description: ""
+      operationId: post_intools_v1_talenta_employees_export
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/talenta/users/{id}:
+    put:
+      description: ""
+      operationId: put_intools_v1_talenta_users_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/transaction-report-stats:
+    get:
+      description: ""
+      operationId: get_intools_v1_transaction_report_stats
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/transactions:
+    post:
+      description: ""
+      operationId: post_intools_v1_transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction_SaveTransactionV1Request'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transaction_SaveTransactionResponse'
+  /intools/v1/update-customer-lists:
+    get:
+      description: ""
+      operationId: get_intools_v1_update_customer_lists
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v1/visitor-verification:
+    post:
+      description: ""
+      operationId: post_intools_v1_visitor_verification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/visitor_VisitorVerificationRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/visitor_VisitorVerificationResponse'
+  /intools/v2/auth/login:
+    post:
+      description: ""
+      operationId: post_intools_v2_auth_login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authintools_GetAccessUserRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authintools_GetAccessUserResponseV2'
+  /intools/v2/check-referral-codes/{code}:
+    get:
+      description: ""
+      operationId: get_intools_v2_check_referral_codes_param
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/collateral-items/calculate-item-detail:
+    post:
+      description: ""
+      operationId: post_intools_v2_collateral_items_calculate_item_detail
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/collateral-items/check:
+    get:
+      description: ""
+      operationId: get_intools_v2_collateral_items_check
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/customers/{cif}:
+    get:
+      description: ""
+      operationId: get_intools_v2_customers_param
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      description: ""
+      operationId: put_intools_v2_customers_param
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/customers/{cif}/blacklist:
+    post:
+      description: ""
+      operationId: post_intools_v2_customers_param_blacklist
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/customers/{cif}/gold-balance:
+    get:
+      description: ""
+      operationId: get_intools_v2_customers_param_gold_balance
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/customers/{cif}/point-balance:
+    get:
+      description: ""
+      operationId: get_intools_v2_customers_param_point_balance
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/customers/{cif}/update:
+    post:
+      description: ""
+      operationId: post_intools_v2_customers_param_update
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/customers/{cif}/update/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v2_customers_param_update_param
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/customers/{cif}/update/{id}/approval:
+    post:
+      description: ""
+      operationId: post_intools_v2_customers_param_update_param_approval
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/loans:
+    post:
+      description: ""
+      operationId: post_intools_v2_loans
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/loans/{id}:
+    get:
+      description: ""
+      operationId: get_intools_v2_loans_param
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/loans/{id}/approval:
+    post:
+      description: ""
+      operationId: post_intools_v2_loans_param_approval
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/loans/{id}/pickup-approval:
+    post:
+      description: ""
+      operationId: post_intools_v2_loans_param_pickup_approval
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/loans/{id}/pickup-request:
+    post:
+      description: ""
+      operationId: post_intools_v2_loans_param_pickup_request
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/price-references:
+    get:
+      description: ""
+      operationId: get_intools_v2_price_references
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/pricing-engines/calculate:
+    post:
+      description: ""
+      operationId: post_intools_v2_pricing_engines_calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pricing_engine_CalculatePricingRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pricing_engine_CalculatePricingV2Response'
+  /intools/v2/print/receipt/{loan_id}:
+    get:
+      description: ""
+      operationId: get_intools_v2_print_receipt_param
+      parameters:
+        - name: loan_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v2/transactions:
+    post:
+      description: ""
+      operationId: post_intools_v2_transactions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v3/collateral-items/check:
+    get:
+      description: ""
+      operationId: get_intools_v3_collateral_items_check
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v3/loans:
+    post:
+      description: ""
+      operationId: post_intools_v3_loans
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v3/loans/{id}/approval:
+    post:
+      description: ""
+      operationId: post_intools_v3_loans_param_approval
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v3/pricing-engines/calculate:
+    post:
+      description: ""
+      operationId: post_intools_v3_pricing_engines_calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pricing_engine_CalculatePricingRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pricing_engine_CalculatePricingV3Response'
+  /intools/v3/transactions:
+    post:
+      description: ""
+      operationId: post_intools_v3_transactions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v4/loans:
+    post:
+      description: ""
+      operationId: post_intools_v4_loans
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /intools/v4/pricing-engines/calculate:
+    post:
+      description: ""
+      operationId: post_intools_v4_pricing_engines_calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pricing_engine_CalculatePricingRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pricing_engine_CalculatePricingV4Response'
+  /intools/v4/transactions:
+    post:
+      description: ""
+      operationId: post_intools_v4_transactions
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /landing/v1/appointments:
+    get:
+      description: ""
+      operationId: get_landing_v1_appointments
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      description: ""
+      operationId: post_landing_v1_appointments
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /landing/v1/banners:
+    get:
+      description: ""
+      operationId: get_landing_v1_banners
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/banner_GetBannersResponse'
+  /landing/v1/branches:
+    get:
+      description: ""
+      operationId: get_landing_v1_branches
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/branch_BranchesResponse'
+  /landing/v1/price-references:
+    get:
+      description: ""
+      operationId: get_landing_v1_price_references
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /landing/v1/promos:
+    get:
+      description: ""
+      operationId: get_landing_v1_promos
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /landing/v1/referrer/{code}/validate:
+    get:
+      description: ""
+      operationId: get_landing_v1_referrer_param_validate
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /webhook/v1/payments/doku:
+    post:
+      description: ""
+      operationId: post_webhook_v1_payments_doku
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /webhook/v1/payments/oy:
+    post:
+      description: ""
+      operationId: post_webhook_v1_payments_oy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/webhook_CallbackOYRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhook_CallbackPaymentLinkResponse'
+  /webhook/v1/payments/xendit:
+    post:
+      description: ""
+      operationId: post_webhook_v1_payments_xendit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/webhook_CallbackXenditRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhook_CallbackPaymentLinkResponse'
+  /webhook/v1/payout/doku/refund:
+    post:
+      description: ""
+      operationId: post_webhook_v1_payout_doku_refund
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhook_CallbackPaymentLinkResponse'
+  /webhook/v1/payout/doku/unpaid:
+    post:
+      description: ""
+      operationId: post_webhook_v1_payout_doku_unpaid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/webhook_DOKUUnpaidNotificationRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhook_CallbackPaymentLinkResponse'
+  /webhook/v1/pintarnya/account-links:
+    post:
+      description: ""
+      operationId: post_webhook_v1_pintarnya_account_links
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /webhook/v1/pintarnya/delete-accounts:
+    post:
+      description: ""
+      operationId: post_webhook_v1_pintarnya_delete_accounts
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /webhook/v1/pintarnya/mission-approvals:
+    post:
+      description: ""
+      operationId: post_webhook_v1_pintarnya_mission_approvals
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+  /webhook/v1/ppob/alterra:
+    post:
+      description: ""
+      operationId: post_webhook_v1_ppob_alterra
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ppob_AlterraWebhookRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ppob_AlterraWebhookResponse'
+components:
+  schemas:
+    auth_CreatePINRequest:
+      type: object
+      properties:
+        pin:
+          type: string
+    auth_CreatePINResponse:
+      type: object
+      properties:
+        is_phone_number_registered:
+          type: boolean
+    auth_GetAuthInfoResponse:
+      type: object
+      properties:
+        is_blocked_verification:
+          type: boolean
+    auth_LoginPINRequest:
+      type: object
+      properties:
+        pin:
+          type: string
+        phone_number:
+          type: string
+    auth_LoginPINResponse:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+        customer_user_id:
+          type: integer
+    auth_RefreshTokenRequest:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+    auth_RequestOTPRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+        channel:
+          type: string
+    auth_RequestOTPResponse:
+      type: object
+      properties:
+        last_request_at:
+          type: string
+    auth_ResetPINRequest:
+      type: object
+      properties:
+        old_pin:
+          type: string
+        new_pin:
+          type: string
+    auth_TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+    auth_VerifyOTPRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+        otp_code:
+          type: string
+    auth_VerifyOTPResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        customer_user_id:
+          type: integer
+    auth_VerifyPhoneRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+    auth_VerifyPhoneResponse:
+      type: object
+      properties:
+        is_registered:
+          type: boolean
+        last_request_at:
+          type: string
+    auth_VerifyUserGoldReward:
+      type: object
+      properties:
+        id:
+          type: integer
+        balance:
+          type: number
+        unit:
+          type: string
+        amount:
+          type: number
+    auth_VerifyUserPointReward:
+      type: object
+      properties:
+        id:
+          type: integer
+        balance:
+          type: number
+        amount:
+          type: number
+    auth_VerifyUserRequest:
+      type: object
+      properties:
+        nik:
+          type: string
+        cif:
+          type: string
+    auth_VerifyUserResponse:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+        gold_reward:
+          type: string
+    auth_VerifyUserV2Response:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+        point_reward:
+          type: string
+    authintools_AuthInfoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        full_name:
+          type: string
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        allowed_modules:
+          type: array
+          items:
+            type: string
+        is_first_time_passcode:
+          type: boolean
+    authintools_ChangePasswordRequest:
+      type: object
+      properties:
+        old_password:
+          type: string
+        new_password:
+          type: string
+    authintools_ChangePasswordResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    authintools_GetAccessUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    authintools_GetAccessUserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        full_name:
+          type: string
+        passcode:
+          type: string
+        first_time_passcode:
+          type: boolean
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        branch_attendance_ids:
+          type: array
+          items:
+            type: integer
+        allowed_modules:
+          type: array
+          items:
+            type: string
+        branches:
+          type: array
+          items:
+            type: string
+        branch_attendances:
+          type: array
+          items:
+            type: string
+        roles:
+          type: array
+          items:
+            type: string
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+    authintools_GetAccessUserResponseV2:
+      type: object
+      properties:
+        id:
+          type: integer
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        must_change_password:
+          type: boolean
+        email:
+          type: string
+        full_name:
+          type: string
+        default_branch_id:
+          type: integer
+        allowed_modules:
+          type: array
+          items:
+            type: string
+        roles:
+          type: array
+          items:
+            type: string
+    authintools_LoginAuthStagingRequest:
+      type: object
+      properties:
+        prod_access_token:
+          type: string
+    authintools_LogoutRequest:
+      type: object
+      properties:
+        access_token:
+          type: string
+    authintools_LogoutResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    authintools_RefreshTokenRequest:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+    authintools_RefreshTokenResponse:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+    banner_GetBanner:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        visit_url:
+          type: string
+        image_url:
+          type: string
+    banner_GetBannersRequest:
+      type: object
+      properties:
+        platform:
+          type: array
+          items:
+            type: string
+        category:
+          type: array
+          items:
+            type: string
+    banner_GetBannersResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    branch_Branch:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        contact_number:
+          type: string
+        address:
+          type: string
+        brand_name:
+          type: string
+        is_active:
+          type: boolean
+        cash_available:
+          type: number
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        va_number:
+          type: string
+        province_id:
+          type: integer
+        city_id:
+          type: integer
+        district_id:
+          type: integer
+        sub_district_id:
+          type: integer
+        bank_amount_limit:
+          type: number
+        opening_date:
+          type: string
+        branch_group:
+          type: string
+        target_trx_count:
+          type: integer
+        longitude:
+          type: number
+        latitude:
+          type: number
+        item_types:
+          type: array
+          items:
+            type: string
+    branch_BranchesResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+        pagination:
+          type: string
+    branch_GetBranchesRequest:
+      type: object
+      properties:
+        branch_ids:
+          type: array
+          items:
+            type: integer
+    collateral_AssetListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+        pagination:
+          type: string
+    collateral_GetAssetResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        item_sub_type:
+          type: string
+        item_name:
+          type: string
+        appraisal_amount:
+          type: number
+        loan_status:
+          type: string
+        uuid:
+          type: string
+        min_loan:
+          type: number
+        max_loan:
+          type: number
+        images:
+          type: array
+          items:
+            type: string
+    cuan_pandai_LastApprovedCuanPandaiResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    customer_CheckReferralCodeResponse:
+      type: object
+      properties:
+        referrer_customer_id:
+          type: integer
+        referrer_name:
+          type: string
+        active_promo:
+          type: string
+    customer_CheckReferralCodeResponseV2:
+      type: object
+      properties:
+        referral_bonus:
+          type: string
+        referral_code:
+          type: string
+        point_reward_amount:
+          type: number
+    customer_state_FirstWalletDisbursementGoldReward:
+      type: object
+      properties:
+        mission_name:
+          type: string
+        reward_amount:
+          type: number
+        balance_gold:
+          type: number
+        unit:
+          type: string
+    customer_state_FirstWalletDisbursementPointReward:
+      type: object
+      properties:
+        mission_name:
+          type: string
+        reward_amount:
+          type: number
+        point_balance:
+          type: number
+    customer_state_GetCustomerStateResponse:
+      type: object
+      properties:
+        latest_read_tnc_version:
+          type: string
+        is_read_latest_tnc_version:
+          type: boolean
+        first_enable_location_at:
+          type: string
+        first_enable_push_notification_at:
+          type: string
+        first_gadai_trx_at:
+          type: string
+        first_ppob_trx_at:
+          type: string
+        first_wallet_disbursement_at:
+          type: string
+        first_wallet_disbursement_is_show_success_page:
+          type: boolean
+        first_wallet_disbursement_gold_reward:
+          type: string
+        verification_at:
+          type: string
+    customer_state_GetCustomerStateV2Response:
+      type: object
+      properties:
+        latest_read_tnc_version:
+          type: string
+        is_read_latest_tnc_version:
+          type: boolean
+        first_enable_location_at:
+          type: string
+        first_enable_push_notification_at:
+          type: string
+        first_gadai_trx_at:
+          type: string
+        first_ppob_trx_at:
+          type: string
+        first_wallet_disbursement_at:
+          type: string
+        first_wallet_disbursement_is_show_success_page:
+          type: boolean
+        first_wallet_disbursement_point_reward:
+          type: string
+        verification_at:
+          type: string
+    customer_state_UpdateCustomerStateRequest:
+      type: object
+      properties:
+        latest_read_tnc_version:
+          type: string
+        first_enable_location_at:
+          type: string
+          format: date-time
+        first_enable_push_notification_at:
+          type: string
+          format: date-time
+        first_gadai_trx_at:
+          type: string
+          format: date-time
+        first_ppob_trx_at:
+          type: string
+          format: date-time
+        first_wallet_disbursement_at:
+          type: string
+          format: date-time
+        first_wallet_disbursement_is_show_success_page:
+          type: boolean
+        is_verified:
+          type: boolean
+    customer_state_UpdateCustomerStateResponse:
+      type: object
+      properties:
+        gold_amount:
+          type: number
+        gold_unit:
+          type: string
+        gold_balance:
+          type: number
+    customer_state_UpdateCustomerStateV2Response:
+      type: object
+      properties:
+        point_amount:
+          type: number
+        point_balance:
+          type: number
+    event_scheduler_SendBookingReminderEventsRequest:
+      type: object
+      properties:
+        batch_size:
+          type: integer
+        event_names:
+          type: array
+          items:
+            type: string
+    event_scheduler_SendBookingReminderEventsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        error_count:
+          type: integer
+        message:
+          type: string
+    event_scheduler_SendLoanReminderEventsRequest:
+      type: object
+      properties:
+        batch_size:
+          type: integer
+        event_names:
+          type: array
+          items:
+            type: string
+    event_scheduler_SendLoanReminderEventsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        error_count:
+          type: integer
+        message:
+          type: string
+    event_scheduler_SendPPOBReminderEventsRequest:
+      type: object
+      properties:
+        batch_size:
+          type: integer
+        event_names:
+          type: array
+          items:
+            type: string
+    event_scheduler_SendPPOBReminderEventsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        error_count:
+          type: integer
+        message:
+          type: string
+    feedback_SaveCustomerFeedbackRequest:
+      type: object
+      properties:
+        rating:
+          type: string
+        category_ids:
+          type: array
+          items:
+            type: integer
+        description:
+          type: string
+    feedback_SaveCustomerFeedbackResponse:
+      type: object
+      properties:
+        rating:
+          type: string
+        contact_cs_url:
+          type: string
+        transaction_type:
+          type: string
+    gold_redemption_CalculateConversionRequest:
+      type: object
+      properties:
+        source:
+          type: string
+        amount:
+          type: number
+        gold_unit:
+          type: string
+        conversion_type:
+          type: string
+    gold_redemption_RedeemGoldRequest:
+      type: object
+      properties:
+        gold_amount:
+          type: number
+        gold_redemption_rule_history_id:
+          type: integer
+        price_reference_id:
+          type: integer
+        conversion_fee_amount:
+          type: number
+    gold_redemption_RedeemGoldResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        gold_amount:
+          type: number
+        gold_unit:
+          type: string
+        rupiah_amount:
+          type: integer
+        rupiah_balance:
+          type: integer
+    gold_reward_CheckClaimStatusRequest:
+      type: object
+      properties:
+        GoldRewardID:
+          type: integer
+    gold_reward_CheckClaimStatusResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        transaction_code:
+          type: string
+        min_eligible_amount:
+          type: number
+        expires_at:
+          type: string
+        claimed_at:
+          type: string
+        is_start_claim:
+          type: boolean
+    gold_reward_ClaimRewardsRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+    gold_reward_ConvertIDRToMGRequest:
+      type: object
+      properties:
+        rupiah_amount:
+          type: integer
+    gold_reward_GetRewardsFilter:
+      type: object
+      properties:
+        {}
+    gold_reward_ProcessExpiredBalancesRequest:
+      type: object
+      properties:
+        {}
+    gold_reward_ProcessExpiredBalancesResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        total_expired_mg:
+          type: string
+        message:
+          type: string
+    gold_reward_ProcessExpiredClaimsRequest:
+      type: object
+      properties:
+        {}
+    gold_reward_ProcessExpiredClaimsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        message:
+          type: string
+    gold_transaction_GetTransactionsFilter:
+      type: object
+      properties:
+        {}
+    httphelper_SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    loan_BranchDataResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        contact_number:
+          type: string
+        address:
+          type: string
+        brand_name:
+          type: string
+        is_active:
+          type: boolean
+        cash_available:
+          type: number
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        va_number:
+          type: string
+        province_id:
+          type: integer
+        city_id:
+          type: integer
+        district_id:
+          type: integer
+        sub_district_id:
+          type: integer
+        bank_amount_limit:
+          type: number
+        opening_date:
+          type: string
+        branch_group:
+          type: string
+        target_trx_count:
+          type: integer
+        longitude:
+          type: number
+        latitude:
+          type: number
+        item_types:
+          type: array
+          items:
+            type: string
+    loan_CalculateLoanPricingRequest:
+      type: object
+      properties:
+        transaction_type:
+          type: string
+        cicil_amount:
+          type: number
+    loan_CancelCustomerPaymentResponse:
+      type: object
+      properties:
+        payment_reference_id:
+          type: string
+    loan_ClaimedReward:
+      type: object
+      properties:
+        total_amount:
+          type: number
+    loan_CollateralItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        item_type:
+          type: string
+        item_sub_type:
+          type: string
+        item_detail:
+          type: string
+        item_description:
+          type: string
+        rubik_category:
+          type: string
+        initial_ltv_percentage:
+          type: number
+        ltv_percentage:
+          type: number
+        initial_appraisal_amount:
+          type: number
+        appraisal_amount:
+          type: number
+        initial_appraised_by:
+          type: string
+        appraised_by:
+          type: string
+        history_action:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+        item_discount:
+          type: string
+        imei:
+          type: string
+        item_photos:
+          type: string
+        new_appraisal_amount:
+          type: number
+        item_discount_v2:
+          type: string
+    loan_CreatePaymentLinkRequest:
+      type: object
+      properties:
+        transaction_type:
+          type: string
+        pricings:
+          type: string
+        totals:
+          type: string
+        promotions:
+          type: string
+        gold_reward:
+          type: string
+        point_reward:
+          type: string
+        reappraisal:
+          type: string
+        is_top_up_for_fee_reduction:
+          type: boolean
+    loan_CreatePaymentLinkResponse:
+      type: object
+      properties:
+        payment_link:
+          type: string
+        payment_reference_id:
+          type: string
+    loan_CreditScoreSnapshot:
+      type: object
+      properties:
+        credit_score:
+          type: number
+        loan_amount_bonus:
+          type: number
+        ltv_bonus:
+          type: number
+        applied_loan_amount_bonus:
+          type: number
+    loan_DiscountDetail:
+      type: object
+      properties:
+        kelengkapan:
+          type: string
+        fisik_body:
+          type: string
+        back_cover:
+          type: string
+        lcd:
+          type: string
+        kamera:
+          type: string
+        speaker:
+          type: string
+        tombol:
+          type: string
+        touch_id:
+          type: string
+        fisik_baterai:
+          type: string
+        sinyal_provider:
+          type: string
+        reject_condition:
+          type: string
+        trackpad:
+          type: string
+        usb_ports:
+          type: string
+        garansi_unit:
+          type: string
+        baterai:
+          type: string
+        keyboard:
+          type: string
+        apple_model:
+          type: string
+    loan_DiscountDetailItem:
+      type: object
+      properties:
+        percentage:
+          type: number
+        amount:
+          type: number
+    loan_GetCollectedCollateral:
+      type: object
+      properties:
+        loans:
+          type: array
+          items:
+            type: string
+    loan_GetCollectedCollateralBranch:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    loan_GetCollectedCollateralItem:
+      type: object
+      properties:
+        type:
+          type: string
+        sub_type:
+          type: string
+        name:
+          type: string
+        qty:
+          type: integer
+    loan_GetCollectedCollateralLoan:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        picked_up_at:
+          type: string
+        item_type:
+          type: string
+        branch:
+          type: string
+        items:
+          type: array
+          items:
+            type: string
+    loan_GetCustomerLoanListRequest:
+      type: object
+      properties:
+        FilterLoanStatus:
+          type: string
+    loan_GoldReward:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: number
+        unit:
+          type: string
+        expired_at:
+          type: string
+        claimed_at:
+          type: string
+        status:
+          type: string
+        is_start_claim:
+          type: boolean
+    loan_GoldRewardInfo:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
+          type: string
+        is_reward_eligible:
+          type: boolean
+        unclaimed:
+          type: string
+        claimed:
+          type: string
+    loan_ItemDetailPaymentData:
+      type: object
+      properties:
+        item_sub_type:
+          type: string
+        item_description:
+          type: string
+        item_qty:
+          type: integer
+    loan_ItemDiscount:
+      type: object
+      properties:
+        total_amount:
+          type: number
+        total_percentage:
+          type: number
+        total_amount_max:
+          type: number
+        total_percentage_max:
+          type: number
+        detail:
+          type: string
+    loan_ItemPhotos:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            type: string
+        url:
+          type: array
+          items:
+            type: string
+        raw_name:
+          type: array
+          items:
+            type: string
+        data:
+          type: array
+          items:
+            type: string
+    loan_Loan:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        customer_id:
+          type: integer
+        branch_id:
+          type: integer
+        collateral_item_id:
+          type: array
+          items:
+            type: integer
+        rubik_category:
+          type: string
+        item_type:
+          type: string
+        item_description:
+          type: string
+        initial_loan_date:
+          type: string
+          format: date-time
+        loan_date:
+          type: string
+          format: date-time
+        initial_due_date:
+          type: string
+          format: date-time
+        due_date:
+          type: string
+          format: date-time
+        initial_total_appraisal_amount:
+          type: number
+        total_appraisal_amount:
+          type: number
+        initial_loan_amount:
+          type: number
+        loan_amount:
+          type: number
+        loan_status:
+          type: string
+        end_date:
+          type: string
+        interest_pricing_rule_history_id:
+          type: integer
+        interest_upfront_amount:
+          type: number
+        late_fee_pricing_rule_history_id:
+          type: integer
+        history_action:
+          type: string
+        approval_status:
+          type: string
+        approved_by:
+          type: string
+        approved_at:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        note:
+          type: string
+        late_status:
+          type: string
+        is_loss:
+          type: boolean
+        is_written_off:
+          type: boolean
+        offload_status:
+          type: string
+        offload_excess_amount:
+          type: number
+        offload_revenue:
+          type: number
+        offload_late_fee:
+          type: number
+        cycle_loan_date:
+          type: string
+          format: date-time
+        is_picked_up:
+          type: boolean
+        credit_score_snapshot:
+          type: string
+        pick_up_date:
+          type: string
+        referral_claim_method:
+          type: string
+        service_time_start_at:
+          type: string
+        service_time_end_at:
+          type: string
+        gto_amount:
+          type: number
+    loan_LoanDetailPaymentData:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        due_date:
+          type: string
+        loan_date:
+          type: string
+        loan_status:
+          type: string
+        loan_amount:
+          type: number
+        transaction_options:
+          type: string
+    loan_LoanPaymentVerificationResponse:
+      type: object
+      properties:
+        loan_detail:
+          type: string
+        item_detail:
+          type: array
+          items:
+            type: string
+        pickup:
+          type: string
+        gold_reward:
+          type: string
+        gold_reward_deeplink_url:
+          type: string
+    loan_LoanPaymentVerificationV2Response:
+      type: object
+      properties:
+        loan_detail:
+          type: string
+        item_detail:
+          type: array
+          items:
+            type: string
+        pickup:
+          type: string
+        point_reward:
+          type: string
+        point_reward_deeplink_url:
+          type: string
+    loan_LoanReferralRequest:
+      type: object
+      properties:
+        campaign_name:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    loan_LoanReferralResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    loan_PickUp:
+      type: object
+      properties:
+        maximal_date:
+          type: string
+        warning:
+          type: string
+        description:
+          type: string
+    loan_PointRewardInfo:
+      type: object
+      properties:
+        amount:
+          type: number
+        is_reward_eligible:
+          type: boolean
+        unclaimed:
+          type: string
+        claimed:
+          type: string
+    loan_SaveLoanRequest:
+      type: object
+      properties:
+        loan_amount:
+          type: number
+        loan_amount_max:
+          type: number
+        loan_amount_bonus:
+          type: number
+        booking_code:
+          type: string
+        branch_id:
+          type: integer
+        due_date:
+          type: string
+        gto_amount:
+          type: number
+        installment_amount:
+          type: number
+        is_gto:
+          type: boolean
+        loan_note:
+          type: string
+        ltv_bonus:
+          type: number
+        payment_method:
+          type: string
+        payment_reference_number:
+          type: string
+        promo_code:
+          type: string
+        referral_claim_method:
+          type: string
+        referrer_customer_id:
+          type: integer
+        service_time_start_at:
+          type: string
+        service_time_end_at:
+          type: string
+        transaction_note:
+          type: string
+        cash_amount:
+          type: number
+        oy_amount:
+          type: number
+        transfer_bank_amount:
+          type: number
+        appointment_url:
+          type: string
+        user_email:
+          type: string
+        force_loan_date:
+          type: string
+        force_due_date:
+          type: string
+    loan_SaveLoanResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    loan_SaveLoanResponseData:
+      type: object
+      properties:
+        branch_data:
+          type: string
+        inventory_id:
+          type: integer
+        loan:
+          type: string
+        transaction:
+          type: string
+    loan_SaveLoanV1Request:
+      type: object
+      properties:
+        item_type:
+          type: string
+        promo_code_validation:
+          type: string
+        inventory_id:
+          type: integer
+        customer_full_name:
+          type: string
+        branch_name:
+          type: string
+        customer_id:
+          type: integer
+        customer_credit_score:
+          type: number
+        pricings:
+          type: string
+        totals:
+          type: string
+        promotions:
+          type: string
+        collateral_items:
+          type: array
+          items:
+            type: string
+        item_discount:
+          type: string
+        gold_reward:
+          type: string
+    loan_Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        transaction_code:
+          type: string
+        loan_id:
+          type: integer
+        transaction_date:
+          type: string
+        transaction_type:
+          type: string
+        payment_method:
+          type: string
+        disbursement_amount:
+          type: number
+        payment_amount:
+          type: number
+        cicil_amount:
+          type: number
+        top_up_amount:
+          type: number
+        interest_amount:
+          type: number
+        admin_fee:
+          type: number
+        late_fee:
+          type: number
+        rounding_amount:
+          type: number
+        promo_code:
+          type: string
+        payment_reference_number:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        note:
+          type: string
+        transfer_bank_amount:
+          type: number
+        cash_amount:
+          type: number
+        oy_amount:
+          type: number
+    loan_UnclaimedReward:
+      type: object
+      properties:
+        total_amount:
+          type: number
+        expired_at:
+          type: string
+    location_Location:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        longitude:
+          type: number
+        latitude:
+          type: number
+    location_LocationCity:
+      type: object
+      properties:
+        province_id:
+          type: integer
+    location_LocationCityResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    location_LocationDistrict:
+      type: object
+      properties:
+        city_id:
+          type: integer
+    location_LocationDistrictResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    location_LocationProvinceResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    location_LocationSubDistrict:
+      type: object
+      properties:
+        district_id:
+          type: integer
+    location_LocationSubDistrictResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    mission_CuanEmasMissionData:
+      type: object
+      properties:
+        visit_url:
+          type: string
+        category:
+          type: array
+          items:
+            type: string
+        total_rewards_available:
+          type: number
+        total_mission_available:
+          type: integer
+        total_user:
+          type: integer
+    mission_CuanPandaiMissionData:
+      type: object
+      properties:
+        visit_url:
+          type: string
+        category:
+          type: array
+          items:
+            type: string
+        total_rewards_available:
+          type: number
+        total_mission_available:
+          type: integer
+        total_user:
+          type: integer
+    mission_GetMissionsRequest:
+      type: object
+      properties:
+        status:
+          type: string
+        mission_type:
+          type: array
+          items:
+            type: string
+    mission_GetMissionsResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+        pagination:
+          type: string
+    mission_GetMissionsV2Response:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+        pagination:
+          type: string
+    mission_MissionItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        mission_type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        gold_reward:
+          type: number
+        gold_unit:
+          type: string
+        icon_url:
+          type: string
+        is_active:
+          type: boolean
+        active_from:
+          type: string
+        active_to:
+          type: string
+        additional_data:
+          type: string
+    mission_MissionItemV2:
+      type: object
+      properties:
+        id:
+          type: integer
+        mission_type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        point_reward:
+          type: number
+        icon_url:
+          type: string
+        is_active:
+          type: boolean
+        active_from:
+          type: string
+        active_to:
+          type: string
+        additional_data:
+          type: string
+    payment_GetActiveCustomerPaymentLinkResponse:
+      type: object
+      properties:
+        sbg_code:
+          type: string
+        created_at:
+          type: string
+        expired_at:
+          type: string
+        payment_amount:
+          type: number
+        status:
+          type: string
+    payment_PaymentInformationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        loan_id:
+          type: integer
+        transaction_id:
+          type: integer
+        transaction_type:
+          type: string
+        payment_reference_id:
+          type: string
+        provider_payment_id:
+          type: string
+        amount:
+          type: number
+        payment_provider:
+          type: string
+        payment_link:
+          type: string
+        payment_link_expired_at:
+          type: string
+          format: date-time
+        payment_method:
+          type: string
+        payment_channel:
+          type: string
+        payment_reference_number:
+          type: string
+        paid_at:
+          type: string
+          format: date-time
+        paid_amount:
+          type: number
+        notes:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+        source:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+        metadata:
+          type: string
+        transaction_data:
+          type: string
+    point_redemption_CalculateRedemptionRequest:
+      type: object
+      properties:
+        point_amount:
+          type: number
+    point_redemption_RedeemRequest:
+      type: object
+      properties:
+        point_amount:
+          type: number
+    point_redemption_RedeemResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        point_amount:
+          type: integer
+        rupiah_amount:
+          type: integer
+        new_point_balance:
+          type: integer
+        new_rupiah_balance:
+          type: integer
+    point_reward_CheckClaimStatusRequest:
+      type: object
+      properties:
+        PointRewardID:
+          type: integer
+    point_reward_CheckClaimStatusResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        point_amount:
+          type: number
+        transaction_code:
+          type: string
+        min_eligible_amount:
+          type: number
+        status:
+          type: string
+        expires_at:
+          type: string
+        claimed_at:
+          type: string
+        is_start_claim:
+          type: boolean
+    point_reward_ClaimRewardsRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+    point_reward_GetRewardsFilter:
+      type: object
+      properties:
+        {}
+    point_reward_ProcessExpiredBalancesRequest:
+      type: object
+      properties:
+        {}
+    point_reward_ProcessExpiredBalancesResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        message:
+          type: string
+    point_reward_ProcessExpiredClaimsRequest:
+      type: object
+      properties:
+        {}
+    point_reward_ProcessExpiredClaimsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        message:
+          type: string
+    point_transaction_GetTransactionsFilter:
+      type: object
+      properties:
+        EntryType:
+          type: string
+    ppob_AlterraWebhookRequest:
+      type: object
+      properties:
+        transaction_id:
+          type: string
+        type:
+          type: string
+        created:
+          type: string
+        changed:
+          type: string
+        customer_number:
+          type: string
+        order_id:
+          type: string
+        price:
+          type: string
+        amount:
+          type: string
+        product_id:
+          type: string
+        data:
+          type: object
+          additionalProperties:
+            type: string
+        token:
+          type: string
+    ppob_AlterraWebhookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    ppob_CreateElectricityPrepaidTransactionRequest:
+      type: object
+      properties:
+        partner:
+          type: string
+        partner_product_id:
+          type: string
+        price:
+          type: integer
+        admin_fee_amount:
+          type: integer
+        payment_amount:
+          type: integer
+    ppob_CreateMobilePrepaidTransactionRequest:
+      type: object
+      properties:
+        partner:
+          type: string
+        phone_number:
+          type: string
+        partner_product_id:
+          type: string
+        price:
+          type: integer
+        admin_fee_amount:
+          type: integer
+        payment_amount:
+          type: integer
+    ppob_CreatePDAMTransactionRequest:
+      type: object
+      properties:
+        partner:
+          type: string
+        customer_number:
+          type: string
+        operator_code:
+          type: string
+        admin_fee_amount:
+          type: integer
+        bill_amount:
+          type: integer
+        payment_amount:
+          type: integer
+    ppob_GetMobilePrepaidProductListRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+        type:
+          type: string
+    ppob_InquiryElectricityCustomerRequest:
+      type: object
+      properties:
+        customer_number:
+          type: string
+    ppob_InquiryPDAMBillRequest:
+      type: object
+      properties:
+        customer_number:
+          type: string
+        operator_code:
+          type: string
+    pricing_engine_CalculatePricingGuestData:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+        transaction_type:
+          type: string
+        gold_reward:
+          type: string
+    pricing_engine_CalculatePricingGuestRequest:
+      type: object
+      properties:
+        loan_id:
+          type: integer
+        transaction_type:
+          type: string
+    pricing_engine_CalculatePricingGuestResponse:
+      type: object
+      properties:
+        pricing_engine:
+          type: string
+        payment_detail:
+          type: array
+          items:
+            type: string
+        gold_reward_detail:
+          type: array
+          items:
+            type: string
+        maximum_pickup_date:
+          type: string
+        pickup_details:
+          type: string
+    pricing_engine_CalculatePricingGuestV3Data:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+        transaction_type:
+          type: string
+        point_reward:
+          type: string
+    pricing_engine_CalculatePricingGuestV3Response:
+      type: object
+      properties:
+        pricing_engine:
+          type: string
+        payment_detail:
+          type: array
+          items:
+            type: string
+        point_reward_detail:
+          type: array
+          items:
+            type: string
+        maximum_pickup_date:
+          type: string
+        pickup_details:
+          type: string
+    pricing_engine_CalculatePricingRequest:
+      type: object
+      properties:
+        item_type:
+          type: string
+        item_sub_type:
+          type: string
+        item_detail:
+          type: string
+        loan_amount:
+          type: number
+        loan_amount_max:
+          type: number
+        loan_date:
+          type: string
+          format: date-time
+        loan_id:
+          type: integer
+        customer_id:
+          type: integer
+        customer_referrer_id:
+          type: integer
+        transaction_type:
+          type: string
+        transaction_date:
+          type: string
+          format: date-time
+        interest_history_id:
+          type: integer
+        interest_upfront_amount:
+          type: number
+        late_fee_history_id:
+          type: integer
+        installment_amount:
+          type: number
+        top_up_amount:
+          type: number
+        payment_method:
+          type: string
+        payment_due_date:
+          type: string
+          format: date-time
+        promo_code:
+          type: string
+        branch_id:
+          type: integer
+        testing:
+          type: boolean
+        is_net_disbursement:
+          type: boolean
+        is_top_up_for_fee_reduction:
+          type: boolean
+        item_detail_elektronik:
+          type: string
+        env:
+          type: string
+    pricing_engine_CalculatePricingResponse:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+        gold_reward:
+          type: string
+        point_reward:
+          type: string
+    pricing_engine_CalculatePricingResponseV2:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+    pricing_engine_CalculatePricingResponseV3:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+        gold_reward:
+          type: string
+    pricing_engine_CalculatePricingResponseV4:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+        point_reward:
+          type: string
+    pricing_engine_CalculatePricingV2Response:
+      type: object
+      properties:
+        payment_detail:
+          type: array
+          items:
+            type: string
+        pricing_detail:
+          type: array
+          items:
+            type: string
+        maximum_pickup_date:
+          type: string
+        pickup_detail:
+          type: string
+    pricing_engine_CalculatePricingV3Response:
+      type: object
+      properties:
+        gold_reward_detail:
+          type: array
+          items:
+            type: string
+        payment_detail:
+          type: array
+          items:
+            type: string
+        pricing_detail:
+          type: array
+          items:
+            type: string
+        maximum_pickup_date:
+          type: string
+        pickup_detail:
+          type: string
+    pricing_engine_CalculatePricingV4Response:
+      type: object
+      properties:
+        point_reward_detail:
+          type: array
+          items:
+            type: string
+        payment_detail:
+          type: array
+          items:
+            type: string
+        pricing_detail:
+          type: array
+          items:
+            type: string
+        maximum_pickup_date:
+          type: string
+        pickup_detail:
+          type: string
+    pricing_engine_ConditionsElektronik:
+      type: object
+      properties:
+        grade:
+          type: string
+        kelengkapan:
+          type: array
+          items:
+            type: string
+    pricing_engine_ContentObject:
+      type: object
+      properties:
+        description:
+          type: string
+        value:
+          type: string
+    pricing_engine_GoldReward:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
+          type: string
+        min_eligible_trx:
+          type: number
+        is_reward_eligible:
+          type: boolean
+        gold_rounding_deduction_mg:
+          type: number
+        gold_mg_rupiah:
+          type: number
+        gold_mg_rupiah_rounding_deduction:
+          type: number
+        gold_reward_rule_history_id:
+          type: integer
+        gold_reward_price_reference_id:
+          type: integer
+    pricing_engine_PickupDetail:
+      type: object
+      properties:
+        description:
+          type: string
+        value:
+          type: string
+    pricing_engine_PointReward:
+      type: object
+      properties:
+        amount:
+          type: number
+        rounded_amount:
+          type: number
+        rounding_amount:
+          type: number
+        min_eligible_trx:
+          type: number
+        is_reward_eligible:
+          type: boolean
+        rule_history_id:
+          type: integer
+        rupiah_amount:
+          type: number
+    pricing_engine_Pricing:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        item_types:
+          type: array
+          items:
+            type: string
+        item_sub_types:
+          type: array
+          items:
+            type: string
+        pricing_attribute:
+          type: string
+        amount:
+          type: number
+        percentage:
+          type: number
+        period_in_days:
+          type: integer
+        loan_amount_min:
+          type: number
+        loan_amount_max:
+          type: number
+        priority:
+          type: integer
+        is_charged_upfront:
+          type: boolean
+        is_active:
+          type: boolean
+        active_from:
+          type: string
+        active_to:
+          type: string
+        history_action:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        history_id:
+          type: integer
+        calculated_amount:
+          type: number
+        promotion_amount:
+          type: number
+        rate_type:
+          type: string
+        min_charge_amount:
+          type: number
+        rounding_step_amount:
+          type: number
+    pricing_engine_Pricings:
+      type: object
+      properties:
+        insurance_fee:
+          type: string
+        adminFee:
+          type: string
+        interest:
+          type: string
+        lateFee:
+          type: string
+        storageFee:
+          type: string
+        nilaiPinjaman:
+          type: string
+        interestSnapshot:
+          type: string
+        lateFeeSnapshot:
+          type: string
+    pricing_engine_PricingsV2:
+      type: object
+      properties:
+        insurance_fee:
+          type: string
+        admin_fee:
+          type: string
+        interest:
+          type: string
+        late_fee:
+          type: string
+        storage_fee:
+          type: string
+        nilai_pinjaman:
+          type: string
+        interest_snapshot:
+          type: string
+        late_fee_snapshot:
+          type: string
+    pricing_engine_Promotion:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        pricing_attribute:
+          type: string
+        eligible_transaction_types:
+          type: array
+          items:
+            type: string
+        applicable_transaction_types:
+          type: array
+          items:
+            type: string
+        promo_code:
+          type: string
+        amount:
+          type: number
+        percentage:
+          type: number
+        percentage_amount_max:
+          type: number
+        loan_amount_min:
+          type: number
+        loan_amount_max:
+          type: number
+        tenor_min:
+          type: integer
+        tenor_max:
+          type: integer
+        is_exclusive:
+          type: boolean
+        priority:
+          type: integer
+        is_active:
+          type: boolean
+        is_new_customer:
+          type: boolean
+        quota:
+          type: integer
+        quota_per_day:
+          type: integer
+        max_redemption:
+          type: integer
+        note:
+          type: string
+        history_action:
+          type: string
+        created_by:
+          type: string
+        updated_by:
+          type: string
+        referral_type:
+          type: string
+        conditions_elektronik:
+          type: string
+        history_id:
+          type: integer
+        calculated_amount:
+          type: number
+    pricing_engine_Promotions:
+      type: object
+      properties:
+        eligible:
+          type: array
+          items:
+            type: string
+        applicable:
+          type: array
+          items:
+            type: string
+        promoCodeValidation:
+          type: string
+        referrerEligible:
+          type: array
+          items:
+            type: string
+    pricing_engine_PromotionsV2:
+      type: object
+      properties:
+        eligible:
+          type: array
+          items:
+            type: string
+        applicable:
+          type: array
+          items:
+            type: string
+        referrer_eligible:
+          type: array
+          items:
+            type: string
+    pricing_engine_SavePromotionRedemptionRequest:
+      type: object
+      properties:
+        transaction_date:
+          type: string
+          format: date-time
+        transaction_id:
+          type: integer
+        transaction_type:
+          type: string
+        customer_id:
+          type: integer
+        loan_id:
+          type: integer
+        referrer_id:
+          type: integer
+        is_testing:
+          type: boolean
+        applicable_promotions:
+          type: array
+          items:
+            type: string
+        eligible_promotions:
+          type: array
+          items:
+            type: string
+        referrer_eligible_promotions:
+          type: array
+          items:
+            type: string
+    pricing_engine_Totals:
+      type: object
+      properties:
+        disbursementAmount:
+          type: number
+        paymentAmount:
+          type: number
+        remainingLoan:
+          type: number
+        roundingAmount:
+          type: number
+        dueDate:
+          type: string
+        loanAmount:
+          type: number
+        cicilAmount:
+          type: number
+        topUpAmount:
+          type: number
+        storageAmount:
+          type: number
+    pricing_engine_TotalsV2:
+      type: object
+      properties:
+        disbursement_amount:
+          type: number
+        payment_amount:
+          type: number
+        remaining_loan:
+          type: number
+        rounding_amount:
+          type: number
+        due_date:
+          type: string
+        loan_amount:
+          type: number
+        cicil_amount:
+          type: number
+        top_up_amount:
+          type: number
+        loan_amount_snapshot:
+          type: number
+        top_up_amount_snapshot:
+          type: number
+        storage_amount:
+          type: number
+    pricing_engine_itemDetailElektronikRequest:
+      type: object
+      properties:
+        grade:
+          type: string
+        kelengkapan:
+          type: array
+          items:
+            type: string
+    transaction_CreditScoreSnapshot:
+      type: object
+      properties:
+        credit_score:
+          type: number
+        loan_amount_bonus:
+          type: number
+        ltv_bonus:
+          type: number
+        applied_loan_amount_bonus:
+          type: number
+    transaction_Loan:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        customer_id:
+          type: integer
+        branch_id:
+          type: integer
+        collateral_item_id:
+          type: array
+          items:
+            type: integer
+        rubik_category:
+          type: string
+        item_type:
+          type: string
+        item_description:
+          type: string
+        initial_loan_date:
+          type: string
+          format: date-time
+        loan_date:
+          type: string
+          format: date-time
+        initial_due_date:
+          type: string
+          format: date-time
+        due_date:
+          type: string
+          format: date-time
+        initial_total_appraisal_amount:
+          type: number
+        total_appraisal_amount:
+          type: number
+        initial_loan_amount:
+          type: number
+        loan_amount:
+          type: number
+        loan_status:
+          type: string
+        end_date:
+          type: string
+        interest_pricing_rule_history_id:
+          type: integer
+        interest_upfront_amount:
+          type: number
+        late_fee_pricing_rule_history_id:
+          type: integer
+        history_action:
+          type: string
+        approval_status:
+          type: string
+        approved_by:
+          type: string
+        approved_at:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        note:
+          type: string
+        late_status:
+          type: string
+        is_loss:
+          type: boolean
+        is_written_off:
+          type: boolean
+        offload_status:
+          type: string
+        offload_excess_amount:
+          type: number
+        offload_revenue:
+          type: number
+        offload_late_fee:
+          type: number
+        cycle_loan_date:
+          type: string
+          format: date-time
+        is_picked_up:
+          type: boolean
+        credit_score_snapshot:
+          type: string
+        pick_up_date:
+          type: string
+        referral_claim_method:
+          type: string
+        service_time_start_at:
+          type: string
+        service_time_end_at:
+          type: string
+        gto_amount:
+          type: number
+    transaction_SaveTransactionRequest:
+      type: object
+      properties:
+        transaction_type:
+          type: string
+        loan_id:
+          type: integer
+        loan_amount:
+          type: number
+        transaction_note:
+          type: string
+        payment_method:
+          type: string
+        promo_code:
+          type: string
+        payment_reference_number:
+          type: string
+        due_date:
+          type: string
+          format: date-time
+        due_date_new:
+          type: string
+          format: date-time
+        installment_amount:
+          type: number
+        inventory_id:
+          type: integer
+        is_gto:
+          type: boolean
+        gto_amount:
+          type: number
+        referral_claim_method:
+          type: string
+        top_up_amount:
+          type: number
+        inventory_item_id:
+          type: integer
+        user_email:
+          type: string
+        loan_amount_new:
+          type: number
+        referrer_customer_id:
+          type: integer
+        item_discount:
+          $ref: '#/components/schemas/loan_ItemDiscount'
+    transaction_SaveTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        loan:
+          type: string
+        transaction:
+          type: string
+    transaction_SaveTransactionV1Request:
+      type: object
+      properties:
+        branch_name:
+          type: string
+        customer_full_name:
+          type: string
+        transaction_keyword:
+          type: string
+        transaction_search_type:
+          type: string
+        total_trx_by_loan_id:
+          type: integer
+        promo_code_validation:
+          type: string
+        is_reappraisal:
+          type: boolean
+        pricings:
+          type: string
+        totals:
+          type: string
+        promotions:
+          type: string
+        collateral_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/loan_CollateralItem'
+    transaction_Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        transaction_code:
+          type: string
+        loan_id:
+          type: integer
+        transaction_date:
+          type: string
+        transaction_type:
+          type: string
+        payment_method:
+          type: string
+        disbursement_amount:
+          type: number
+        payment_amount:
+          type: number
+        cicil_amount:
+          type: number
+        top_up_amount:
+          type: number
+        interest_amount:
+          type: number
+        admin_fee:
+          type: number
+        late_fee:
+          type: number
+        rounding_amount:
+          type: number
+        promo_code:
+          type: string
+        payment_reference_number:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        note:
+          type: string
+        transfer_bank_amount:
+          type: number
+        cash_amount:
+          type: number
+        oy_amount:
+          type: number
+    visitor_VisitorVerificationRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+        branch_id:
+          type: integer
+    visitor_VisitorVerificationResponse:
+      type: object
+      properties:
+        is_verified:
+          type: boolean
+        role:
+          type: string
+    wallet_AccountInquiryRequest:
+      type: object
+      properties:
+        account_number:
+          type: string
+        method:
+          type: string
+        code:
+          type: string
+    wallet_CalculateWithdrawRequest:
+      type: object
+      properties:
+        account_number:
+          type: string
+        method:
+          type: string
+        amount:
+          type: number
+    wallet_GetAdminFeeRequest:
+      type: object
+      properties:
+        {}
+    wallet_GetTransactionsRequest:
+      type: object
+      properties:
+        {}
+    wallet_GetTransactionsV2Request:
+      type: object
+      properties:
+        status:
+          type: string
+    wallet_GoldRewardRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
+          type: string
+        rounding_amount:
+          type: number
+    wallet_PointRewardRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+    wallet_WithdrawRequest:
+      type: object
+      properties:
+        account_number:
+          type: string
+        method:
+          type: string
+        code:
+          type: string
+        amount:
+          type: number
+        admin_fee_amount:
+          type: number
+        total_amount:
+          type: number
+        gold_reward:
+          type: string
+    wallet_WithdrawV2Request:
+      type: object
+      properties:
+        account_number:
+          type: string
+        method:
+          type: string
+        code:
+          type: string
+        amount:
+          type: number
+        admin_fee_amount:
+          type: number
+        total_amount:
+          type: number
+        point_reward:
+          type: string
+    webhook_CallbackOYRequest:
+      type: object
+      properties:
+        partner_tx_id:
+          type: string
+        child_balance:
+          type: string
+        tx_ref_number:
+          type: string
+        amount:
+          type: number
+        paid_amount:
+          type: number
+        sender_name:
+          type: string
+        sender_phone:
+          type: string
+        sender_note:
+          type: string
+        status:
+          type: string
+        description:
+          type: string
+        sender_bank:
+          type: string
+        payment_method:
+          type: string
+        settlement_type:
+          type: string
+        settlement_time:
+          type: string
+        settlement_status:
+          type: string
+        created:
+          type: string
+        updated:
+          type: string
+        due_date:
+          type: string
+        payment_received_time:
+          type: string
+        expiration:
+          type: string
+        is_invoice:
+          type: boolean
+        payment_reference_number:
+          type: string
+        email:
+          type: string
+    webhook_CallbackPaymentLinkResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    webhook_CallbackXenditRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        external_id:
+          type: string
+        updated:
+          type: string
+          format: date-time
+        created:
+          type: string
+          format: date-time
+        user_id:
+          type: string
+        status:
+          type: string
+        currency:
+          type: string
+        paid_at:
+          type: string
+          format: date-time
+        merchant_name:
+          type: string
+        amount:
+          type: integer
+        payer_email:
+          type: string
+        description:
+          type: string
+        paid_amount:
+          type: integer
+        payment_method:
+          type: string
+        payment_channel:
+          type: string
+        payment_destination:
+          type: string
+        bank_code:
+          type: string
+        ewallet_type:
+          type: string
+    webhook_DOKUUnpaidNotificationRequest:
+      type: object
+      properties:
+        {}
+    webhook_InfobipWhatsappInboundRequest:
+      type: object
+      properties:
+        messageCount:
+          type: integer
+        pendingMessageCount:
+          type: integer
