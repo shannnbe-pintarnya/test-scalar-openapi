@@ -1,0 +1,4759 @@
+openapi: 3.1.0
+info:
+  title: Cortes API - Model Schemas
+  version: 0.0.1
+  description: Shared DTO schemas for all platforms
+components:
+  schemas:
+    auth_CreatePINRequest:
+      type: object
+      properties:
+        pin:
+          type: string
+    auth_CreatePINResponse:
+      type: object
+      properties:
+        is_phone_number_registered:
+          type: boolean
+    auth_GetAuthInfoResponse:
+      type: object
+      properties:
+        is_blocked_verification:
+          type: boolean
+    auth_LoginPINRequest:
+      type: object
+      properties:
+        pin:
+          type: string
+        phone_number:
+          type: string
+    auth_LoginPINResponse:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+        customer_user_id:
+          type: integer
+    auth_RefreshTokenRequest:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+    auth_RequestOTPRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+        channel:
+          type: string
+    auth_RequestOTPResponse:
+      type: object
+      properties:
+        last_request_at:
+          type: string
+    auth_ResetPINRequest:
+      type: object
+      properties:
+        old_pin:
+          type: string
+        new_pin:
+          type: string
+    auth_TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+    auth_VerifyOTPRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+        otp_code:
+          type: string
+    auth_VerifyOTPResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        customer_user_id:
+          type: integer
+    auth_VerifyPhoneRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+    auth_VerifyPhoneResponse:
+      type: object
+      properties:
+        is_registered:
+          type: boolean
+        last_request_at:
+          type: string
+    auth_VerifyUserGoldReward:
+      type: object
+      properties:
+        id:
+          type: integer
+        balance:
+          type: number
+        unit:
+          type: string
+        amount:
+          type: number
+    auth_VerifyUserPointReward:
+      type: object
+      properties:
+        id:
+          type: integer
+        balance:
+          type: number
+        amount:
+          type: number
+    auth_VerifyUserRequest:
+      type: object
+      properties:
+        nik:
+          type: string
+        cif:
+          type: string
+    auth_VerifyUserResponse:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+        gold_reward:
+          type: string
+    auth_VerifyUserV2Response:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+        point_reward:
+          type: string
+    authintools_AuthInfoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        full_name:
+          type: string
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        allowed_modules:
+          type: array
+          items:
+            type: string
+        is_first_time_passcode:
+          type: boolean
+    authintools_ChangePasswordRequest:
+      type: object
+      properties:
+        old_password:
+          type: string
+        new_password:
+          type: string
+    authintools_ChangePasswordResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    authintools_GetAccessUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    authintools_GetAccessUserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        full_name:
+          type: string
+        passcode:
+          type: string
+        first_time_passcode:
+          type: boolean
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        branch_attendance_ids:
+          type: array
+          items:
+            type: integer
+        allowed_modules:
+          type: array
+          items:
+            type: string
+        branches:
+          type: array
+          items:
+            type: string
+        branch_attendances:
+          type: array
+          items:
+            type: string
+        roles:
+          type: array
+          items:
+            type: string
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+    authintools_GetAccessUserResponseV2:
+      type: object
+      properties:
+        id:
+          type: integer
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        must_change_password:
+          type: boolean
+        email:
+          type: string
+        full_name:
+          type: string
+        default_branch_id:
+          type: integer
+        allowed_modules:
+          type: array
+          items:
+            type: string
+        roles:
+          type: array
+          items:
+            type: string
+    authintools_LoginAuthStagingRequest:
+      type: object
+      properties:
+        prod_access_token:
+          type: string
+    authintools_LogoutRequest:
+      type: object
+      properties:
+        access_token:
+          type: string
+    authintools_LogoutResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    authintools_RefreshTokenRequest:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+    authintools_RefreshTokenResponse:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+    banner_GetBanner:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        visit_url:
+          type: string
+        image_url:
+          type: string
+    banner_GetBannersRequest:
+      type: object
+      properties:
+        platform:
+          type: array
+          items:
+            type: string
+        category:
+          type: array
+          items:
+            type: string
+    banner_GetBannersResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    branch_Branch:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        contact_number:
+          type: string
+        address:
+          type: string
+        brand_name:
+          type: string
+        is_active:
+          type: boolean
+        cash_available:
+          type: number
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        va_number:
+          type: string
+        province_id:
+          type: integer
+        city_id:
+          type: integer
+        district_id:
+          type: integer
+        sub_district_id:
+          type: integer
+        bank_amount_limit:
+          type: number
+        opening_date:
+          type: string
+        branch_group:
+          type: string
+        target_trx_count:
+          type: integer
+        longitude:
+          type: number
+        latitude:
+          type: number
+        item_types:
+          type: array
+          items:
+            type: string
+    branch_BranchesResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+        pagination:
+          type: string
+    branch_GetBranchesRequest:
+      type: object
+      properties:
+        branch_ids:
+          type: array
+          items:
+            type: integer
+    collateral_AssetListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+        pagination:
+          type: string
+    collateral_GetAssetResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        item_sub_type:
+          type: string
+        item_name:
+          type: string
+        appraisal_amount:
+          type: number
+        loan_status:
+          type: string
+        uuid:
+          type: string
+        min_loan:
+          type: number
+        max_loan:
+          type: number
+        images:
+          type: array
+          items:
+            type: string
+    cuan_pandai_LastApprovedCuanPandaiResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    customer_CheckReferralCodeResponse:
+      type: object
+      properties:
+        referrer_customer_id:
+          type: integer
+        referrer_name:
+          type: string
+        active_promo:
+          type: string
+    customer_CheckReferralCodeResponseV2:
+      type: object
+      properties:
+        referral_bonus:
+          type: string
+        referral_code:
+          type: string
+        point_reward_amount:
+          type: number
+    customer_state_FirstWalletDisbursementGoldReward:
+      type: object
+      properties:
+        mission_name:
+          type: string
+        reward_amount:
+          type: number
+        balance_gold:
+          type: number
+        unit:
+          type: string
+    customer_state_FirstWalletDisbursementPointReward:
+      type: object
+      properties:
+        mission_name:
+          type: string
+        reward_amount:
+          type: number
+        point_balance:
+          type: number
+    customer_state_GetCustomerStateResponse:
+      type: object
+      properties:
+        latest_read_tnc_version:
+          type: string
+        is_read_latest_tnc_version:
+          type: boolean
+        first_enable_location_at:
+          type: string
+        first_enable_push_notification_at:
+          type: string
+        first_gadai_trx_at:
+          type: string
+        first_ppob_trx_at:
+          type: string
+        first_wallet_disbursement_at:
+          type: string
+        first_wallet_disbursement_is_show_success_page:
+          type: boolean
+        first_wallet_disbursement_gold_reward:
+          type: string
+        verification_at:
+          type: string
+    customer_state_GetCustomerStateV2Response:
+      type: object
+      properties:
+        latest_read_tnc_version:
+          type: string
+        is_read_latest_tnc_version:
+          type: boolean
+        first_enable_location_at:
+          type: string
+        first_enable_push_notification_at:
+          type: string
+        first_gadai_trx_at:
+          type: string
+        first_ppob_trx_at:
+          type: string
+        first_wallet_disbursement_at:
+          type: string
+        first_wallet_disbursement_is_show_success_page:
+          type: boolean
+        first_wallet_disbursement_point_reward:
+          type: string
+        verification_at:
+          type: string
+    customer_state_UpdateCustomerStateRequest:
+      type: object
+      properties:
+        latest_read_tnc_version:
+          type: string
+        first_enable_location_at:
+          type: string
+          format: date-time
+        first_enable_push_notification_at:
+          type: string
+          format: date-time
+        first_gadai_trx_at:
+          type: string
+          format: date-time
+        first_ppob_trx_at:
+          type: string
+          format: date-time
+        first_wallet_disbursement_at:
+          type: string
+          format: date-time
+        first_wallet_disbursement_is_show_success_page:
+          type: boolean
+        is_verified:
+          type: boolean
+    customer_state_UpdateCustomerStateResponse:
+      type: object
+      properties:
+        gold_amount:
+          type: number
+        gold_unit:
+          type: string
+        gold_balance:
+          type: number
+    customer_state_UpdateCustomerStateV2Response:
+      type: object
+      properties:
+        point_amount:
+          type: number
+        point_balance:
+          type: number
+    event_scheduler_SendBookingReminderEventsRequest:
+      type: object
+      properties:
+        batch_size:
+          type: integer
+        event_names:
+          type: array
+          items:
+            type: string
+    event_scheduler_SendBookingReminderEventsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        error_count:
+          type: integer
+        message:
+          type: string
+    event_scheduler_SendLoanReminderEventsRequest:
+      type: object
+      properties:
+        batch_size:
+          type: integer
+        event_names:
+          type: array
+          items:
+            type: string
+    event_scheduler_SendLoanReminderEventsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        error_count:
+          type: integer
+        message:
+          type: string
+    event_scheduler_SendPPOBReminderEventsRequest:
+      type: object
+      properties:
+        batch_size:
+          type: integer
+        event_names:
+          type: array
+          items:
+            type: string
+    event_scheduler_SendPPOBReminderEventsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        error_count:
+          type: integer
+        message:
+          type: string
+    feedback_SaveCustomerFeedbackRequest:
+      type: object
+      properties:
+        rating:
+          type: string
+        category_ids:
+          type: array
+          items:
+            type: integer
+        description:
+          type: string
+    feedback_SaveCustomerFeedbackResponse:
+      type: object
+      properties:
+        rating:
+          type: string
+        contact_cs_url:
+          type: string
+        transaction_type:
+          type: string
+    gold_redemption_CalculateConversionRequest:
+      type: object
+      properties:
+        source:
+          type: string
+        amount:
+          type: number
+        gold_unit:
+          type: string
+        conversion_type:
+          type: string
+    gold_redemption_RedeemGoldRequest:
+      type: object
+      properties:
+        gold_amount:
+          type: number
+        gold_redemption_rule_history_id:
+          type: integer
+        price_reference_id:
+          type: integer
+        conversion_fee_amount:
+          type: number
+    gold_redemption_RedeemGoldResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        gold_amount:
+          type: number
+        gold_unit:
+          type: string
+        rupiah_amount:
+          type: integer
+        rupiah_balance:
+          type: integer
+    gold_reward_CheckClaimStatusRequest:
+      type: object
+      properties:
+        GoldRewardID:
+          type: integer
+    gold_reward_CheckClaimStatusResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        transaction_code:
+          type: string
+        min_eligible_amount:
+          type: number
+        expires_at:
+          type: string
+        claimed_at:
+          type: string
+        is_start_claim:
+          type: boolean
+    gold_reward_ClaimRewardsRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+    gold_reward_ConvertIDRToMGRequest:
+      type: object
+      properties:
+        rupiah_amount:
+          type: integer
+    gold_reward_GetRewardsFilter:
+      type: object
+      properties:
+        {}
+    gold_reward_ProcessExpiredBalancesRequest:
+      type: object
+      properties:
+        {}
+    gold_reward_ProcessExpiredBalancesResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        total_expired_mg:
+          type: string
+        message:
+          type: string
+    gold_reward_ProcessExpiredClaimsRequest:
+      type: object
+      properties:
+        {}
+    gold_reward_ProcessExpiredClaimsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        message:
+          type: string
+    gold_transaction_GetTransactionsFilter:
+      type: object
+      properties:
+        {}
+    httphelper_SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    loan_BranchDataResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        contact_number:
+          type: string
+        address:
+          type: string
+        brand_name:
+          type: string
+        is_active:
+          type: boolean
+        cash_available:
+          type: number
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        va_number:
+          type: string
+        province_id:
+          type: integer
+        city_id:
+          type: integer
+        district_id:
+          type: integer
+        sub_district_id:
+          type: integer
+        bank_amount_limit:
+          type: number
+        opening_date:
+          type: string
+        branch_group:
+          type: string
+        target_trx_count:
+          type: integer
+        longitude:
+          type: number
+        latitude:
+          type: number
+        item_types:
+          type: array
+          items:
+            type: string
+    loan_CalculateLoanPricingRequest:
+      type: object
+      properties:
+        transaction_type:
+          type: string
+        cicil_amount:
+          type: number
+    loan_CancelCustomerPaymentResponse:
+      type: object
+      properties:
+        payment_reference_id:
+          type: string
+    loan_ClaimedReward:
+      type: object
+      properties:
+        total_amount:
+          type: number
+    loan_CollateralItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        item_type:
+          type: string
+        item_sub_type:
+          type: string
+        item_detail:
+          type: string
+        item_description:
+          type: string
+        rubik_category:
+          type: string
+        initial_ltv_percentage:
+          type: number
+        ltv_percentage:
+          type: number
+        initial_appraisal_amount:
+          type: number
+        appraisal_amount:
+          type: number
+        initial_appraised_by:
+          type: string
+        appraised_by:
+          type: string
+        history_action:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+        item_discount:
+          type: string
+        imei:
+          type: string
+        item_photos:
+          type: string
+        new_appraisal_amount:
+          type: number
+        item_discount_v2:
+          type: string
+    loan_CreatePaymentLinkRequest:
+      type: object
+      properties:
+        transaction_type:
+          type: string
+        pricings:
+          type: string
+        totals:
+          type: string
+        promotions:
+          type: string
+        gold_reward:
+          type: string
+        point_reward:
+          type: string
+        reappraisal:
+          type: string
+        is_top_up_for_fee_reduction:
+          type: boolean
+    loan_CreatePaymentLinkResponse:
+      type: object
+      properties:
+        payment_link:
+          type: string
+        payment_reference_id:
+          type: string
+    loan_CreditScoreSnapshot:
+      type: object
+      properties:
+        credit_score:
+          type: number
+        loan_amount_bonus:
+          type: number
+        ltv_bonus:
+          type: number
+        applied_loan_amount_bonus:
+          type: number
+    loan_DiscountDetail:
+      type: object
+      properties:
+        kelengkapan:
+          type: string
+        fisik_body:
+          type: string
+        back_cover:
+          type: string
+        lcd:
+          type: string
+        kamera:
+          type: string
+        speaker:
+          type: string
+        tombol:
+          type: string
+        touch_id:
+          type: string
+        fisik_baterai:
+          type: string
+        sinyal_provider:
+          type: string
+        reject_condition:
+          type: string
+        trackpad:
+          type: string
+        usb_ports:
+          type: string
+        garansi_unit:
+          type: string
+        baterai:
+          type: string
+        keyboard:
+          type: string
+        apple_model:
+          type: string
+    loan_DiscountDetailItem:
+      type: object
+      properties:
+        percentage:
+          type: number
+        amount:
+          type: number
+    loan_GetCollectedCollateral:
+      type: object
+      properties:
+        loans:
+          type: array
+          items:
+            type: string
+    loan_GetCollectedCollateralBranch:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    loan_GetCollectedCollateralItem:
+      type: object
+      properties:
+        type:
+          type: string
+        sub_type:
+          type: string
+        name:
+          type: string
+        qty:
+          type: integer
+    loan_GetCollectedCollateralLoan:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        picked_up_at:
+          type: string
+        item_type:
+          type: string
+        branch:
+          type: string
+        items:
+          type: array
+          items:
+            type: string
+    loan_GetCustomerLoanListRequest:
+      type: object
+      properties:
+        FilterLoanStatus:
+          type: string
+    loan_GoldReward:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: number
+        unit:
+          type: string
+        expired_at:
+          type: string
+        claimed_at:
+          type: string
+        status:
+          type: string
+        is_start_claim:
+          type: boolean
+    loan_GoldRewardInfo:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
+          type: string
+        is_reward_eligible:
+          type: boolean
+        unclaimed:
+          type: string
+        claimed:
+          type: string
+    loan_ItemDetailPaymentData:
+      type: object
+      properties:
+        item_sub_type:
+          type: string
+        item_description:
+          type: string
+        item_qty:
+          type: integer
+    loan_ItemDiscount:
+      type: object
+      properties:
+        total_amount:
+          type: number
+        total_percentage:
+          type: number
+        total_amount_max:
+          type: number
+        total_percentage_max:
+          type: number
+        detail:
+          type: string
+    loan_ItemPhotos:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            type: string
+        url:
+          type: array
+          items:
+            type: string
+        raw_name:
+          type: array
+          items:
+            type: string
+        data:
+          type: array
+          items:
+            type: string
+    loan_Loan:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        customer_id:
+          type: integer
+        branch_id:
+          type: integer
+        collateral_item_id:
+          type: array
+          items:
+            type: integer
+        rubik_category:
+          type: string
+        item_type:
+          type: string
+        item_description:
+          type: string
+        initial_loan_date:
+          type: string
+          format: date-time
+        loan_date:
+          type: string
+          format: date-time
+        initial_due_date:
+          type: string
+          format: date-time
+        due_date:
+          type: string
+          format: date-time
+        initial_total_appraisal_amount:
+          type: number
+        total_appraisal_amount:
+          type: number
+        initial_loan_amount:
+          type: number
+        loan_amount:
+          type: number
+        loan_status:
+          type: string
+        end_date:
+          type: string
+        interest_pricing_rule_history_id:
+          type: integer
+        interest_upfront_amount:
+          type: number
+        late_fee_pricing_rule_history_id:
+          type: integer
+        history_action:
+          type: string
+        approval_status:
+          type: string
+        approved_by:
+          type: string
+        approved_at:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        note:
+          type: string
+        late_status:
+          type: string
+        is_loss:
+          type: boolean
+        is_written_off:
+          type: boolean
+        offload_status:
+          type: string
+        offload_excess_amount:
+          type: number
+        offload_revenue:
+          type: number
+        offload_late_fee:
+          type: number
+        cycle_loan_date:
+          type: string
+          format: date-time
+        is_picked_up:
+          type: boolean
+        credit_score_snapshot:
+          type: string
+        pick_up_date:
+          type: string
+        referral_claim_method:
+          type: string
+        service_time_start_at:
+          type: string
+        service_time_end_at:
+          type: string
+        gto_amount:
+          type: number
+    loan_LoanDetailPaymentData:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        due_date:
+          type: string
+        loan_date:
+          type: string
+        loan_status:
+          type: string
+        loan_amount:
+          type: number
+        transaction_options:
+          type: string
+    loan_LoanPaymentVerificationResponse:
+      type: object
+      properties:
+        loan_detail:
+          type: string
+        item_detail:
+          type: array
+          items:
+            type: string
+        pickup:
+          type: string
+        gold_reward:
+          type: string
+        gold_reward_deeplink_url:
+          type: string
+    loan_LoanPaymentVerificationV2Response:
+      type: object
+      properties:
+        loan_detail:
+          type: string
+        item_detail:
+          type: array
+          items:
+            type: string
+        pickup:
+          type: string
+        point_reward:
+          type: string
+        point_reward_deeplink_url:
+          type: string
+    loan_LoanReferralRequest:
+      type: object
+      properties:
+        campaign_name:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    loan_LoanReferralResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    loan_PickUp:
+      type: object
+      properties:
+        maximal_date:
+          type: string
+        warning:
+          type: string
+        description:
+          type: string
+    loan_PointRewardInfo:
+      type: object
+      properties:
+        amount:
+          type: number
+        is_reward_eligible:
+          type: boolean
+        unclaimed:
+          type: string
+        claimed:
+          type: string
+    loan_SaveLoanRequest:
+      type: object
+      properties:
+        loan_amount:
+          type: number
+        loan_amount_max:
+          type: number
+        loan_amount_bonus:
+          type: number
+        booking_code:
+          type: string
+        branch_id:
+          type: integer
+        due_date:
+          type: string
+        gto_amount:
+          type: number
+        installment_amount:
+          type: number
+        is_gto:
+          type: boolean
+        loan_note:
+          type: string
+        ltv_bonus:
+          type: number
+        payment_method:
+          type: string
+        payment_reference_number:
+          type: string
+        promo_code:
+          type: string
+        referral_claim_method:
+          type: string
+        referrer_customer_id:
+          type: integer
+        service_time_start_at:
+          type: string
+        service_time_end_at:
+          type: string
+        transaction_note:
+          type: string
+        cash_amount:
+          type: number
+        oy_amount:
+          type: number
+        transfer_bank_amount:
+          type: number
+        appointment_url:
+          type: string
+        user_email:
+          type: string
+        force_loan_date:
+          type: string
+        force_due_date:
+          type: string
+    loan_SaveLoanResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    loan_SaveLoanResponseData:
+      type: object
+      properties:
+        branch_data:
+          type: string
+        inventory_id:
+          type: integer
+        loan:
+          type: string
+        transaction:
+          type: string
+    loan_SaveLoanV1Request:
+      type: object
+      properties:
+        item_type:
+          type: string
+        promo_code_validation:
+          type: string
+        inventory_id:
+          type: integer
+        customer_full_name:
+          type: string
+        branch_name:
+          type: string
+        customer_id:
+          type: integer
+        customer_credit_score:
+          type: number
+        pricings:
+          type: string
+        totals:
+          type: string
+        promotions:
+          type: string
+        collateral_items:
+          type: array
+          items:
+            type: string
+        item_discount:
+          type: string
+        gold_reward:
+          type: string
+    loan_Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        transaction_code:
+          type: string
+        loan_id:
+          type: integer
+        transaction_date:
+          type: string
+        transaction_type:
+          type: string
+        payment_method:
+          type: string
+        disbursement_amount:
+          type: number
+        payment_amount:
+          type: number
+        cicil_amount:
+          type: number
+        top_up_amount:
+          type: number
+        interest_amount:
+          type: number
+        admin_fee:
+          type: number
+        late_fee:
+          type: number
+        rounding_amount:
+          type: number
+        promo_code:
+          type: string
+        payment_reference_number:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        note:
+          type: string
+        transfer_bank_amount:
+          type: number
+        cash_amount:
+          type: number
+        oy_amount:
+          type: number
+    loan_UnclaimedReward:
+      type: object
+      properties:
+        total_amount:
+          type: number
+        expired_at:
+          type: string
+    location_Location:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        longitude:
+          type: number
+        latitude:
+          type: number
+    location_LocationCity:
+      type: object
+      properties:
+        province_id:
+          type: integer
+    location_LocationCityResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    location_LocationDistrict:
+      type: object
+      properties:
+        city_id:
+          type: integer
+    location_LocationDistrictResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    location_LocationProvinceResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    location_LocationSubDistrict:
+      type: object
+      properties:
+        district_id:
+          type: integer
+    location_LocationSubDistrictResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+    mission_CuanEmasMissionData:
+      type: object
+      properties:
+        visit_url:
+          type: string
+        category:
+          type: array
+          items:
+            type: string
+        total_rewards_available:
+          type: number
+        total_mission_available:
+          type: integer
+        total_user:
+          type: integer
+    mission_CuanPandaiMissionData:
+      type: object
+      properties:
+        visit_url:
+          type: string
+        category:
+          type: array
+          items:
+            type: string
+        total_rewards_available:
+          type: number
+        total_mission_available:
+          type: integer
+        total_user:
+          type: integer
+    mission_GetMissionsRequest:
+      type: object
+      properties:
+        status:
+          type: string
+        mission_type:
+          type: array
+          items:
+            type: string
+    mission_GetMissionsResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+        pagination:
+          type: string
+    mission_GetMissionsV2Response:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+        pagination:
+          type: string
+    mission_MissionItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        mission_type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        gold_reward:
+          type: number
+        gold_unit:
+          type: string
+        icon_url:
+          type: string
+        is_active:
+          type: boolean
+        active_from:
+          type: string
+        active_to:
+          type: string
+        additional_data:
+          type: string
+    mission_MissionItemV2:
+      type: object
+      properties:
+        id:
+          type: integer
+        mission_type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        point_reward:
+          type: number
+        icon_url:
+          type: string
+        is_active:
+          type: boolean
+        active_from:
+          type: string
+        active_to:
+          type: string
+        additional_data:
+          type: string
+    payment_GetActiveCustomerPaymentLinkResponse:
+      description: Active payment link information for the customer.
+      type: object
+      required:
+        - sbg_code
+        - created_at
+        - expired_at
+        - payment_amount
+        - status
+      properties:
+        sbg_code:
+          type: string
+          description: Loan code associated with the payment link. It prefixes with Branch ID followed by the Loan ID.
+          examples:
+            - 999999900002679
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the payment link was created (RFC3339).
+          examples:
+            - 2024-01-15T09:30:00Z
+        expired_at:
+          type: string
+          format: date-time
+          description: Timestamp when the payment link expires (RFC3339).
+          examples:
+            - 2024-01-16T09:30:00Z
+        payment_amount:
+          type: number
+          description: Total amount to be paid.
+          examples:
+            - 1250000
+        status:
+          type: string
+          description: Current status of the payment link.
+          examples:
+            - CREATED
+            - EXPIRED
+            - PAID
+    payment_PaymentInformationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        loan_id:
+          type: integer
+        transaction_id:
+          type: integer
+        transaction_type:
+          type: string
+        payment_reference_id:
+          type: string
+        provider_payment_id:
+          type: string
+        amount:
+          type: number
+        payment_provider:
+          type: string
+        payment_link:
+          type: string
+        payment_link_expired_at:
+          type: string
+          format: date-time
+        payment_method:
+          type: string
+        payment_channel:
+          type: string
+        payment_reference_number:
+          type: string
+        paid_at:
+          type: string
+          format: date-time
+        paid_amount:
+          type: number
+        notes:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+        source:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+        metadata:
+          type: string
+        transaction_data:
+          type: string
+    point_redemption_CalculateRedemptionRequest:
+      type: object
+      properties:
+        point_amount:
+          type: number
+    point_redemption_RedeemRequest:
+      type: object
+      properties:
+        point_amount:
+          type: number
+    point_redemption_RedeemResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        point_amount:
+          type: integer
+        rupiah_amount:
+          type: integer
+        new_point_balance:
+          type: integer
+        new_rupiah_balance:
+          type: integer
+    point_reward_CheckClaimStatusRequest:
+      type: object
+      properties:
+        PointRewardID:
+          type: integer
+    point_reward_CheckClaimStatusResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        point_amount:
+          type: number
+        transaction_code:
+          type: string
+        min_eligible_amount:
+          type: number
+        status:
+          type: string
+        expires_at:
+          type: string
+        claimed_at:
+          type: string
+        is_start_claim:
+          type: boolean
+    point_reward_ClaimRewardsRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+    point_reward_GetRewardsFilter:
+      type: object
+      properties:
+        {}
+    point_reward_ProcessExpiredBalancesRequest:
+      type: object
+      properties:
+        {}
+    point_reward_ProcessExpiredBalancesResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        message:
+          type: string
+    point_reward_ProcessExpiredClaimsRequest:
+      type: object
+      properties:
+        {}
+    point_reward_ProcessExpiredClaimsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        processed_count:
+          type: integer
+        message:
+          type: string
+    point_transaction_GetTransactionsFilter:
+      type: object
+      properties:
+        EntryType:
+          type: string
+    ppob_AlterraWebhookRequest:
+      type: object
+      properties:
+        transaction_id:
+          type: string
+        type:
+          type: string
+        created:
+          type: string
+        changed:
+          type: string
+        customer_number:
+          type: string
+        order_id:
+          type: string
+        price:
+          type: string
+        amount:
+          type: string
+        product_id:
+          type: string
+        data:
+          type: object
+          additionalProperties:
+            type: string
+        token:
+          type: string
+    ppob_AlterraWebhookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    ppob_CreateElectricityPrepaidTransactionRequest:
+      type: object
+      properties:
+        partner:
+          type: string
+        partner_product_id:
+          type: string
+        price:
+          type: integer
+        admin_fee_amount:
+          type: integer
+        payment_amount:
+          type: integer
+    ppob_CreateMobilePrepaidTransactionRequest:
+      type: object
+      properties:
+        partner:
+          type: string
+        phone_number:
+          type: string
+        partner_product_id:
+          type: string
+        price:
+          type: integer
+        admin_fee_amount:
+          type: integer
+        payment_amount:
+          type: integer
+    ppob_CreatePDAMTransactionRequest:
+      type: object
+      properties:
+        partner:
+          type: string
+        customer_number:
+          type: string
+        operator_code:
+          type: string
+        admin_fee_amount:
+          type: integer
+        bill_amount:
+          type: integer
+        payment_amount:
+          type: integer
+    ppob_GetMobilePrepaidProductListRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+        type:
+          type: string
+    ppob_InquiryElectricityCustomerRequest:
+      type: object
+      properties:
+        customer_number:
+          type: string
+    ppob_InquiryPDAMBillRequest:
+      type: object
+      properties:
+        customer_number:
+          type: string
+        operator_code:
+          type: string
+    pricing_engine_CalculatePricingGuestData:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+        transaction_type:
+          type: string
+        gold_reward:
+          type: string
+    pricing_engine_CalculatePricingGuestRequest:
+      type: object
+      properties:
+        loan_id:
+          type: integer
+        transaction_type:
+          type: string
+    pricing_engine_CalculatePricingGuestResponse:
+      type: object
+      properties:
+        pricing_engine:
+          type: string
+        payment_detail:
+          type: array
+          items:
+            type: string
+        gold_reward_detail:
+          type: array
+          items:
+            type: string
+        maximum_pickup_date:
+          type: string
+        pickup_details:
+          type: string
+    pricing_engine_CalculatePricingGuestV3Data:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+        transaction_type:
+          type: string
+        point_reward:
+          type: string
+    pricing_engine_CalculatePricingGuestV3Response:
+      type: object
+      properties:
+        pricing_engine:
+          type: string
+        payment_detail:
+          type: array
+          items:
+            type: string
+        point_reward_detail:
+          type: array
+          items:
+            type: string
+        maximum_pickup_date:
+          type: string
+        pickup_details:
+          type: string
+    pricing_engine_CalculatePricingRequest:
+      type: object
+      properties:
+        item_type:
+          type: string
+        item_sub_type:
+          type: string
+        item_detail:
+          type: string
+        loan_amount:
+          type: number
+        loan_amount_max:
+          type: number
+        loan_date:
+          type: string
+          format: date-time
+        loan_id:
+          type: integer
+        customer_id:
+          type: integer
+        customer_referrer_id:
+          type: integer
+        transaction_type:
+          type: string
+        transaction_date:
+          type: string
+          format: date-time
+        interest_history_id:
+          type: integer
+        interest_upfront_amount:
+          type: number
+        late_fee_history_id:
+          type: integer
+        installment_amount:
+          type: number
+        top_up_amount:
+          type: number
+        payment_method:
+          type: string
+        payment_due_date:
+          type: string
+          format: date-time
+        promo_code:
+          type: string
+        branch_id:
+          type: integer
+        testing:
+          type: boolean
+        is_net_disbursement:
+          type: boolean
+        is_top_up_for_fee_reduction:
+          type: boolean
+        item_detail_elektronik:
+          type: string
+        env:
+          type: string
+    pricing_engine_CalculatePricingResponse:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+        gold_reward:
+          type: string
+        point_reward:
+          type: string
+    pricing_engine_CalculatePricingResponseV2:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+    pricing_engine_CalculatePricingResponseV3:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+        gold_reward:
+          type: string
+    pricing_engine_CalculatePricingResponseV4:
+      type: object
+      properties:
+        pricings:
+          type: string
+        promotions:
+          type: string
+        totals:
+          type: string
+        point_reward:
+          type: string
+    pricing_engine_CalculatePricingV2Response:
+      type: object
+      properties:
+        payment_detail:
+          type: array
+          items:
+            type: string
+        pricing_detail:
+          type: array
+          items:
+            type: string
+        maximum_pickup_date:
+          type: string
+        pickup_detail:
+          type: string
+    pricing_engine_CalculatePricingV3Response:
+      type: object
+      properties:
+        gold_reward_detail:
+          type: array
+          items:
+            type: string
+        payment_detail:
+          type: array
+          items:
+            type: string
+        pricing_detail:
+          type: array
+          items:
+            type: string
+        maximum_pickup_date:
+          type: string
+        pickup_detail:
+          type: string
+    pricing_engine_CalculatePricingV4Response:
+      type: object
+      properties:
+        point_reward_detail:
+          type: array
+          items:
+            type: string
+        payment_detail:
+          type: array
+          items:
+            type: string
+        pricing_detail:
+          type: array
+          items:
+            type: string
+        maximum_pickup_date:
+          type: string
+        pickup_detail:
+          type: string
+    pricing_engine_ConditionsElektronik:
+      type: object
+      properties:
+        grade:
+          type: string
+        kelengkapan:
+          type: array
+          items:
+            type: string
+    pricing_engine_ContentObject:
+      type: object
+      properties:
+        description:
+          type: string
+        value:
+          type: string
+    pricing_engine_GoldReward:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
+          type: string
+        min_eligible_trx:
+          type: number
+        is_reward_eligible:
+          type: boolean
+        gold_rounding_deduction_mg:
+          type: number
+        gold_mg_rupiah:
+          type: number
+        gold_mg_rupiah_rounding_deduction:
+          type: number
+        gold_reward_rule_history_id:
+          type: integer
+        gold_reward_price_reference_id:
+          type: integer
+    pricing_engine_PickupDetail:
+      type: object
+      properties:
+        description:
+          type: string
+        value:
+          type: string
+    pricing_engine_PointReward:
+      type: object
+      properties:
+        amount:
+          type: number
+        rounded_amount:
+          type: number
+        rounding_amount:
+          type: number
+        min_eligible_trx:
+          type: number
+        is_reward_eligible:
+          type: boolean
+        rule_history_id:
+          type: integer
+        rupiah_amount:
+          type: number
+    pricing_engine_Pricing:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        item_types:
+          type: array
+          items:
+            type: string
+        item_sub_types:
+          type: array
+          items:
+            type: string
+        pricing_attribute:
+          type: string
+        amount:
+          type: number
+        percentage:
+          type: number
+        period_in_days:
+          type: integer
+        loan_amount_min:
+          type: number
+        loan_amount_max:
+          type: number
+        priority:
+          type: integer
+        is_charged_upfront:
+          type: boolean
+        is_active:
+          type: boolean
+        active_from:
+          type: string
+        active_to:
+          type: string
+        history_action:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        history_id:
+          type: integer
+        calculated_amount:
+          type: number
+        promotion_amount:
+          type: number
+        rate_type:
+          type: string
+        min_charge_amount:
+          type: number
+        rounding_step_amount:
+          type: number
+    pricing_engine_Pricings:
+      type: object
+      properties:
+        insurance_fee:
+          type: string
+        adminFee:
+          type: string
+        interest:
+          type: string
+        lateFee:
+          type: string
+        storageFee:
+          type: string
+        nilaiPinjaman:
+          type: string
+        interestSnapshot:
+          type: string
+        lateFeeSnapshot:
+          type: string
+    pricing_engine_PricingsV2:
+      type: object
+      properties:
+        insurance_fee:
+          type: string
+        admin_fee:
+          type: string
+        interest:
+          type: string
+        late_fee:
+          type: string
+        storage_fee:
+          type: string
+        nilai_pinjaman:
+          type: string
+        interest_snapshot:
+          type: string
+        late_fee_snapshot:
+          type: string
+    pricing_engine_Promotion:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        pricing_attribute:
+          type: string
+        eligible_transaction_types:
+          type: array
+          items:
+            type: string
+        applicable_transaction_types:
+          type: array
+          items:
+            type: string
+        promo_code:
+          type: string
+        amount:
+          type: number
+        percentage:
+          type: number
+        percentage_amount_max:
+          type: number
+        loan_amount_min:
+          type: number
+        loan_amount_max:
+          type: number
+        tenor_min:
+          type: integer
+        tenor_max:
+          type: integer
+        is_exclusive:
+          type: boolean
+        priority:
+          type: integer
+        is_active:
+          type: boolean
+        is_new_customer:
+          type: boolean
+        quota:
+          type: integer
+        quota_per_day:
+          type: integer
+        max_redemption:
+          type: integer
+        note:
+          type: string
+        history_action:
+          type: string
+        created_by:
+          type: string
+        updated_by:
+          type: string
+        referral_type:
+          type: string
+        conditions_elektronik:
+          type: string
+        history_id:
+          type: integer
+        calculated_amount:
+          type: number
+    pricing_engine_Promotions:
+      type: object
+      properties:
+        eligible:
+          type: array
+          items:
+            type: string
+        applicable:
+          type: array
+          items:
+            type: string
+        promoCodeValidation:
+          type: string
+        referrerEligible:
+          type: array
+          items:
+            type: string
+    pricing_engine_PromotionsV2:
+      type: object
+      properties:
+        eligible:
+          type: array
+          items:
+            type: string
+        applicable:
+          type: array
+          items:
+            type: string
+        referrer_eligible:
+          type: array
+          items:
+            type: string
+    pricing_engine_SavePromotionRedemptionRequest:
+      type: object
+      properties:
+        transaction_date:
+          type: string
+          format: date-time
+        transaction_id:
+          type: integer
+        transaction_type:
+          type: string
+        customer_id:
+          type: integer
+        loan_id:
+          type: integer
+        referrer_id:
+          type: integer
+        is_testing:
+          type: boolean
+        applicable_promotions:
+          type: array
+          items:
+            type: string
+        eligible_promotions:
+          type: array
+          items:
+            type: string
+        referrer_eligible_promotions:
+          type: array
+          items:
+            type: string
+    pricing_engine_Totals:
+      type: object
+      properties:
+        disbursementAmount:
+          type: number
+        paymentAmount:
+          type: number
+        remainingLoan:
+          type: number
+        roundingAmount:
+          type: number
+        dueDate:
+          type: string
+        loanAmount:
+          type: number
+        cicilAmount:
+          type: number
+        topUpAmount:
+          type: number
+        storageAmount:
+          type: number
+    pricing_engine_TotalsV2:
+      type: object
+      properties:
+        disbursement_amount:
+          type: number
+        payment_amount:
+          type: number
+        remaining_loan:
+          type: number
+        rounding_amount:
+          type: number
+        due_date:
+          type: string
+        loan_amount:
+          type: number
+        cicil_amount:
+          type: number
+        top_up_amount:
+          type: number
+        loan_amount_snapshot:
+          type: number
+        top_up_amount_snapshot:
+          type: number
+        storage_amount:
+          type: number
+    pricing_engine_itemDetailElektronikRequest:
+      type: object
+      properties:
+        grade:
+          type: string
+        kelengkapan:
+          type: array
+          items:
+            type: string
+    transaction_CreditScoreSnapshot:
+      type: object
+      properties:
+        credit_score:
+          type: number
+        loan_amount_bonus:
+          type: number
+        ltv_bonus:
+          type: number
+        applied_loan_amount_bonus:
+          type: number
+    transaction_Loan:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        customer_id:
+          type: integer
+        branch_id:
+          type: integer
+        collateral_item_id:
+          type: array
+          items:
+            type: integer
+        rubik_category:
+          type: string
+        item_type:
+          type: string
+        item_description:
+          type: string
+        initial_loan_date:
+          type: string
+          format: date-time
+        loan_date:
+          type: string
+          format: date-time
+        initial_due_date:
+          type: string
+          format: date-time
+        due_date:
+          type: string
+          format: date-time
+        initial_total_appraisal_amount:
+          type: number
+        total_appraisal_amount:
+          type: number
+        initial_loan_amount:
+          type: number
+        loan_amount:
+          type: number
+        loan_status:
+          type: string
+        end_date:
+          type: string
+        interest_pricing_rule_history_id:
+          type: integer
+        interest_upfront_amount:
+          type: number
+        late_fee_pricing_rule_history_id:
+          type: integer
+        history_action:
+          type: string
+        approval_status:
+          type: string
+        approved_by:
+          type: string
+        approved_at:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        note:
+          type: string
+        late_status:
+          type: string
+        is_loss:
+          type: boolean
+        is_written_off:
+          type: boolean
+        offload_status:
+          type: string
+        offload_excess_amount:
+          type: number
+        offload_revenue:
+          type: number
+        offload_late_fee:
+          type: number
+        cycle_loan_date:
+          type: string
+          format: date-time
+        is_picked_up:
+          type: boolean
+        credit_score_snapshot:
+          type: string
+        pick_up_date:
+          type: string
+        referral_claim_method:
+          type: string
+        service_time_start_at:
+          type: string
+        service_time_end_at:
+          type: string
+        gto_amount:
+          type: number
+    transaction_SaveTransactionRequest:
+      type: object
+      properties:
+        transaction_type:
+          type: string
+        loan_id:
+          type: integer
+        loan_amount:
+          type: number
+        transaction_note:
+          type: string
+        payment_method:
+          type: string
+        promo_code:
+          type: string
+        payment_reference_number:
+          type: string
+        due_date:
+          type: string
+          format: date-time
+        due_date_new:
+          type: string
+          format: date-time
+        installment_amount:
+          type: number
+        inventory_id:
+          type: integer
+        is_gto:
+          type: boolean
+        gto_amount:
+          type: number
+        referral_claim_method:
+          type: string
+        top_up_amount:
+          type: number
+        inventory_item_id:
+          type: integer
+        user_email:
+          type: string
+        loan_amount_new:
+          type: number
+        referrer_customer_id:
+          type: integer
+        item_discount:
+          $ref: '#/components/schemas/loan_ItemDiscount'
+    transaction_SaveTransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        loan:
+          type: string
+        transaction:
+          type: string
+    transaction_SaveTransactionV1Request:
+      type: object
+      properties:
+        branch_name:
+          type: string
+        customer_full_name:
+          type: string
+        transaction_keyword:
+          type: string
+        transaction_search_type:
+          type: string
+        total_trx_by_loan_id:
+          type: integer
+        promo_code_validation:
+          type: string
+        is_reappraisal:
+          type: boolean
+        pricings:
+          type: string
+        totals:
+          type: string
+        promotions:
+          type: string
+        collateral_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/loan_CollateralItem'
+    transaction_Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        transaction_code:
+          type: string
+        loan_id:
+          type: integer
+        transaction_date:
+          type: string
+        transaction_type:
+          type: string
+        payment_method:
+          type: string
+        disbursement_amount:
+          type: number
+        payment_amount:
+          type: number
+        cicil_amount:
+          type: number
+        top_up_amount:
+          type: number
+        interest_amount:
+          type: number
+        admin_fee:
+          type: number
+        late_fee:
+          type: number
+        rounding_amount:
+          type: number
+        promo_code:
+          type: string
+        payment_reference_number:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_by:
+          type: string
+        updated_at:
+          type: string
+        note:
+          type: string
+        transfer_bank_amount:
+          type: number
+        cash_amount:
+          type: number
+        oy_amount:
+          type: number
+    visitor_VisitorVerificationRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+        branch_id:
+          type: integer
+    visitor_VisitorVerificationResponse:
+      type: object
+      properties:
+        is_verified:
+          type: boolean
+        role:
+          type: string
+    wallet_AccountInquiryRequest:
+      type: object
+      properties:
+        account_number:
+          type: string
+        method:
+          type: string
+        code:
+          type: string
+    wallet_CalculateWithdrawRequest:
+      type: object
+      properties:
+        account_number:
+          type: string
+        method:
+          type: string
+        amount:
+          type: number
+    wallet_GetAdminFeeRequest:
+      type: object
+      properties:
+        {}
+    wallet_GetTransactionsRequest:
+      type: object
+      properties:
+        {}
+    wallet_GetTransactionsV2Request:
+      type: object
+      properties:
+        status:
+          type: string
+    wallet_GoldRewardRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
+          type: string
+        rounding_amount:
+          type: number
+    wallet_PointRewardRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+    wallet_WithdrawRequest:
+      type: object
+      properties:
+        account_number:
+          type: string
+        method:
+          type: string
+        code:
+          type: string
+        amount:
+          type: number
+        admin_fee_amount:
+          type: number
+        total_amount:
+          type: number
+        gold_reward:
+          type: string
+    wallet_WithdrawV2Request:
+      type: object
+      properties:
+        account_number:
+          type: string
+        method:
+          type: string
+        code:
+          type: string
+        amount:
+          type: number
+        admin_fee_amount:
+          type: number
+        total_amount:
+          type: number
+        point_reward:
+          type: string
+    webhook_CallbackOYRequest:
+      type: object
+      properties:
+        partner_tx_id:
+          type: string
+        child_balance:
+          type: string
+        tx_ref_number:
+          type: string
+        amount:
+          type: number
+        paid_amount:
+          type: number
+        sender_name:
+          type: string
+        sender_phone:
+          type: string
+        sender_note:
+          type: string
+        status:
+          type: string
+        description:
+          type: string
+        sender_bank:
+          type: string
+        payment_method:
+          type: string
+        settlement_type:
+          type: string
+        settlement_time:
+          type: string
+        settlement_status:
+          type: string
+        created:
+          type: string
+        updated:
+          type: string
+        due_date:
+          type: string
+        payment_received_time:
+          type: string
+        expiration:
+          type: string
+        is_invoice:
+          type: boolean
+        payment_reference_number:
+          type: string
+        email:
+          type: string
+    webhook_CallbackPaymentLinkResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    webhook_CallbackXenditRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        external_id:
+          type: string
+        updated:
+          type: string
+          format: date-time
+        created:
+          type: string
+          format: date-time
+        user_id:
+          type: string
+        status:
+          type: string
+        currency:
+          type: string
+        paid_at:
+          type: string
+          format: date-time
+        merchant_name:
+          type: string
+        amount:
+          type: integer
+        payer_email:
+          type: string
+        description:
+          type: string
+        paid_amount:
+          type: integer
+        payment_method:
+          type: string
+        payment_channel:
+          type: string
+        payment_destination:
+          type: string
+        bank_code:
+          type: string
+        ewallet_type:
+          type: string
+    webhook_DOKUUnpaidNotificationRequest:
+      type: object
+      properties:
+        {}
+    webhook_InfobipWhatsappInboundRequest:
+      type: object
+      properties:
+        messageCount:
+          type: integer
+        pendingMessageCount:
+          type: integer
+    branch_BranchObject:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        company_entity:
+          type: string
+    cuan_emas_GetLastApprovedMissionsResponse:
+      type: object
+      properties:
+        missions:
+          type: array
+          items:
+            $ref: '#/components/schemas/mission_CuanEmasMissionData'
+    customer_balance_GetBalancesResponse:
+      type: object
+      properties:
+        gold:
+          $ref: '#/components/schemas/customer_balance_GoldBalanceInfo'
+        rupiah:
+          $ref: '#/components/schemas/customer_balance_RupiahBalanceInfo'
+    customer_balance_GetV2BalancesResponse:
+      type: object
+      properties:
+        points:
+          $ref: '#/components/schemas/customer_balance_PointBalanceInfo'
+        rupiah:
+          $ref: '#/components/schemas/customer_balance_RupiahBalanceInfo'
+    customer_balance_GoldBalanceInfo:
+      type: object
+      properties:
+        balance:
+          type: string
+        balance_rupiah:
+          type: number
+        balance_unit:
+          type: string
+        unclaimed:
+          type: string
+        expired_at:
+          type: string
+    customer_balance_PointBalanceInfo:
+      type: object
+      properties:
+        balance:
+          type: number
+        held_point_balance:
+          type: number
+        unclaimed:
+          type: number
+        expired_at:
+          type: string
+    customer_balance_RupiahBalanceInfo:
+      type: object
+      properties:
+        balance:
+          type: number
+        held_rupiah_balance:
+          type: number
+    feedback_FeedbackCategories:
+      type: object
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+        order:
+          type: integer
+    feedback_FeedbackRatingResponse:
+      type: object
+      properties:
+        order:
+          type: integer
+        rating:
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/feedback_FeedbackCategories'
+    feedback_GetFeedbackDataResponse:
+      type: object
+      properties:
+        sbg_code:
+          type: string
+        frontliner_name:
+          type: string
+        branch_name:
+          type: string
+        items:
+          type: array
+          items:
+            type: string
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/feedback_FeedbackRatingResponse'
+        status:
+          type: string
+        contact_cs_url:
+          type: string
+    gold_redemption_CalculateConversionResponse:
+      type: object
+      properties:
+        gold_amount:
+          type: number
+        gold_unit:
+          type: string
+        rupiah_amount:
+          type: number
+        rupiah_formatted:
+          type: string
+        conversion_type:
+          type: string
+        gold_redemption_rule_history_id:
+          type: integer
+        price_reference_id:
+          type: integer
+        conversion_fee_amount:
+          type: number
+        rate:
+          $ref: '#/components/schemas/gold_redemption_PriceRate'
+    gold_redemption_PriceRate:
+      type: object
+      properties:
+        price:
+          type: number
+        unit:
+          type: string
+        unit_amount:
+          type: integer
+    gold_reward_ClaimRewardsResponse:
+      type: object
+      properties:
+        gold_balance:
+          type: number
+        unit:
+          type: string
+        claimed_gold_amount:
+          type: number
+        gold_reward_data:
+          $ref: '#/components/schemas/gold_reward_GoldRewardData'
+    gold_reward_ComparisonPriceInfo:
+      type: object
+      properties:
+        amount:
+          type: number
+        delta_amount:
+          type: number
+        delta_percentage:
+          type: number
+        period_type:
+          type: string
+        period_count:
+          type: integer
+    gold_reward_ConversionInfoDTO:
+      type: object
+      properties:
+        amount:
+          type: string
+        rounded_amount:
+          type: string
+    gold_reward_ConversionPriceInfoDTO:
+      type: object
+      properties:
+        amount:
+          type: string
+        unit:
+          type: string
+        unit_amount:
+          type: integer
+    gold_reward_ConvertIDRToMGResponse:
+      type: object
+      properties:
+        price_reference_id:
+          type: integer
+        rule_history_id:
+          type: integer
+        price_last_updated_at:
+          type: string
+        price:
+          $ref: '#/components/schemas/gold_reward_ConversionPriceInfoDTO'
+        conversion:
+          $ref: '#/components/schemas/gold_reward_ConversionInfoDTO'
+    gold_reward_Countdown:
+      type: object
+      properties:
+        expires_at:
+          type: string
+        total_unclaimed_gold_reward:
+          type: string
+        gold_unit:
+          type: string
+    gold_reward_CurrentPriceInfo:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
+          type: string
+        unit_amount:
+          type: integer
+    gold_reward_GetGoldPriceResponse:
+      type: object
+      properties:
+        last_updated_at:
+          type: string
+        price:
+          $ref: '#/components/schemas/gold_reward_PriceInfo'
+    gold_reward_GetRewardsResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/gold_reward_RewardItem'
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    gold_reward_GetUnclaimedRewardsResponse:
+      type: object
+      properties:
+        countdown:
+          $ref: '#/components/schemas/gold_reward_Countdown'
+    gold_reward_GoldRewardData:
+      type: object
+      properties:
+        id:
+          type: integer
+        reward_type:
+          type: string
+        referral_code:
+          type: string
+        due_date_new:
+          type: string
+        loan_amount_new:
+          type: number
+        max_pickup_date:
+          type: string
+        description:
+          type: string
+    gold_reward_GraphPoint:
+      type: object
+      properties:
+        date:
+          type: string
+        amount:
+          type: number
+    gold_reward_GraphPriceInfo:
+      type: object
+      properties:
+        period_type:
+          type: string
+        period_count:
+          type: integer
+        data_points:
+          type: array
+          items:
+            $ref: '#/components/schemas/gold_reward_GraphPoint'
+    gold_reward_PriceInfo:
+      type: object
+      properties:
+        current:
+          $ref: '#/components/schemas/gold_reward_CurrentPriceInfo'
+        comparison:
+          $ref: '#/components/schemas/gold_reward_ComparisonPriceInfo'
+        graph:
+          $ref: '#/components/schemas/gold_reward_GraphPriceInfo'
+    gold_reward_RewardItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+        reward_type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        note:
+          type: string
+        gold_amount:
+          type: string
+        gold_unit:
+          type: string
+        countdown:
+          $ref: '#/components/schemas/gold_reward_Countdown'
+        total_items:
+          type: integer
+        created_at:
+          type: string
+        expired_at:
+          type: string
+    gold_transaction_GetTransactionsResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/gold_transaction_TransactionItem'
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    gold_transaction_TransactionItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        type:
+          type: string
+        amount:
+          type: number
+        unit:
+          type: string
+        created_at:
+          type: string
+        note:
+          type: string
+    health_HealthCheckResponse:
+      type: object
+      properties:
+        status:
+          type: string
+    loan_CalculatePricingResponse:
+      type: object
+      properties:
+        transaction_type:
+          type: string
+        cicil_amount:
+          type: number
+        pricing:
+          $ref: '#/components/schemas/pricing_engine_CalculatePricingResponse'
+    loan_CicilLimit:
+      type: object
+      properties:
+        min_amount:
+          type: number
+        max_amount:
+          type: number
+    loan_GetCustomerLoanDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        remaining_loan_amount:
+          type: number
+        due_date:
+          type: string
+        loan_date:
+          type: string
+        loan_status:
+          type: string
+        picked_up_date:
+          type: string
+        branch:
+          $ref: '#/components/schemas/branch_BranchObject'
+        items:
+          $ref: '#/components/schemas/collateral_GetAssetResponse'
+        payment:
+          $ref: '#/components/schemas/loan_PaymentLoanDetail'
+        pickup:
+          $ref: '#/components/schemas/loan_PickUp'
+        transaction_options:
+          $ref: '#/components/schemas/loan_TransactionOptions'
+        cicil_limit:
+          $ref: '#/components/schemas/loan_CicilLimit'
+        gold_reward:
+          $ref: '#/components/schemas/loan_GoldRewardSummary'
+    loan_GetCustomerLoanDetailV2Response:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        remaining_loan_amount:
+          type: number
+        due_date:
+          type: string
+        loan_date:
+          type: string
+        loan_status:
+          type: string
+        picked_up_date:
+          type: string
+        branch:
+          $ref: '#/components/schemas/branch_BranchObject'
+        items:
+          $ref: '#/components/schemas/collateral_GetAssetResponse'
+        payment:
+          $ref: '#/components/schemas/loan_PaymentLoanDetail'
+        pickup:
+          $ref: '#/components/schemas/loan_PickUp'
+        transaction_options:
+          $ref: '#/components/schemas/loan_TransactionOptions'
+        cicil_limit:
+          $ref: '#/components/schemas/loan_CicilLimit'
+        point_reward:
+          $ref: '#/components/schemas/loan_PointRewardSummary'
+    loan_GetCustomerLoanListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/loan_GetCustomerLoanResponse'
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+        total_active_loans:
+          type: integer
+        total_loans:
+          type: integer
+    loan_GetCustomerLoanResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        sbg_code:
+          type: string
+        item_name:
+          type: string
+        remaining_loan_amount:
+          type: number
+        loan_amount:
+          type: number
+        due_date:
+          type: string
+        loan_status:
+          type: string
+        item_sub_type:
+          type: string
+        company_entity:
+          type: string
+        payments:
+          $ref: '#/components/schemas/loan_PaymentLoanDetail'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/loan_GetCustomerLoanResponseItem'
+        branch:
+          $ref: '#/components/schemas/branch_BranchObject'
+        max_pickup_date:
+          type: string
+    loan_GetCustomerLoanResponseItem:
+      type: object
+      properties:
+        type:
+          type: string
+        sub_type:
+          type: string
+        name:
+          type: string
+        qty:
+          type: integer
+
+    loan_GoldRewardOption:
+      type: object
+      properties:
+        is_eligible:
+          type: boolean
+        message:
+          type: string
+    loan_GoldRewardSummary:
+      type: object
+      properties:
+        unclaimed:
+          $ref: '#/components/schemas/loan_UnclaimedReward'
+        claimed:
+          $ref: '#/components/schemas/loan_ClaimedReward'
+        unit:
+          type: string
+    loan_PaymentLoanDetail:
+      type: object
+      properties:
+        created_at:
+          type: string
+        expired_at:
+          type: string
+        payment_amount:
+          type: number
+        link:
+          type: string
+        status:
+          type: string
+        transaction_type:
+          type: string
+        cicil_amount:
+          type: number
+        gold_reward:
+          $ref: '#/components/schemas/loan_GoldReward'
+        point_reward:
+          $ref: '#/components/schemas/loan_PointReward'
+    loan_PointReward:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: number
+        expired_at:
+          type: string
+        claimed_at:
+          type: string
+        status:
+          type: string
+        is_start_claim:
+          type: boolean
+    loan_PointRewardOption:
+      type: object
+      properties:
+        is_eligible:
+          type: boolean
+        message:
+          type: string
+    loan_PointRewardSummary:
+      type: object
+      properties:
+        unclaimed:
+          $ref: '#/components/schemas/loan_UnclaimedReward'
+        claimed:
+          $ref: '#/components/schemas/loan_ClaimedReward'
+    loan_TransactionOption:
+      type: object
+      properties:
+        transaction_type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        is_enabled:
+          type: boolean
+        is_cicil_toggle_enabled:
+          type: boolean
+        gold_reward_option:
+          $ref: '#/components/schemas/loan_GoldRewardOption'
+        point_reward_option:
+          $ref: '#/components/schemas/loan_PointRewardOption'
+    loan_TransactionOptions:
+      type: array
+      items:
+        $ref: '#/components/schemas/loan_TransactionOption'
+    payment_GetPaymentInformationResponse:
+      type: object
+      properties:
+        payment_link:
+          type: string
+        status:
+          type: string
+        amount:
+          type: number
+        expired_at:
+          type: string
+    point_redemption_CalculateRedemptionResponse:
+      type: object
+      properties:
+        point_amount:
+          type: number
+        rupiah_amount:
+          type: number
+        rate:
+          $ref: '#/components/schemas/point_redemption_RedemptionRate'
+    point_redemption_RedemptionRate:
+      type: object
+      properties:
+        price:
+          type: number
+    point_reward_ClaimRewardsResponse:
+      type: object
+      properties:
+        point_balance:
+          type: number
+        claimed_point_amount:
+          type: number
+        point_reward_data:
+          $ref: '#/components/schemas/point_reward_PointRewardData'
+    point_reward_GetRewardsResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/point_reward_PointRewardItem'
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    point_reward_GetUnclaimedRewardsResponse:
+      type: object
+      properties:
+        countdown:
+          $ref: '#/components/schemas/point_reward_PointCountdown'
+    point_reward_PointCountdown:
+      type: object
+      properties:
+        expires_at:
+          type: string
+        total_unclaimed_point_reward:
+          type: number
+    point_reward_PointRewardData:
+      type: object
+      properties:
+        id:
+          type: integer
+        reward_type:
+          type: string
+        referral_code:
+          type: string
+        due_date_new:
+          type: string
+        loan_amount_new:
+          type: number
+        max_pickup_date:
+          type: string
+        description:
+          type: string
+    point_reward_PointRewardItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+        reward_type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        note:
+          type: string
+        point_amount:
+          type: number
+        countdown:
+          $ref: '#/components/schemas/point_reward_PointCountdown'
+        total_items:
+          type: integer
+        created_at:
+          type: string
+        expired_at:
+          type: string
+    point_transaction_GetTransactionsResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/point_transaction_PointTransactionItem'
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    point_transaction_PointTransactionItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        type:
+          type: string
+        amount:
+          type: number
+        created_at:
+          type: string
+        note:
+          type: string
+    ppob_ElectricityPrepaidInquiryResponse:
+      type: object
+      properties:
+        customer_name:
+          type: string
+        meter_number:
+          type: string
+        power:
+          type: number
+    ppob_ElectricityPrepaidProductDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        product_code:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        admin_fee:
+          type: number
+    ppob_ElectricityPrepaidProductListResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ppob_ElectricityProduct'
+    ppob_ElectricityPrepaidTransactionResponse:
+      type: object
+      properties:
+        transaction_id:
+          type: string
+        customer_name:
+          type: string
+        meter_number:
+          type: string
+        token:
+          type: string
+        amount:
+          type: number
+        admin_fee:
+          type: number
+        status:
+          type: string
+    ppob_ElectricityProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+        product_code:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        admin_fee:
+          type: number
+    ppob_MobilePrepaidProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+        product_code:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        admin_fee:
+          type: number
+    ppob_MobilePrepaidProductDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        product_code:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        admin_fee:
+          type: number
+    ppob_MobilePrepaidProductListResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ppob_MobilePrepaidProduct'
+    ppob_MobilePrepaidTransactionResponse:
+      type: object
+      properties:
+        transaction_id:
+          type: string
+        phone_number:
+          type: string
+        product_name:
+          type: string
+        amount:
+          type: number
+        admin_fee:
+          type: number
+        status:
+          type: string
+    ppob_PDAMInquiryResponse:
+      type: object
+      properties:
+        customer_name:
+          type: string
+        bill_number:
+          type: string
+        bill_amount:
+          type: number
+        admin_fee:
+          type: number
+        period:
+          type: string
+    ppob_PDAMOperator:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+    ppob_PDAMOperatorListResponse:
+      type: object
+      properties:
+        operators:
+          type: array
+          items:
+            $ref: '#/components/schemas/ppob_PDAMOperator'
+    ppob_PDAMTransactionResponse:
+      type: object
+      properties:
+        transaction_id:
+          type: string
+        customer_name:
+          type: string
+        bill_number:
+          type: string
+        amount:
+          type: number
+        admin_fee:
+          type: number
+        status:
+          type: string
+    wallet_AccountInquiryResponse:
+      type: object
+      properties:
+        account_number:
+          type: string
+        account_name:
+          type: string
+        method:
+          type: string
+        code:
+          type: string
+        payment_channel_name:
+          type: string
+        validation_error_message:
+          type: string
+    wallet_BankInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        code:
+          type: string
+    wallet_CalculateWithdrawResponse:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/wallet_AccountInquiryResponse'
+        amount:
+          type: number
+        admin_fee:
+          type: number
+        gold_reward:
+          $ref: '#/components/schemas/wallet_GoldRewardInfoDTO'
+    wallet_CalculateWithdrawV2Response:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/wallet_AccountInquiryResponse'
+        amount:
+          type: number
+        admin_fee:
+          type: number
+        point_reward:
+          $ref: '#/components/schemas/wallet_PointRewardInfoDTO'
+    wallet_DetailedGoldRewardInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: string
+        unit:
+          type: string
+        expired_at:
+          type: string
+        status:
+          type: string
+        claimed_at:
+          type: string
+        is_start_claim:
+          type: boolean
+    wallet_DetailedPointRewardInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: number
+        status:
+          type: string
+        expired_at:
+          type: string
+        claimed_at:
+          type: string
+        is_start_claim:
+          type: boolean
+    wallet_EWalletInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        code:
+          type: string
+    wallet_GetAdminFeeResponse:
+      type: object
+      properties:
+        amount:
+          type: number
+        gold_reward:
+          $ref: '#/components/schemas/wallet_GoldRewardInfoDTO'
+    wallet_GetAdminFeeV2Response:
+      type: object
+      properties:
+        amount:
+          type: number
+        point_reward:
+          $ref: '#/components/schemas/wallet_PointRewardInfoDTO'
+    wallet_GetTransactionDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+        ppob_category:
+          type: string
+        created_at:
+          type: string
+        total_amount:
+          type: number
+        gold_reward:
+          $ref: '#/components/schemas/wallet_DetailedGoldRewardInfo'
+        mission_reward:
+          $ref: '#/components/schemas/wallet_MissionRewardInfo'
+        status:
+          type: string
+        transaction_detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_TransactionDetailItem'
+        additional_information:
+          type: string
+    wallet_GetTransactionDetailV2Response:
+      type: object
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+        ppob_category:
+          type: string
+        created_at:
+          type: string
+        total_amount:
+          type: number
+        point_reward:
+          $ref: '#/components/schemas/wallet_DetailedPointRewardInfo'
+        mission_reward:
+          $ref: '#/components/schemas/wallet_MissionRewardInfoV2'
+        status:
+          type: string
+        transaction_detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_TransactionDetailItem'
+        additional_information:
+          type: string
+    wallet_GetTransactionsResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_TransactionItem'
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    wallet_GetTransactionsV2Response:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_TransactionItemV2'
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    wallet_GetWithdrawalMethodListResponse:
+      type: object
+      properties:
+        admin_fee_amount:
+          type: number
+        bank:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_BankInfo'
+        ewallet:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_EWalletInfo'
+    wallet_GoldRewardInfoDTO:
+      type: object
+      properties:
+        amount:
+          type: number
+        unit:
+          type: string
+        balance:
+          type: number
+    wallet_MissionRewardInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: string
+        unit:
+          type: string
+        gold_balance:
+          type: number
+        expired_at:
+          type: string
+        status:
+          type: string
+        claimed_at:
+          type: string
+        is_start_claim:
+          type: boolean
+    wallet_MissionRewardInfoV2:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: number
+        point_balance:
+          type: number
+        expired_at:
+          type: string
+        status:
+          type: string
+        claimed_at:
+          type: string
+        is_start_claim:
+          type: boolean
+    wallet_PointRewardInfoDTO:
+      type: object
+      properties:
+        amount:
+          type: number
+        balance:
+          type: number
+        is_reward_eligible:
+          type: boolean
+    wallet_TransactionDetailItem:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        is_copy:
+          type: boolean
+    wallet_TransactionItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+        entry_type:
+          type: string
+        amount:
+          type: number
+        category:
+          type: string
+        entry_type_image_url:
+          type: string
+        gold_reward:
+          $ref: '#/components/schemas/wallet_GoldRewardInfoDTO'
+    wallet_TransactionItemV2:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+        entry_type:
+          type: string
+        amount:
+          type: number
+        category:
+          type: string
+        entry_type_image_url:
+          type: string
+        point_reward:
+          $ref: '#/components/schemas/wallet_PointRewardInfoDTO'
+    wallet_WithdrawResponse:
+      type: object
+      properties:
+        wallet_transaction_id:
+          type: integer
+        gold_reward:
+          $ref: '#/components/schemas/wallet_GoldRewardInfoDTO'
+    wallet_WithdrawV2Response:
+      type: object
+      properties:
+        wallet_transaction_id:
+          type: integer
+        point_reward:
+          $ref: '#/components/schemas/wallet_PointRewardInfoDTO'
+    webhook_InfobipWhatsappInboundResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    whoami_GetCurrentUserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        customer_user_id:
+          type: integer
+        cif:
+          type: string
+        nik:
+          type: string
+        name:
+          type: string
+        is_verified:
+          type: boolean
+        referrer_code:
+          type: string
+        phone_number:
+          type: string
+        email:
+          type: string
+        gender:
+          type: string
+
+    gold_reward_GetGoldRewardPriceResponse:
+      type: object
+      properties:
+        price_reference_id:
+          type: integer
+        price_last_updated_at:
+          type: string
+        price:
+          $ref: '#/components/schemas/gold_reward_ConversionPriceInfoDTO'
+        rupiah_amount:
+          type: integer
+        gold_amount:
+          type: string
+        gold_unit:
+          type: string
+
+    webhook_PintarnyaAccountLinkResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        code:
+          type: string
+    webhook_PintarnyaDeleteAccountResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        code:
+          type: string
+    webhook_CCMissionApprovalRequest:
+      type: object
+      properties:
+        request_id:
+          type: string
+        list_data:
+          type: array
+          items:
+            $ref: '#/components/schemas/webhook_CCMissionApprovalItem'
+    webhook_CCMissionApprovalItem:
+      type: object
+      properties:
+        id:
+          type: string
+        mission:
+          $ref: '#/components/schemas/webhook_CCMissionData'
+    webhook_CCMissionData:
+      type: object
+      properties:
+        id:
+          type: integer
+        submission_id:
+          type: integer
+        title:
+          type: string
+        rewards:
+          type: object
+        category:
+          type: array
+          items:
+            type: string
+        status_updated_at:
+          type: string
+          format: date-time
+        status:
+          type: string
+    webhook_CCMissionApprovalResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/webhook_CCMissionApprovalErrorResponse'
+    webhook_CCMissionApprovalErrorResponse:
+      type: object
+      properties:
+        hashed_cif:
+          type: string
+        partner_reference_id:
+          type: string
+        mission_id:
+          type: integer
+        error:
+          type: string
+    landing_PriceReferenceResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/landing_PriceReferenceItem'
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    landing_PriceReferenceItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+        name:
+          type: string
+        merk:
+          type: string
+        type:
+          type: string
+        price:
+          type: number
+        year:
+          type: string
+    landing_PromosResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/landing_PromoItem'
+    landing_PromoItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        promo_code:
+          type: string
+        promo_description:
+          type: string
+    landing_CreateAppointmentRequest:
+      type: object
+      properties:
+        device_uuid:
+          type: string
+        promo_code:
+          type: string
+        branch_id:
+          type: integer
+        arrival_time_constant:
+          type: string
+        full_name:
+          type: string
+        phone_number:
+          type: string
+        email:
+          type: string
+        referral_code:
+          type: string
+    landing_CreateAppointmentResponse:
+      type: object
+      properties:
+        booking_code:
+          type: string
+        booking_date:
+          type: string
+        referral_code:
+          type: string
+        branch:
+          $ref: '#/components/schemas/landing_AppointmentBranch'
+        promo_description:
+          type: string
+        personal_information:
+          $ref: '#/components/schemas/landing_PersonalInformation'
+        min_loan:
+          type: number
+        max_loan:
+          type: number
+        device:
+          type: string
+    landing_AppointmentBranch:
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        contact_number:
+          type: string
+        maps_url:
+          type: string
+    landing_PersonalInformation:
+      type: object
+      properties:
+        full_name:
+          type: string
+        phone_number:
+          type: string
+        email:
+          type: string
+    landing_GetAppointmentsResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/landing_AppointmentItem'
+    landing_AppointmentItem:
+      type: object
+      properties:
+        booking_code:
+          type: string
+        booking_date:
+          type: string
+        referral_code:
+          type: string
+        branch:
+          $ref: '#/components/schemas/landing_AppointmentBranch'
+        promo_description:
+          type: string
+        personal_information:
+          $ref: '#/components/schemas/landing_PersonalInformation'
+        promo:
+          $ref: '#/components/schemas/landing_AppointmentPromo'
+        device:
+          $ref: '#/components/schemas/landing_AppointmentDevice'
+        status:
+          type: string
+    landing_AppointmentPromo:
+      type: object
+      properties:
+        promo_code:
+          type: string
+        promo_description:
+          type: string
+    landing_AppointmentDevice:
+      type: object
+      properties:
+        device:
+          type: string
+        device_merk:
+          type: string
+        device_type:
+          type: string
+        device_category:
+          type: string
+        device_uuid:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        min_loan:
+          type: number
+        max_loan:
+          type: number
+    landing_ValidateReferrerResponse:
+      type: object
+      properties:
+        referrer_customer_id:
+          type: integer
+        referrer_name:
+          type: string
+        active_promo:
+          type: string
+
+    intools_GenericSuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    offload_GetQCListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    offload_GetQCItemResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    offload_GetPickupListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    offload_GetItemListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    offload_GetItemDetailResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    offload_GetItemEventHistoryResponse:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+    offload_GetStockOpnameListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    offload_GetStockOpnameItemListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+    offload_GetStockOpnameItemResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    offload_GetOffloadBuyerListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    offload_GetTransactionListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    offload_GetTransactionDetailResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    offload_GetTransactionAnalyticsResponse:
+      type: object
+      properties:
+        analytics:
+          type: object
+    offload_GetWarehouseDeliveryListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    offload_GetWarehouseDeliveryResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    offload_GetWarehouseDeliveryItemsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+    offload_GetWarehouseDeliveryLocationsResponse:
+      type: object
+      properties:
+        locations:
+          type: array
+          items:
+            type: object
+    offload_GetItemsToPackResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+    stock_opname_GetDetailResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    stock_opname_GetConfigResponse:
+      type: object
+      properties:
+        configs:
+          type: array
+          items:
+            type: object
+    stock_opname_GetOpenAccessCategoriesResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: object
+    stock_opname_GetStatusByBranchResponse:
+      type: object
+      properties:
+        statuses:
+          type: array
+          items:
+            type: object
+    cash_management_GetStatsResponse:
+      type: object
+      properties:
+        stats:
+          type: object
+    cash_management_GetListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    cash_management_GetDetailResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    petty_cash_GetListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    petty_cash_GetDetailResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    petty_cash_GetBalanceResponse:
+      type: object
+      properties:
+        balance:
+          type: number
+    petty_cash_GetPrintResponse:
+      type: object
+      properties:
+        print_data:
+          type: object
+    inventory_report_GetListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    inventory_report_GetStatsResponse:
+      type: object
+      properties:
+        stats:
+          type: object
+    inventory_report_GetPrintResponse:
+      type: object
+      properties:
+        print_data:
+          type: object
+    transaction_report_GetStatsResponse:
+      type: object
+      properties:
+        stats:
+          type: object
+    guest_book_GetListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    guest_book_GetDetailResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    print_GetSBGDataResponse:
+      type: object
+      properties:
+        print_data:
+          type: object
+    print_GetReceiptDataResponse:
+      type: object
+      properties:
+        print_data:
+          type: object
+    print_GetPlombirDataResponse:
+      type: object
+      properties:
+        print_data:
+          type: object
+    metabase_GetEmbedURLResponse:
+      type: object
+      properties:
+        embed_url:
+          type: string
+    talenta_GetExportResponse:
+      type: object
+      properties:
+        export_data:
+          type: object
+    dashboard_GetImportantLinksResponse:
+      type: object
+      properties:
+        links:
+          type: array
+          items:
+            type: object
+    menus_GetMenusResponse:
+      type: object
+      properties:
+        menus:
+          type: array
+          items:
+            type: object
+    plombir_GetFindResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    access_user_GetFLPerformanceResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    account_codes_GetResponse:
+      type: object
+      properties:
+        codes:
+          type: array
+          items:
+            type: object
+    price_reference_GetListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    promotion_GetEligibleResponse:
+      type: object
+      properties:
+        promotions:
+          type: array
+          items:
+            type: object
+    gold_voucher_CalculateResponse:
+      type: object
+      properties:
+        calculation:
+          type: object
+    gold_voucher_RedeemResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    point_voucher_CalculateResponse:
+      type: object
+      properties:
+        calculation:
+          type: object
+    point_voucher_RedeemResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    appointment_VerifyAppointmentResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    collateral_CalculateItemDetailResponse:
+      type: object
+      properties:
+        detail:
+          type: object
+    approval_GetRejectionCategoriesResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+    loan_payment_link_GetTransactionsResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    customer_PhoneCheckResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    customer_GetCustomerGoldBalance:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+        nik:
+          type: string
+        cif:
+          type: string
+        balance_mg:
+          type: number
+        expired_at:
+          type: string
+        full_name:
+          type: string
+        phone_number:
+          type: string
+    customer_GetCustomerPointBalance:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+        nik:
+          type: string
+        cif:
+          type: string
+        full_name:
+          type: string
+        phone_number:
+          type: string
+        point_account_balance_id:
+          type: integer
+        held_balance:
+          type: number
+        balance:
+          type: number
+        expired_at:
+          type: string
+    customer_GetCustomerByNIKResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        cif:
+          type: string
+        nik:
+          type: string
+        date_of_birth:
+          type: string
+        phone_number:
+          type: string
+        branch:
+          type: string
+        credit_score:
+          type: number
+    customer_CreateCustomerRequest:
+      type: object
+      properties:
+        customer:
+          type: object
+    customer_UpdateCustomerRequest:
+      type: object
+      properties:
+        customer:
+          type: object
+    customer_CreateCustomerUpdateRequestRequest:
+      type: object
+      properties:
+        customer:
+          type: object
+    customer_CustomerUpdateRequestApprovalRequest:
+      type: object
+      properties:
+        status:
+          type: string
+    customer_BlacklistCustomerRequest:
+      type: object
+      properties:
+        note:
+          type: string
+        category:
+          type: string
+    customer_GetCustomerDetailResponse:
+      type: object
+      properties:
+        classification:
+          type: object
+        customer:
+          type: object
+    customer_GetCustomerUpdateRequestResponse:
+      type: object
+      properties:
+        request_detail:
+          type: object
+    customer_CustomerListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    customer_CustomerUpdateRequestListResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: object
+        pagination:
+          $ref: '#/components/schemas/httphelper_PaginationResponse'
+    customer_WaitingForApprovalUpdateRequestCountResponse:
+      type: object
+      properties:
+        is_empty:
+          type: boolean
+    banner_CreateBannerRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    banner_UpdateBannerRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    banner_BannerDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        visit_url:
+          type: string
+        image_url:
+          type: string
+        status:
+          type: string
+    loan_LoanApprovalResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    loan_LoanItemPickupRequest:
+      type: object
+      properties:
+        photos:
+          type: object
+    loan_PickupApprovalRequest:
+      type: object
+      properties:
+        status:
+          type: string
+    loan_PaymentLinkStatusCheckResponse:
+      type: object
+      properties:
+        payment_status:
+          type: string
+    promos_GetEligiblePromotionsRequest:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+    promos_GetEligiblePromotionsResponse:
+      type: object
+      properties:
+        promotions:
+          type: array
+          items:
+            type: object

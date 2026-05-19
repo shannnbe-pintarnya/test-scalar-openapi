@@ -1,0 +1,209 @@
+openapi: 3.1.0
+info:
+  title: Cortes API - Webhook Platform
+  description: |
+    Webhook endpoints for third-party payment and PPOB providers.
+
+    ## Authentication
+
+    | Provider | Auth Method |
+    |---|---|
+    | OY | Signature validation, optional encrypted payload |
+    | Xendit | X-CALLBACK-TOKEN header verification |
+    | DOKU | AES-encrypted signature verification |
+    | Alterra | JSON payload parsing |
+    | Pintarnya | HMAC-signed webhook auth (PintarnyaWebhookAuth) |
+
+    ## Webhook Flow
+
+    Third-party providers send HTTP POST callbacks to these endpoints when payment statuses change or transactions are completed.
+    All endpoints return a success acknowledgment to prevent the provider from retrying.
+  version: 0.0.1
+servers:
+  - url: /
+    description: Base URL
+tags:
+  - name: webhook-payment
+    x-displayName: Payment
+    description: Payment callback webhooks from OY, Xendit, and DOKU for payment status updates.
+  - name: webhook-payout
+    x-displayName: Payout
+    description: DOKU payout notification webhooks for unpaid and refund events.
+  - name: webhook-pintarnya
+    x-displayName: Pintarnya
+    description: Pintarnya partner webhooks for account linking, mission approvals, and account deletion.
+  - name: webhook-ppob
+    x-displayName: PPOB
+    description: PPOB provider webhooks from Alterra for bill payment callbacks.
+paths:
+
+  /webhook/v1/payments/oy:
+    post:
+      tags:
+        - webhook-payment
+      summary: OY payment callback
+      description: Receives payment status callbacks from OY Indonesia. Supports both plain JSON and encrypted payload modes. Updates payment link status based on the notification.
+      operationId: post_webhook_v1_payments_oy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/webhook_CallbackOYRequest'
+      responses:
+        "200":
+          description: Payment callback acknowledged successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/webhook_CallbackPaymentLinkResponse'
+
+  /webhook/v1/payments/xendit:
+    post:
+      tags:
+        - webhook-payment
+      summary: Xendit invoice callback
+      description: Receives invoice status callbacks from Xendit. Validates the X-CALLBACK-TOKEN header before processing. Supports idempotency via webhook-id header caching.
+      operationId: post_webhook_v1_payments_xendit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/webhook_CallbackXenditRequest'
+      responses:
+        "200":
+          description: Invoice callback acknowledged.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/webhook_CallbackPaymentLinkResponse'
+
+  /webhook/v1/payments/doku:
+    post:
+      tags:
+        - webhook-payment
+      summary: DOKU payment callback
+      description: Handles DOKU payment webhook notifications. Processes provider-specific payment status updates via the shared payment service.
+      operationId: post_webhook_v1_payments_doku
+      responses:
+        "200":
+          description: DOKU payment callback processed.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/webhook_CallbackPaymentLinkResponse'
+
+  /webhook/v1/payout/doku/unpaid:
+    post:
+      tags:
+        - webhook-payout
+      summary: DOKU unpaid notification
+      description: Receives DOKU unpaid transaction notifications. Validates the request signature (AES-encrypted agentKey+requestId) before processing. Maps DOKU transaction statuses to internal attempt statuses.
+      operationId: post_webhook_v1_payout_doku_unpaid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/webhook_DOKUUnpaidNotificationRequest'
+      responses:
+        "200":
+          description: Unpaid notification processed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/webhook_CallbackPaymentLinkResponse'
+
+  /webhook/v1/payout/doku/refund:
+    post:
+      tags:
+        - webhook-payout
+      summary: DOKU refund notification
+      description: Receives DOKU refund notification callbacks. Validates the request signature before acknowledging receipt.
+      operationId: post_webhook_v1_payout_doku_refund
+      responses:
+        "200":
+          description: Refund notification acknowledged.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/webhook_CallbackPaymentLinkResponse'
+
+  /webhook/v1/pintarnya/account-links:
+    post:
+      tags:
+        - webhook-pintarnya
+      summary: Pintarnya account link webhook
+      description: Receives account linking status updates from Pintarnya. Processes CIF-based account linking (SUCCESS, FAILED, INVALID_ACCOUNT, etc.).
+      operationId: post_webhook_v1_pintarnya_account_links
+      security:
+        - PintarnyaWebhookAuth: []
+      responses:
+        "200":
+          description: Account link status with success flag and error code.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/webhook_PintarnyaAccountLinkResponse'
+
+  /webhook/v1/pintarnya/mission-approvals:
+    post:
+      tags:
+        - webhook-pintarnya
+      summary: Pintarnya mission approval webhook
+      description: Receives mission/referral approval updates from Pintarnya. Processes batch mission approval data with idempotency via request_id. Returns partial success with error details for failed items.
+      operationId: post_webhook_v1_pintarnya_mission_approvals
+      security:
+        - PintarnyaWebhookAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/webhook_CCMissionApprovalRequest'
+      responses:
+        "200":
+          description: Mission approval processing result with any errors.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/webhook_CCMissionApprovalResponse'
+
+  /webhook/v1/pintarnya/delete-accounts:
+    post:
+      tags:
+        - webhook-pintarnya
+      summary: Pintarnya delete account webhook
+      description: Receives account deletion requests from Pintarnya by hashed CIF. Processes account removal and returns success/failure status.
+      operationId: post_webhook_v1_pintarnya_delete_accounts
+      security:
+        - PintarnyaWebhookAuth: []
+      responses:
+        "200":
+          description: Delete account status with success flag and error code.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/webhook_PintarnyaDeleteAccountResponse'
+
+  /webhook/v1/ppob/alterra:
+    post:
+      tags:
+        - webhook-ppob
+      summary: Alterra PPOB webhook
+      description: Receives PPOB transaction callbacks from Alterra (Bill Payment provider). Processes transaction status updates for electricity, mobile prepaid, and PDAM payments.
+      operationId: post_webhook_v1_ppob_alterra
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/ppob_AlterraWebhookRequest'
+      responses:
+        "200":
+          description: Alterra webhook processed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/ppob_AlterraWebhookResponse'

@@ -1,0 +1,241 @@
+openapi: 3.1.0
+info:
+  title: Cortes API - Landing Platform
+  description: |
+    Public landing page endpoints for the website.
+
+    ## Authentication
+
+    All landing endpoints are **public** (no authentication required).
+
+    ## Domains
+
+    | Domain | Description |
+    |---|---|
+    | **Branch** | Branch listings with maps integration |
+    | **Banner** | Promotional banner display |
+    | **Price Reference** | Device price reference data |
+    | **Promos** | Active promotion codes |
+    | **Appointment** | Service visit booking and lookup |
+    | **Referrer** | Referral code validation |
+  version: 0.0.1
+servers:
+  - url: /
+    description: Base URL
+tags:
+  - name: landing-appointments
+    x-displayName: Appointments
+    description: Service visit appointment booking and retrieval by booking code.
+  - name: landing-banner
+    x-displayName: Banner
+    description: Public promotional banners for the landing page.
+  - name: landing-branch
+    x-displayName: Branch
+    description: Branch listing with location details and maps URLs.
+  - name: landing-price-references
+    x-displayName: Price References
+    description: Device price reference data for collateral appraisal.
+  - name: landing-promos
+    x-displayName: Promos
+    description: Available promotion codes and their descriptions.
+  - name: landing-referrer
+    x-displayName: Referrer
+    description: Referral code validation.
+paths:
+
+  /landing/v1/appointments:
+    get:
+      tags:
+        - landing-appointments
+      summary: Get appointments
+      description: Look up appointments by one or more booking codes. Returns appointment details including branch info, personal information, device details, and loan estimates.
+      operationId: get_landing_v1_appointments
+      parameters:
+        - name: booking_code
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Comma-separated booking codes to look up.
+      responses:
+        "200":
+          description: Appointment details with branch, device info, and loan estimates.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/landing_GetAppointmentsResponse'
+    post:
+      tags:
+        - landing-appointments
+      summary: Create appointment
+      description: Book a new service appointment at a branch. Generates a unique booking code and returns appointment details along with loan estimates based on the device.
+      operationId: post_landing_v1_appointments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/landing_CreateAppointmentRequest'
+      responses:
+        "200":
+          description: Appointment created with booking code and loan estimates.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/landing_CreateAppointmentResponse'
+
+  /landing/v1/banners:
+    get:
+      tags:
+        - landing-banner
+      summary: Get banners
+      description: Returns a list of active banners for the landing page, filtered by platform and category.
+      operationId: get_landing_v1_banners
+      parameters:
+        - name: platform
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          description: Filter by target platform (e.g. landing).
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          description: Filter by banner category.
+      responses:
+        "200":
+          description: List of active banners for the landing page.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/banner_GetBannersResponse'
+
+  /landing/v1/branches:
+    get:
+      tags:
+        - landing-branch
+      summary: Get branches
+      description: Returns a list of active branches with location details. Supports search, geo-location filtering (lat/long), and pagination.
+      operationId: get_landing_v1_branches
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search branches by name or address.
+        - name: lat
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Latitude for geo-location filtering.
+        - name: long
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Longitude for geo-location filtering.
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Page number for pagination.
+        - name: page_size
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Number of items per page.
+      responses:
+        "200":
+          description: Paginated list of branches.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/branch_BranchesResponse'
+
+  /landing/v1/price-references:
+    get:
+      tags:
+        - landing-price-references
+      summary: Get price references
+      description: Returns a paginated list of device price references for collateral appraisal. Filterable by device name.
+      operationId: get_landing_v1_price_references
+      parameters:
+        - name: device
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter price references by device name.
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Page number for pagination.
+        - name: page_size
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Number of items per page.
+      responses:
+        "200":
+          description: Paginated list of device price references.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/landing_PriceReferenceResponse'
+
+  /landing/v1/promos:
+    get:
+      tags:
+        - landing-promos
+      summary: Get promos
+      description: Returns a list of currently available promotions, optionally filtered by maximum loan amount.
+      operationId: get_landing_v1_promos
+      parameters:
+        - name: max_loan
+          in: query
+          required: false
+          schema:
+            type: number
+          description: Filter promotions applicable up to this maximum loan amount.
+      responses:
+        "200":
+          description: List of available promotions.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/landing_PromosResponse'
+
+  /landing/v1/referrer/{code}/validate:
+    get:
+      tags:
+        - landing-referrer
+      summary: Validate referrer code
+      description: Validate a referral code and return the referrer customer information and active promo details.
+      operationId: get_landing_v1_referrer_param_validate
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Referral code to validate.
+      responses:
+        "200":
+          description: Referrer validation result with customer and promo info.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_CheckReferralCodeResponse'

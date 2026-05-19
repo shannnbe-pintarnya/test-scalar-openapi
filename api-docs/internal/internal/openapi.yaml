@@ -1,0 +1,22 @@
+openapi: 3.1.0
+info:
+  title: Cortes API - Internal Platform
+  description: Internal service-to-service endpoints
+  version: 0.0.1
+servers:
+  - url: /
+    description: Base URL
+paths:
+  /internal/v1/user:
+    post:
+      tags:
+        - internal-user
+      description: ""
+      operationId: post_internal_v1_user
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object

@@ -1,0 +1,281 @@
+openapi: 3.1.0
+info:
+  title: Cortes API
+  description: |
+    Cortes API serves five platforms from a single Go codebase.
+    
+    ## Platforms
+    
+    | Platform | Prefix | Audience |
+    |---|---|---|
+    | **App** | `/api` | Mobile clients |
+    | **Intools** | `/intools` | Internal staff tools |
+    | **Landing** | `/landing` | Public website |
+    | **Webhook** | `/webhook` | Third-party providers |
+    | **Internal** | `/internal` | Service-to-service |
+    
+    ## Authentication
+    
+    | Type | Platform | How |
+    |---|---|---|
+    | JWT Bearer token | App, Intools | `Authorization: Bearer <token>` header |
+    | Refresh token | App, Intools | POST to `/api/v1/auth/refresh` |
+    | Public (no auth) | Landing, some Webhooks | No header required |
+    | PIN login | App | POST to `/api/v1/auth/pin/login` |
+    | OTP | App | Request via `/api/v1/auth/otp/request` |
+    | HMAC signature | Webhook (Pintarnya) | Signed request body |
+    | Callback token | Webhook (Xendit) | `X-CALLBACK-TOKEN` header |
+    | AES signature | Webhook (DOKU) | Encrypted agentKey+requestId |
+    
+    
+    ## Environments
+    
+    | Environment | Description |
+    |---|---|
+    | `local` | Local development |
+    | `staging` | Testing and QA |
+    | `production` | Live app traffic |
+    | `internal-production` | Internal tools on production data |
+    
+    ## Architecture
+    
+    | Layer | Description |
+    |---|---|
+    | Controller | HTTP routing and request/response handling |
+    | Service | Business logic coordination |
+    | Repository | Database queries and external service calls |
+    | Shared modules | Cross-platform reusable domain logic (`shared/` package) |
+    | Adapter | Dependency injection composition (`internal/adapter/`) |
+    
+    ## Response Envelope
+    
+        {
+          "header": {
+            "server_time_ms": 1741535480,
+            "process_time_ms": 5064,
+            "request_id": "8ceb138a-375a-4118-9d47-035e824d6597"
+          },
+          "data": { ... }
+        }
+    
+    ## Why separate files?
+    
+    Originally a single 7,900-line `openapi.yaml` monolith. Splitting it eliminates merge conflicts when multiple teams work on different platforms simultaneously:
+    
+    - An App dev adding `/api/` endpoints never touches `intools/openapi.yaml`
+    - An Intools dev adding `/intools/` endpoints never touches `api/openapi.yaml`
+    - A DTO change in `model/openapi.yaml` is append-only and rarely conflicts
+    - Tag metadata lives in `info.yaml`, separate from paths and schemas
+    - The root `openapi.yaml` is fully generated — safe to delete and rebuild
+    
+    Each platform file is self-documenting for its own audience. The root file merges them into one view for Scalar.
+    
+    ## Local Development
+    
+    View the full API documentation locally using Scalar (need to download Scalar CLI):
+
+    ```bash
+    npx @scalar/cli document serve ./docs/api-docs/internal/openapi.yaml --watch
+    ```
+    
+    This serves the combined root spec at `http://localhost:3000`
+    
+    ## How to Contribute & Maintain
+    
+    ### Quick start: adding a new App endpoint
+    
+    1. **Add the path** to `api/openapi.yaml` following the existing format (summary, description, operationId, security, parameters, requestBody, responses with `$ref`).
+    2. **Add the DTO schema** to `model/openapi.yaml` if it doesn't already exist. Use the convention `<domain>_<StructName>`.
+    3. **Rebuild the root**: `python3 ./docs/api-docs/internal/regen.py`
+    4. **Validate**: `npx @scalar/cli document validate api/openapi.yaml`
+    5. **Serve and check**: `npx @scalar/cli document serve openapi.yaml --watch`
+    
+    ### Which file to edit
+    
+    | File | What goes here | Never contains |
+    |---|---|---|
+    | `api/openapi.yaml` | `/api/*` paths (`$ref` to model for schemas) | `/intools` paths, inline schemas |
+    | `intools/openapi.yaml` | `/intools/*` paths | `/api` paths |
+    | `landing/openapi.yaml` | `/landing/*` paths | `/api` / `/intools` paths |
+    | `webhook/openapi.yaml` | `/webhook/*` paths | `/api` paths |
+    | `internal/openapi.yaml` | `/internal/*` paths | `/api` paths |
+    | `model/openapi.yaml` | All `components/schemas` (DTO definitions) | Path definitions |
+    | `info.yaml` | **Metadata**: info description, `tags:` (with descriptions), `x-tagGroups:` | Paths, schemas |
+    | `openapi.yaml` (root) | **Generated** — never edit this file | Edits will be lost |
+    
+    ### Endpoint format
+    
+    Every endpoint must include:
+    
+    ```yaml
+    /api/v1/example:
+      post:
+        tags:
+          - api-example
+        summary: Short label (max 8 words)
+        description: One sentence describing what the endpoint does.
+        operationId: post_api_v1_example
+        security:
+          - JWTAuth: []              # omit for public endpoints
+        parameters:                   # only if path/query params exist
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+            description: What this param is.
+        requestBody:                  # only for POST/PUT/PATCH
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/example_SomeRequest'
+        responses:
+          "200":
+            description: What a successful response contains.
+            content:
+              application/json:
+                schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/example_SomeResponse'
+    ```
+    
+    ### Rules
+    
+    1. **Schema naming**: `<domain>_<StructName>` — match the Go struct name exactly (e.g., `auth_VerifyOTPRequest`).
+    2. **Schema references**: Always `$ref: '../model/openapi.yaml#/components/schemas/<Name>'`. Never write schemas inline in platform files.
+    3. **Tags**: Add new tags in `info.yaml` under `tags:` (with `x-displayName` and `description`). Assign them to a group in `x-tagGroups:`.
+    4. **Auth**: Set `security: - JWTAuth: []` for authenticated endpoints. Omit for public endpoints.
+    5. **Consult the code**: DTO field names, types, and validation rules live in `internal/<domain>/api.go`.
+    6. **Validate before commit**: `npx @scalar/cli document validate <file>.yaml`
+    7. **Rebuild the root**: `python3 ./docs/api-docs/internal/regen.py` after any path or schema change. The root is fully generated from source files — conflicts on it are resolved by re-running regen.
+    
+  version: 0.0.1
+tags:
+  - name: landing-appointments
+    x-displayName: Appointments
+    description: Service visit appointment booking and retrieval by booking code.
+  - name: landing-banner
+    x-displayName: Banner
+    description: Public promotional banners for the landing page.
+  - name: landing-branch
+    x-displayName: Branch
+    description: Branch listing with location details and maps URLs.
+  - name: landing-price-references
+    x-displayName: Price References
+    description: Device price reference data for collateral appraisal.
+  - name: landing-promos
+    x-displayName: Promos
+    description: Available promotion codes and their descriptions.
+  - name: landing-referrer
+    x-displayName: Referrer
+    description: Referral code validation.
+  - name: webhook-payment
+    x-displayName: Payment
+    description: Payment callback webhooks from OY, Xendit, and DOKU for payment status updates.
+  - name: webhook-payout
+    x-displayName: Payout
+    description: DOKU payout notification webhooks for unpaid and refund events.
+  - name: webhook-pintarnya
+    x-displayName: Pintarnya
+    description: Pintarnya partner webhooks for account linking, mission approvals, and account deletion.
+  - name: webhook-ppob
+    x-displayName: PPOB
+    description: PPOB provider webhooks from Alterra for bill payment callbacks.
+x-tagGroups:
+  - name: App
+    tags:
+      - api-active-payments
+      - api-admin-fee
+      - api-assets
+      - api-auth
+      - api-balance
+      - api-banner
+      - api-branch
+      - api-customer-prospect
+      - api-customer-state
+      - api-feedback
+      - api-gold-reward-prices
+      - api-gold
+      - api-health
+      - api-last-approved-cuan-emas
+      - api-loan
+      - api-location
+      - api-mission
+      - api-payment
+      - api-point
+      - api-ppob
+      - api-pricing-engine
+      - api-user
+      - api-wallet
+      - api-webhook
+      - api-whoami
+      - api-last-approved-cuan-pandai
+  - name: Intools
+    tags:
+      - intools-access-user-fl-performance
+      - intools-account-codes
+      - intools-appointments
+      - intools-approval
+      - intools-auth
+      - intools-banner
+      - intools-branch
+      - intools-cash-management-stats
+      - intools-cash-managements
+      - intools-check-referral-codes
+      - intools-check-stock-opname-statuses
+      - intools-collateral-items
+      - intools-customer-lists
+      - intools-customer-prospect
+      - intools-customers
+      - intools-customers-waiting-approvals
+      - intools-dashboard
+      - intools-event-scheduler
+      - intools-gold-rewards
+      - intools-gold
+      - intools-guest-book-lists
+      - intools-guest-books
+      - intools-inventory-report-stats
+      - intools-inventory-reports
+      - intools-loan-lists
+      - intools-loan-payment-link-transactions
+      - intools-loan
+      - intools-menus
+      - intools-metabase
+      - intools-offloads
+      - intools-petty-cash
+      - intools-petty-cash-balance
+      - intools-plombir
+      - intools-point-rewards
+      - intools-point
+      - intools-price-references
+      - intools-prices
+      - intools-pricing-engine
+      - intools-print
+      - intools-promotion-redemptions
+      - intools-promotion
+      - intools-stock-opname-configs
+      - intools-stock-opname-open-access-categories
+      - intools-stock-opnames
+      - intools-talenta
+      - intools-transaction-report-stats
+      - intools-transactions
+      - intools-update-customer-lists
+      - intools-visitor-verification
+  - name: Internal
+    tags:
+      - internal-user
+  - name: Landing
+    tags:
+      - landing-appointments
+      - landing-banner
+      - landing-branch
+      - landing-price-references
+      - landing-promos
+      - landing-referrer
+  - name: Webhook
+    tags:
+      - webhook-payment
+      - webhook-payout
+      - webhook-pintarnya
+      - webhook-ppob
+

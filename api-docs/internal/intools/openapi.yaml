@@ -1,0 +1,3574 @@
+openapi: 3.1.0
+info:
+  title: Cortes API - Intools Platform
+  description: |
+    Internal staff tools endpoints for back-office operations.
+
+    ## Authentication
+
+    | Type | How |
+    |---|---|
+    | IntoolsAuth (RBAC) | Session token with role-based permission checks per endpoint |
+    | Scheduler auth | Internal scheduler service authentication |
+    | API key (internal) | Select legacy endpoints protected by internal API key headers |
+
+    ## Permissions
+
+    Each endpoint requires specific permission constants (e.g., `LOANS_CREATE`, `CUSTOMERS`, `OFFLOAD_QC`).
+    Users are assigned permissions via their role. The `menus` endpoint returns available features based on permissions.
+
+    ## Domains
+
+    | Domain | Description |
+    |---|---|
+    | **Auth** | Staff login, logout, token refresh, password change |
+    | **Loan** | Loan creation, approval, listing, payment links, pickup management |
+    | **Customer** | Customer CRUD, verification, referral codes, blacklist, balances |
+    | **Banner** | Banner management with image upload |
+    | **Branch** | Branch listing |
+    | **Collateral** | Collateral item IMEI lookup and detail calculation |
+    | **Offload** | Inventory offload, QC, stock opname, warehouse deliveries |
+    | **Cash Management** | Cash flow tracking and reporting |
+    | **Petty Cash** | Petty cash transactions and approvals |
+    | **Stock Opname** | Inventory audit configuration and execution |
+    | **Reporting** | Inventory reports, transaction reports, dashboards |
+    | **Pricing Engine** | Loan pricing calculations |
+    | **Price Reference** | Device price lookup and photo upload |
+    | **Promos** | Promotion eligibility checks |
+    | **Guest Book** | Walk-in visitor management |
+    | **Print** | SBG, receipt, and plombir document generation |
+    | **Metabase** | Business intelligence dashboard embedding |
+    | **Talenta** | HR system integration |
+    | **Event Scheduler** | Scheduled task execution (reminders, reward processing) |
+  version: "0.0.1"
+servers:
+  - url: /
+    description: Base URL
+tags:
+  - name: intools-access-user-fl-performance
+    x-displayName: Access User FL Performance
+    description: Frontliner performance data.
+  - name: intools-account-codes
+    x-displayName: Account Codes
+    description: Available account code listings.
+  - name: intools-appointments
+    x-displayName: Appointments
+    description: Appointment verification by booking code.
+  - name: intools-approval
+    x-displayName: Approval
+    description: Loan approval operations including rejection categories.
+  - name: intools-auth
+    x-displayName: Auth
+    description: Staff authentication (login, logout, token refresh, password change).
+  - name: intools-banner
+    x-displayName: Banner
+    description: Banner management (create, read, update) with image upload.
+  - name: intools-branch
+    x-displayName: Branch
+    description: Branch listing for internal tools.
+  - name: intools-cash-management-stats
+    x-displayName: Cash Management Stats
+    description: Aggregated cash management statistics.
+  - name: intools-cash-managements
+    x-displayName: Cash Managements
+    description: Cash management record CRUD operations.
+  - name: intools-check-referral-codes
+    x-displayName: Check Referral Codes
+    description: Referral code validation.
+  - name: intools-check-stock-opname-statuses
+    x-displayName: Check Stock Opname Statuses
+    description: Branch-level stock opname status checks.
+  - name: intools-collateral-items
+    x-displayName: Collateral Items
+    description: Collateral item IMEI lookup and detail calculation.
+  - name: intools-customer-lists
+    x-displayName: Customer Lists
+    description: Paginated customer listings with search and filtering.
+  - name: intools-customer-prospect
+    x-displayName: Customer Prospect
+    description: Customer prospect segment management.
+  - name: intools-customers
+    x-displayName: Customers
+    description: Customer CRUD, verification, referral, blacklist, and balance operations.
+  - name: intools-customers-waiting-approvals
+    x-displayName: Customers Waiting Approvals
+    description: Pending customer update request counts.
+  - name: intools-dashboard
+    x-displayName: Dashboard
+    description: Dashboard widgets and important links.
+  - name: intools-event-scheduler
+    x-displayName: Event Scheduler
+    description: Scheduled task execution (reminders, expired reward processing).
+  - name: intools-gold-rewards
+    x-displayName: Gold Rewards
+    description: Expired gold reward claim and balance processing.
+  - name: intools-gold
+    x-displayName: Gold
+    description: Gold voucher calculation and redemption.
+  - name: intools-guest-book-lists
+    x-displayName: Guest Book Lists
+    description: Paginated guest book entry listings.
+  - name: intools-guest-books
+    x-displayName: Guest Books
+    description: Guest book CRUD for walk-in visitors.
+  - name: intools-inventory-report-stats
+    x-displayName: Inventory Report Stats
+    description: Inventory report statistics.
+  - name: intools-inventory-reports
+    x-displayName: Inventory Reports
+    description: Inventory report listing and printing.
+  - name: intools-loan-lists
+    x-displayName: Loan Lists
+    description: Paginated loan listings with search and filtering.
+  - name: intools-loan-payment-link-transactions
+    x-displayName: Loan Payment Link Transactions
+    description: Payment link transaction listing.
+  - name: intools-loan
+    x-displayName: Loan
+    description: Loan lifecycle management (create, approve, detail, payment, pickup).
+  - name: intools-menus
+    x-displayName: Menus
+    description: Permission-based sidebar menu configuration.
+  - name: intools-metabase
+    x-displayName: Metabase
+    description: Business intelligence dashboard embedding.
+  - name: intools-offloads
+    x-displayName: Offloads
+    description: Inventory offload, QC, stock opname, warehouse delivery management.
+  - name: intools-petty-cash
+    x-displayName: Petty Cash
+    description: Petty cash transaction management and approvals.
+  - name: intools-petty-cash-balance
+    x-displayName: Petty Cash Balance
+    description: Branch-level petty cash balance inquiries.
+  - name: intools-plombir
+    x-displayName: Plombir
+    description: Plombir (seal) record lookup.
+  - name: intools-point-rewards
+    x-displayName: Point Rewards
+    description: Expired point reward claim and balance processing.
+  - name: intools-point
+    x-displayName: Point
+    description: Point voucher calculation and redemption.
+  - name: intools-price-references
+    x-displayName: Price References
+    description: Device price reference data management.
+  - name: intools-prices
+    x-displayName: Prices
+    description: Price configuration management.
+  - name: intools-pricing-engine
+    x-displayName: Pricing Engine
+    description: Loan pricing calculations with promotions.
+  - name: intools-print
+    x-displayName: Print
+    description: SBG, receipt, and plombir document generation.
+  - name: intools-promotion-redemptions
+    x-displayName: Promotion Redemptions
+    description: Promotion code redemption recording.
+  - name: intools-promotion
+    x-displayName: Promotion
+    description: Promotion eligibility checks.
+  - name: intools-stock-opname-configs
+    x-displayName: Stock Opname Configs
+    description: Stock opname configuration settings.
+  - name: intools-stock-opname-open-access-categories
+    x-displayName: Stock Opname Open Access Categories
+    description: Available open access review categories.
+  - name: intools-stock-opnames
+    x-displayName: Stock Opnames
+    description: Stock opname CRUD and open access management.
+  - name: intools-talenta
+    x-displayName: Talenta
+    description: HR system integration (employees, attendances).
+  - name: intools-transaction-report-stats
+    x-displayName: Transaction Report Stats
+    description: Transaction report statistics.
+  - name: intools-transactions
+    x-displayName: Transactions
+    description: Loan transaction creation and management.
+  - name: intools-update-customer-lists
+    x-displayName: Update Customer Lists
+    description: Customer update request listings and approvals.
+  - name: intools-visitor-verification
+    x-displayName: Visitor Verification
+    description: Visitor identity verification.
+paths:
+  /intools/v1/auth/login:
+    post:
+      tags:
+        - intools-auth
+      summary: Staff login
+      description: Authenticate using email and password. Returns access token and user permissions.
+      operationId: post_intools_v1_auth_login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/authintools_GetAccessUserRequest'
+      responses:
+        "200":
+          description: Login result with access token, refresh token, and user permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/authintools_GetAccessUserResponse'
+  /intools/v1/auth/login/stg:
+    post:
+      tags:
+        - intools-auth
+      summary: Staging login
+      description: Login to the staging environment using email and password bypassing normal auth.
+      operationId: post_intools_v1_auth_login_stg
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/authintools_LoginAuthStagingRequest'
+      responses:
+        "200":
+          description: Staging login result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/authintools_GetAccessUserResponse'
+  /intools/v2/auth/login:
+    post:
+      tags:
+        - intools-auth
+      summary: Staff login V2
+      description: Authenticate using email and password (V2). Returns enhanced user permissions and role data.
+      operationId: post_intools_v2_auth_login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/authintools_GetAccessUserRequest'
+      responses:
+        "200":
+          description: V2 login result with user permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/authintools_GetAccessUserResponseV2'
+  /intools/v1/auth/refresh-token:
+    post:
+      tags:
+        - intools-auth
+      summary: Refresh access token
+      description: Exchange a refresh token for a new access token and refresh token pair.
+      operationId: post_intools_v1_auth_refresh-token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/authintools_RefreshTokenRequest'
+      responses:
+        "200":
+          description: New access token and refresh token.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/authintools_RefreshTokenResponse'
+  /intools/v1/auth/logout:
+    post:
+      tags:
+        - intools-auth
+      summary: Logout
+      description: Invalidate the current access token and end the session.
+      operationId: post_intools_v1_auth_logout
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/authintools_LogoutRequest'
+      responses:
+        "200":
+          description: Logout confirmation.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/authintools_LogoutResponse'
+  /intools/v1/auth/validate-token:
+    post:
+      tags:
+        - intools-auth
+      summary: Validate token
+      description: Check if the current access token is still valid.
+      operationId: post_intools_v1_auth_validate-token
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Token validation result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/auth/info:
+    get:
+      tags:
+        - intools-auth
+      summary: Get auth info
+      description: Returns the authenticated user information including permissions and branch access.
+      operationId: get_intools_v1_auth_info
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: User authentication info with roles and permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/authintools_AuthInfoResponse'
+  /intools/v1/auth/change-password:
+    post:
+      tags:
+        - intools-auth
+      summary: Change password
+      description: Change the authenticated user password by providing the old and new passwords.
+      operationId: post_intools_v1_auth_change-password
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/authintools_ChangePasswordRequest'
+      responses:
+        "200":
+          description: Password change confirmation.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/authintools_ChangePasswordResponse'
+  /intools/v1/loans:
+    post:
+      tags:
+        - intools-loan
+      summary: Create loan V1
+      description: Create a new loan application with collateral items, pricing calculations, and transaction details. Protected by internal API key.
+      operationId: post_intools_v1_loans
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/loan_SaveLoanV1Request'
+      responses:
+        "200":
+          description: Loan creation result with loan and transaction data.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_SaveLoanResponse'
+  /intools/v2/loans:
+    post:
+      tags:
+        - intools-loan
+      summary: Create loan V2
+      description: Create a new loan (V2) with enhanced pricing, CIF-based customer lookup, and net disbursement options.
+      operationId: post_intools_v2_loans
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/loan_SaveLoanRequest'
+      responses:
+        "200":
+          description: Loan creation result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_SaveLoanResponse'
+  /intools/v3/loans:
+    post:
+      tags:
+        - intools-loan
+      summary: Create loan V3
+      description: Create a new loan (V3) with gold reward integration.
+      operationId: post_intools_v3_loans
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/loan_SaveLoanRequest'
+      responses:
+        "200":
+          description: V3 loan creation result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_SaveLoanResponse'
+  /intools/v4/loans:
+    post:
+      tags:
+        - intools-loan
+      summary: Create loan V4
+      description: Create a new loan (V4) with point reward integration.
+      operationId: post_intools_v4_loans
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/loan_SaveLoanRequest'
+      responses:
+        "200":
+          description: V4 loan creation result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_SaveLoanResponse'
+  /intools/v1/loans/approval/{id}:
+    post:
+      tags:
+        - intools-loan
+      summary: Approve/reject loan V1
+      description: Approve or reject a loan application by loan ID.
+      operationId: post_intools_v1_loans_approval_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Loan approval result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_LoanApprovalResponse'
+  /intools/v2/loans/{id}/approval:
+    post:
+      tags:
+        - intools-loan
+      summary: Approve/reject loan V2
+      description: Approve or reject a loan application (V2) with rejection category support.
+      operationId: post_intools_v2_loans_id_approval
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: V2 loan approval result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_LoanApprovalResponse'
+  /intools/v3/loans/{id}/approval:
+    post:
+      tags:
+        - intools-loan
+      summary: Approve/reject loan V3
+      description: Approve or reject a loan application (V3).
+      operationId: post_intools_v3_loans_id_approval
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: V3 loan approval result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_LoanApprovalResponse'
+  /intools/v1/loans/{id}:
+    get:
+      tags:
+        - intools-loan
+      summary: Get loan detail V1
+      description: Returns comprehensive loan information including customer data, collateral items, inventory storage, transaction history, and simulasi gadai results.
+      operationId: get_intools_v1_loans_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Detailed loan information with customer, items, and transaction history.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_GetLoanDetailResponse'
+  /intools/v2/loans/{id}:
+    get:
+      tags:
+        - intools-loan
+      summary: Get loan detail V2
+      description: Returns loan detail (V2) with point reward transaction histories.
+      operationId: get_intools_v2_loans_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: V2 loan detail with point reward transaction history.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_GetLoanDetailV2Response'
+  /intools/v1/loan-lists:
+    get:
+      tags:
+        - intools-loan-lists
+      summary: Get loan list
+      description: Returns a paginated, filterable list of loans with support for search, date ranges, branch IDs, approval status, and sorting.
+      operationId: get_intools_v1_loan-lists
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Paginated list of loans.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_GetLoanListResponse'
+  /intools/v1/loans/referral/{id}:
+    post:
+      tags:
+        - intools-loan
+      summary: Add loan referral
+      description: Associate a referral campaign with a loan.
+      operationId: post_intools_v1_loans_referral_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/loan_LoanReferralRequest'
+      responses:
+        "200":
+          description: Referral association result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_LoanReferralResponse'
+  /intools/v1/loans/payment/{sbg_code}:
+    post:
+      tags:
+        - intools-loan
+      summary: Create payment link (intools)
+      description: Generate a payment link for a loan from the intools dashboard.
+      operationId: post_intools_v1_loans_payment_sbg_code
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: SBG loan code
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/loan_CreatePaymentLinkRequest'
+      responses:
+        "200":
+          description: Payment link created.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_CreatePaymentLinkResponse'
+  /intools/v1/loans/payment-status/{id}:
+    post:
+      tags:
+        - intools-loan
+      summary: Check payment link status
+      description: Check the current status of a payment link by loan ID.
+      operationId: post_intools_v1_loans_payment-status_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Payment link status.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_PaymentLinkStatusCheckResponse'
+  /intools/v1/loan-payment-link-transactions:
+    get:
+      tags:
+        - intools-loan-payment-link-transactions
+      summary: Get payment link transactions
+      description: Returns a list of payment link transactions filtered by branch and sorted by criteria.
+      operationId: get_intools_v1_loan-payment-link-transactions
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Paginated list of payment link transactions.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/loan_payment_link_GetTransactionsResponse'
+  /intools/v2/loans/{id}/pickup-request:
+    post:
+      tags:
+        - intools-loan
+      summary: Create pickup request
+      description: Create a collateral pickup request for a loan, including photos and review notes.
+      operationId: post_intools_v2_loans_id_pickup-request
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/loan_LoanItemPickupRequest'
+      responses:
+        "200":
+          description: Pickup request created.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_LoanReferralResponse'
+  /intools/v2/loans/{id}/pickup-approval:
+    post:
+      tags:
+        - intools-loan
+      summary: Approve/reject pickup
+      description: Approve or reject a collateral pickup request with review notes.
+      operationId: post_intools_v2_loans_id_pickup-approval
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/loan_PickupApprovalRequest'
+      responses:
+        "200":
+          description: Pickup approval result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/loan_LoanReferralResponse'
+  /intools/v1/approval/rejection-categories:
+    get:
+      tags:
+        - intools-approval
+      summary: Get rejection categories
+      description: Returns the list of available loan rejection categories.
+      operationId: get_intools_v1_approval_rejection-categories
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: List of rejection categories.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/approval_GetRejectionCategoriesResponse'
+  /intools/v1/customers:
+    post:
+      tags:
+        - intools-customers
+      summary: Create customer
+      description: Create a new customer with full profile including domicile, emergency contact, collateral details, reference, and occupation.
+      operationId: post_intools_v1_customers
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/customer_CreateCustomerRequest'
+      responses:
+        "200":
+          description: Customer created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/check-referral-codes/{code}:
+    get:
+      tags:
+        - intools-check-referral-codes
+      summary: Check referral code V1
+      description: Validate a referral code and return the referrer information and active promo.
+      operationId: get_intools_v1_check-referral-codes_code
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Referral code
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Referral code validation result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_CheckReferralCodeResponse'
+  /intools/v2/check-referral-codes/{code}:
+    get:
+      tags:
+        - intools-check-referral-codes
+      summary: Check referral code V2
+      description: Validate a referral code (V2) with point reward information.
+      operationId: get_intools_v2_check-referral-codes_code
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Referral code
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: V2 referral code validation with point reward info.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_CheckReferralCodeResponseV2'
+  /intools/v1/customers/{nik}/check:
+    get:
+      tags:
+        - intools-customers
+      summary: Check customer by NIK
+      description: Look up a customer by their NIK (national ID number) for loan simulation purposes.
+      operationId: get_intools_v1_customers_nik_check
+      parameters:
+        - name: nik
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer NIK
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Customer NIK check result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_GetCustomerByNIKResponse'
+  /intools/v1/customers/{nik}/check/{phone_number}/check-phone:
+    get:
+      tags:
+        - intools-customers
+      summary: Check customer phone
+      description: Verify a customer phone number against their NIK record.
+      operationId: get_intools_v1_customers_nik_check_phone_number_check-phone
+      parameters:
+        - name: nik
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer NIK
+        - name: phone_number
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Phone number
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Phone number verification result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_PhoneCheckResponse'
+  /intools/v1/customer-lists:
+    get:
+      tags:
+        - intools-customer-lists
+      summary: Get customer list
+      description: Returns a paginated, filterable list of all customers with search, date range, branch, and sorting support.
+      operationId: get_intools_v1_customer-lists
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Paginated customer list.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_CustomerListResponse'
+  /intools/v1/customers/{nik}:
+    get:
+      tags:
+        - intools-customers
+      summary: Get customer detail V1
+      description: Returns complete customer profile by NIK.
+      operationId: get_intools_v1_customers_nik
+      parameters:
+        - name: nik
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer NIK
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Customer detail with classification, profile, and blacklist info.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_GetCustomerDetailResponse'
+
+    put:
+      tags:
+        - intools-customers
+      summary: Update customer V1
+      description: Update customer profile by NIK.
+      operationId: put_intools_v1_customers_nik
+      parameters:
+        - name: nik
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer NIK
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/customer_UpdateCustomerRequest'
+      responses:
+        "200":
+          description: Customer updated.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v2/customers/{cif}:
+    get:
+      tags:
+        - intools-customers
+      summary: Get customer detail V2
+      description: Returns customer detail by CIF (Customer Information File) number.
+      operationId: get_intools_v2_customers_cif
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer CIF
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: V2 customer detail.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_GetCustomerDetailResponse'
+
+    put:
+      tags:
+        - intools-customers
+      summary: Update customer V2
+      description: Update customer profile by CIF.
+      operationId: put_intools_v2_customers_cif
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer CIF
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/customer_UpdateCustomerRequest'
+      responses:
+        "200":
+          description: V2 customer updated.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v2/customers/{cif}/update:
+    post:
+      tags:
+        - intools-customers
+      summary: Create update request
+      description: Submit a customer data update request for approval.
+      operationId: post_intools_v2_customers_cif_update
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer CIF
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/customer_CreateCustomerUpdateRequestRequest'
+      responses:
+        "200":
+          description: Update request created.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v2/customers/{cif}/update/{id}:
+    get:
+      tags:
+        - intools-customers
+      summary: Get update request
+      description: View a specific customer update request by ID.
+      operationId: get_intools_v2_customers_cif_update_id
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer CIF
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Update request ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Update request details showing current vs updated data.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_GetCustomerUpdateRequestResponse'
+  /intools/v2/customers/{cif}/update/{id}/approval:
+    post:
+      tags:
+        - intools-customers
+      summary: Approve update request
+      description: Approve or reject a customer data update request.
+      operationId: post_intools_v2_customers_cif_update_id_approval
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer CIF
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Update request ID
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/customer_CustomerUpdateRequestApprovalRequest'
+      responses:
+        "200":
+          description: Update request approval result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v2/customers/{cif}/blacklist:
+    post:
+      tags:
+        - intools-customers
+      summary: Blacklist customer
+      description: Add or update a customer blacklist entry with category and notes.
+      operationId: post_intools_v2_customers_cif_blacklist
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer CIF
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/customer_BlacklistCustomerRequest'
+      responses:
+        "200":
+          description: Blacklist record created/updated.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v2/customers/{cif}/gold-balance:
+    get:
+      tags:
+        - intools-customers
+      summary: Get customer gold balance
+      description: Returns the customer gold balance including held balance and expiry.
+      operationId: get_intools_v2_customers_cif_gold-balance
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer CIF
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Customer gold balance details.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_GetCustomerGoldBalance'
+  /intools/v2/customers/{cif}/point-balance:
+    get:
+      tags:
+        - intools-customers
+      summary: Get customer point balance
+      description: Returns the customer point balance including held balance and expiry.
+      operationId: get_intools_v2_customers_cif_point-balance
+      parameters:
+        - name: cif
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Customer CIF
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Customer point balance details.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_GetCustomerPointBalance'
+  /intools/v1/update-customer-lists:
+    get:
+      tags:
+        - intools-update-customer-lists
+      summary: Get update request list
+      description: Returns a paginated list of customer update requests with filters for search, status, date range, and branches.
+      operationId: get_intools_v1_update-customer-lists
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Paginated update request list.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_CustomerUpdateRequestListResponse'
+  /intools/v1/customers-waiting-approvals:
+    get:
+      tags:
+        - intools-customers-waiting-approvals
+      summary: Check waiting approvals
+      description: Returns whether there are any customer update requests waiting for approval.
+      operationId: get_intools_v1_customers-waiting-approvals
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Waiting approval status.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/customer_WaitingForApprovalUpdateRequestCountResponse'
+  /intools/v1/banners:
+    post:
+      tags:
+        - intools-banner
+      summary: Create banner
+      description: Create a new promotional banner with image upload, platform targeting, and scheduling.
+      operationId: post_intools_v1_banners
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/banner_CreateBannerRequest'
+      responses:
+        "200":
+          description: Banner created.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/banners/{id}:
+    get:
+      tags:
+        - intools-banner
+      summary: Get banner detail
+      description: Returns detailed banner information by ID.
+      operationId: get_intools_v1_banners_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Banner ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Banner detail.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/banner_BannerDetail'
+
+    put:
+      tags:
+        - intools-banner
+      summary: Update banner
+      description: Update an existing banner with new image, targeting, or schedule.
+      operationId: put_intools_v1_banners_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Banner ID
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/banner_UpdateBannerRequest'
+      responses:
+        "200":
+          description: Banner updated.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/branches:
+    get:
+      tags:
+        - intools-branch
+      summary: Get branch list
+      description: Returns a list of all branches with cash availability and contact details. Supports branch ID filtering.
+      operationId: get_intools_v1_branches
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Paginated branch list.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/branch_BranchesResponse'
+  /intools/v1/collateral-items/{imei}/check:
+    get:
+      tags:
+        - intools-collateral-items
+      summary: Check collateral by IMEI V1
+      description: Look up the latest collateral item by device IMEI for loan simulation.
+      operationId: get_intools_v1_collateral-items_imei_check
+      parameters:
+        - name: imei
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Device IMEI
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Latest collateral item data.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/collateral_GetAssetResponse'
+  /intools/v2/collateral-items/check:
+    get:
+      tags:
+        - intools-collateral-items
+      summary: Check collateral by IMEI V2
+      description: Look up the latest collateral item by IMEI (V2).
+      operationId: get_intools_v2_collateral-items_check
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: V2 collateral item data.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/collateral_GetAssetResponse'
+  /intools/v3/collateral-items/check:
+    get:
+      tags:
+        - intools-collateral-items
+      summary: Check collateral by IMEI V3
+      description: Look up the latest collateral item by IMEI (V3) with QC support.
+      operationId: get_intools_v3_collateral-items_check
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: V3 collateral item data.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/collateral_GetAssetResponse'
+  /intools/v1/collateral-items/calculate-item-detail:
+    post:
+      tags:
+        - intools-collateral-items
+      summary: Calculate item detail V1
+      description: Calculate collateral item detail and pricing for a device.
+      operationId: post_intools_v1_collateral-items_calculate-item-detail
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Item detail calculation.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/collateral_CalculateItemDetailResponse'
+  /intools/v2/collateral-items/calculate-item-detail:
+    post:
+      tags:
+        - intools-collateral-items
+      summary: Calculate item detail V2
+      description: Calculate collateral item detail and pricing (V2).
+      operationId: post_intools_v2_collateral-items_calculate-item-detail
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: V2 item detail calculation.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/collateral_CalculateItemDetailResponse'
+  /intools/v1/cash-management-stats:
+    get:
+      tags:
+        - intools-cash-management-stats
+      summary: Get cash management stats
+      description: Returns aggregated cash management statistics.
+      operationId: get_intools_v1_cash-management-stats
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Cash management statistics.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/cash_management_GetStatsResponse'
+  /intools/v1/cash-managements:
+    get:
+      tags:
+        - intools-cash-managements
+      summary: List cash managements
+      description: Returns a paginated list of cash management records.
+      operationId: get_intools_v1_cash-managements
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Paginated cash management list.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/cash_management_GetListResponse'
+
+    post:
+      tags:
+        - intools-cash-managements
+      summary: Create cash management
+      description: Create a new cash management record.
+      operationId: post_intools_v1_cash-managements
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Cash management record created.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/cash_management_GetListResponse'
+  /intools/v1/cash-managements/{id}:
+    get:
+      tags:
+        - intools-cash-managements
+      summary: Get cash management detail
+      description: Returns a specific cash management record by ID.
+      operationId: get_intools_v1_cash-managements_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Record ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Cash management detail.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/cash_management_GetDetailResponse'
+  /intools/v1/petty-cash:
+    get:
+      tags:
+        - intools-petty-cash
+      summary: List petty cash
+      description: Returns a paginated list of petty cash transactions.
+      operationId: get_intools_v1_petty-cash
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Paginated petty cash list.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/petty_cash_GetListResponse'
+
+    post:
+      tags:
+        - intools-petty-cash
+      summary: Create petty cash
+      description: Create a new petty cash transaction.
+      operationId: post_intools_v1_petty-cash
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Petty cash transaction created.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/petty_cash_GetListResponse'
+  /intools/v1/petty-cash/{id}:
+    get:
+      tags:
+        - intools-petty-cash
+      summary: Get petty cash detail
+      description: Returns a specific petty cash transaction by ID.
+      operationId: get_intools_v1_petty-cash_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Petty cash detail.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/petty_cash_GetDetailResponse'
+  /intools/v1/petty-cash/{id}/approval:
+    post:
+      tags:
+        - intools-petty-cash
+      summary: Approve petty cash
+      description: Approve or reject a petty cash transaction.
+      operationId: post_intools_v1_petty-cash_id_approval
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Approval result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/petty-cash/{id}/print:
+    get:
+      tags:
+        - intools-petty-cash
+      summary: Print petty cash
+      description: Generate a printable view of a petty cash transaction.
+      operationId: get_intools_v1_petty-cash_id_print
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Printable petty cash data.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/petty_cash_GetPrintResponse'
+  /intools/v1/petty-cash-balance/{id}:
+    get:
+      tags:
+        - intools-petty-cash-balance
+      summary: Get petty cash balance
+      description: Returns the current petty cash balance for a branch.
+      operationId: get_intools_v1_petty-cash-balance_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Branch ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Branch petty cash balance.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/petty_cash_GetBalanceResponse'
+  /intools/v1/offloads/qcs:
+    get:
+      tags:
+        - intools-offloads
+      summary: List QC items
+      description: Returns a list of collateral items pending quality control review.
+      operationId: get_intools_v1_offloads_qcs
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetQCListResponse'
+  /intools/v1/offloads/qcs/{sbg_code}:
+    get:
+      tags:
+        - intools-offloads
+      summary: Get QC item detail
+      description: Returns QC details for a specific loan by SBG code.
+      operationId: get_intools_v1_offloads_qcs_sbg_code
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: SBG code
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetQCItemResponse'
+  /intools/v1/offloads/qcs/{sbg_code}/collateral/calculate:
+    post:
+      tags:
+        - intools-offloads
+      summary: Calculate collateral
+      description: Calculate collateral value for QC assessment.
+      operationId: post_intools_v1_offloads_qcs_sbg_code_collateral_calculate
+      parameters:
+        - name: sbg_code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: SBG code
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/offload_GetQCItemResponse'
+  /intools/v1/offloads/qcs/{sbg_code}/collateral/submit:
+    put:
+      tags:
+        - intools-offloads
+      summary: Submit collateral QC
+      description: Submit QC review results for collateral items.
+      operationId: put_intools_v1_offloads_qcs_sbg_code_collateral_submit
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/pickups:
+    get:
+      tags:
+        - intools-offloads
+      summary: List pickups
+      description: Returns a list of items ready for pickup.
+      operationId: get_intools_v1_offloads_pickups
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetPickupListResponse'
+
+    post:
+      tags:
+        - intools-offloads
+      summary: Mark items as picked up
+      description: Record pickup for multiple SBG items.
+      operationId: post_intools_v1_offloads_pickups
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetPickupListResponse'
+  /intools/v1/offloads/items/qr-print:
+    post:
+      tags:
+        - intools-offloads
+      summary: Mark QR print
+      description: Mark items as having their QR labels printed.
+      operationId: post_intools_v1_offloads_items_qr-print
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/items:
+    get:
+      tags:
+        - intools-offloads
+      summary: List offload items
+      description: Returns a paginated list of offload inventory items.
+      operationId: get_intools_v1_offloads_items
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetItemListResponse'
+  /intools/v1/offloads/items-export:
+    get:
+      tags:
+        - intools-offloads
+      summary: Export offload items
+      description: Export offload items to a downloadable file.
+      operationId: get_intools_v1_offloads_items-export
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetItemListResponse'
+  /intools/v1/offloads/items-status:
+    patch:
+      tags:
+        - intools-offloads
+      summary: Update items status
+      description: Batch update status for multiple offload items.
+      operationId: patch_intools_v1_offloads_items-status
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/items/{id}:
+    get:
+      tags:
+        - intools-offloads
+      summary: Get offload item
+      description: Returns details for a specific offload item by ID.
+      operationId: get_intools_v1_offloads_items_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Item ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetItemDetailResponse'
+  /intools/v1/offloads/items/{id}/event-history:
+    get:
+      tags:
+        - intools-offloads
+      summary: Get item event history
+      description: Returns the event history timeline for an offload item.
+      operationId: get_intools_v1_offloads_items_id_event-history
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Item ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetItemEventHistoryResponse'
+  /intools/v1/offloads/items/{id}/found:
+    put:
+      tags:
+        - intools-offloads
+      summary: Mark lost item as found
+      description: Update a previously lost offload item status to found.
+      operationId: put_intools_v1_offloads_items_id_found
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Item ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/stock-opnames:
+    get:
+      tags:
+        - intools-offloads
+      summary: List stock opnames
+      description: Returns a list of stock opname records.
+      operationId: get_intools_v1_offloads_stock-opnames
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetStockOpnameListResponse'
+  /intools/v1/offloads/stock-opnames/draft:
+    post:
+      tags:
+        - intools-offloads
+      summary: Create stock opname draft
+      description: Create a new stock opname draft for QC review.
+      operationId: post_intools_v1_offloads_stock-opnames_draft
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetStockOpnameItemResponse'
+  /intools/v1/offloads/stock-opnames/{opname_code}/items:
+    get:
+      tags:
+        - intools-offloads
+      summary: List stock opname items
+      description: Returns items in a specific stock opname.
+      operationId: get_intools_v1_offloads_stock-opnames_opname_code_items
+      parameters:
+        - name: opname_code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Opname code
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetStockOpnameItemListResponse'
+  /intools/v1/offloads/stock-opnames/{opname_code}/items/{id}:
+    get:
+      tags:
+        - intools-offloads
+      summary: Get stock opname item
+      description: Returns a specific stock opname item.
+      operationId: get_intools_v1_offloads_stock-opnames_opname_code_items_id
+      parameters:
+        - name: opname_code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Opname code
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Item ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetStockOpnameItemResponse'
+
+    put:
+      tags:
+        - intools-offloads
+      summary: Update stock opname item
+      description: Update a stock opname item entry.
+      operationId: put_intools_v1_offloads_stock-opnames_opname_code_items_id
+      parameters:
+        - name: opname_code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Opname code
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Item ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetStockOpnameItemResponse'
+  /intools/v1/offloads/stock-opnames/{opname_code}/submit:
+    put:
+      tags:
+        - intools-offloads
+      summary: Submit stock opname
+      description: Submit a stock opname draft for final processing.
+      operationId: put_intools_v1_offloads_stock-opnames_opname_code_submit
+      parameters:
+        - name: opname_code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Opname code
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/analytics/transactions:
+    get:
+      tags:
+        - intools-offloads
+      summary: Transaction analytics
+      description: Returns analytics data for offload transactions.
+      operationId: get_intools_v1_offloads_analytics_transactions
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetTransactionAnalyticsResponse'
+  /intools/v1/offloads/buyers:
+    get:
+      tags:
+        - intools-offloads
+      summary: List buyers
+      description: Returns a list of offload buyers.
+      operationId: get_intools_v1_offloads_buyers
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetOffloadBuyerListResponse'
+
+    post:
+      tags:
+        - intools-offloads
+      summary: Create buyer
+      description: Create a new offload buyer record.
+      operationId: post_intools_v1_offloads_buyers
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetOffloadBuyerListResponse'
+  /intools/v1/offloads/transactions:
+    get:
+      tags:
+        - intools-offloads
+      summary: List transactions
+      description: Returns a paginated list of offload transactions.
+      operationId: get_intools_v1_offloads_transactions
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetTransactionListResponse'
+
+    post:
+      tags:
+        - intools-offloads
+      summary: Create transaction
+      description: Create a new offload transaction.
+      operationId: post_intools_v1_offloads_transactions
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetTransactionListResponse'
+  /intools/v1/offloads/transactions-export:
+    get:
+      tags:
+        - intools-offloads
+      summary: Export transactions
+      description: Export offload transactions to a file.
+      operationId: get_intools_v1_offloads_transactions-export
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetTransactionListResponse'
+  /intools/v1/offloads/transactions/{id}:
+    get:
+      tags:
+        - intools-offloads
+      summary: Get transaction
+      description: Returns a specific offload transaction by ID.
+      operationId: get_intools_v1_offloads_transactions_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetTransactionDetailResponse'
+  /intools/v1/offloads/transactions/{id}/subtotal:
+    patch:
+      tags:
+        - intools-offloads
+      summary: Update subtotal
+      description: Update the subtotal amount for an offload transaction.
+      operationId: patch_intools_v1_offloads_transactions_id_subtotal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/transactions/{id}/items:
+    patch:
+      tags:
+        - intools-offloads
+      summary: Update items
+      description: Add or remove items from an offload transaction.
+      operationId: patch_intools_v1_offloads_transactions_id_items
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/transactions/{id}/items-import:
+    post:
+      tags:
+        - intools-offloads
+      summary: Import items
+      description: Import items into an offload transaction from a file.
+      operationId: post_intools_v1_offloads_transactions_id_items-import
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/transactions/{id}/items-export:
+    get:
+      tags:
+        - intools-offloads
+      summary: Export items
+      description: Export items from an offload transaction.
+      operationId: get_intools_v1_offloads_transactions_id_items-export
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetTransactionDetailResponse'
+  /intools/v1/offloads/transactions/{id}/approval-status:
+    patch:
+      tags:
+        - intools-offloads
+      summary: Update approval
+      description: Update the approval status for an offload transaction.
+      operationId: patch_intools_v1_offloads_transactions_id_approval-status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/transactions/{id}/transitions:
+    post:
+      tags:
+        - intools-offloads
+      summary: Transition status
+      description: Transition an offload transaction to a new status.
+      operationId: post_intools_v1_offloads_transactions_id_transitions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/transactions/{id}/payment-attempt/{attempt_id}/retry:
+    post:
+      tags:
+        - intools-offloads
+      summary: Retry payment
+      description: Retry a failed payment attempt for an offload transaction.
+      operationId: post_intools_v1_offloads_transactions_id_payment-attempt_attempt_id_retry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Transaction ID
+        - name: attempt_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Attempt ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/items-to-pack:
+    get:
+      tags:
+        - intools-offloads
+      summary: Get items to pack
+      description: Returns default items to pack for warehouse delivery.
+      operationId: get_intools_v1_offloads_items-to-pack
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetItemsToPackResponse'
+  /intools/v1/offloads/warehouse/deliveries:
+    get:
+      tags:
+        - intools-offloads
+      summary: List warehouse deliveries
+      description: Returns a list of warehouse delivery records.
+      operationId: get_intools_v1_offloads_warehouse_deliveries
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetWarehouseDeliveryListResponse'
+
+    post:
+      tags:
+        - intools-offloads
+      summary: Create warehouse delivery
+      description: Create a new warehouse delivery record.
+      operationId: post_intools_v1_offloads_warehouse_deliveries
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetWarehouseDeliveryListResponse'
+  /intools/v1/offloads/warehouse/deliveries/{id}:
+    get:
+      tags:
+        - intools-offloads
+      summary: Get warehouse delivery
+      description: Returns a specific warehouse delivery by ID.
+      operationId: get_intools_v1_offloads_warehouse_deliveries_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Delivery ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetWarehouseDeliveryResponse'
+  /intools/v1/offloads/warehouse/deliveries/{id}/items:
+    get:
+      tags:
+        - intools-offloads
+      summary: Get delivery items
+      description: Returns items in a warehouse delivery.
+      operationId: get_intools_v1_offloads_warehouse_deliveries_id_items
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Delivery ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetWarehouseDeliveryItemsResponse'
+  /intools/v1/offloads/warehouse/deliveries/{id}/items/confirm:
+    post:
+      tags:
+        - intools-offloads
+      summary: Confirm delivery items
+      description: Confirm receipt of warehouse delivery items.
+      operationId: post_intools_v1_offloads_warehouse_deliveries_id_items_confirm
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Delivery ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/warehouse/deliveries/{id}/items/confirm-investigation:
+    post:
+      tags:
+        - intools-offloads
+      summary: Confirm investigation
+      description: Confirm items under investigation in a delivery.
+      operationId: post_intools_v1_offloads_warehouse_deliveries_id_items_confirm-investigation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Delivery ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/warehouse/deliveries/{id}/qr/print:
+    get:
+      tags:
+        - intools-offloads
+      summary: Print delivery QR
+      description: Generate QR code print data for a warehouse delivery.
+      operationId: get_intools_v1_offloads_warehouse_deliveries_id_qr_print
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Delivery ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetWarehouseDeliveryResponse'
+  /intools/v1/offloads/warehouse/deliveries/{id}/delivery-status:
+    patch:
+      tags:
+        - intools-offloads
+      summary: Update delivery status
+      description: Update the status of a warehouse delivery.
+      operationId: patch_intools_v1_offloads_warehouse_deliveries_id_delivery-status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Delivery ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/offloads/warehouse/delivery-locations:
+    get:
+      tags:
+        - intools-offloads
+      summary: Get delivery locations
+      description: Returns a list of warehouse delivery checkpoint locations.
+      operationId: get_intools_v1_offloads_warehouse_delivery-locations
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/offload_GetWarehouseDeliveryLocationsResponse'
+  /intools/v1/stock-opnames:
+    post:
+      tags:
+        - intools-stock-opnames
+      summary: Create stock opname
+      description: Create a new stock opname record.
+      operationId: post_intools_v1_stock-opnames
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/stock_opname_GetDetailResponse'
+
+    get:
+      tags:
+        - intools-stock-opnames
+      summary: List stock opnames
+      description: Returns a paginated list of stock opnames.
+      operationId: get_intools_v1_stock-opnames
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/stock_opname_GetDetailResponse'
+  /intools/v1/stock-opnames/{id}:
+    get:
+      tags:
+        - intools-stock-opnames
+      summary: Get stock opname detail
+      description: Returns a specific stock opname by ID.
+      operationId: get_intools_v1_stock-opnames_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Opname ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/stock_opname_GetDetailResponse'
+
+    put:
+      tags:
+        - intools-stock-opnames
+      summary: Update stock opname
+      description: Update an existing stock opname record.
+      operationId: put_intools_v1_stock-opnames_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Opname ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/stock_opname_GetDetailResponse'
+  /intools/v1/stock-opname-configs:
+    get:
+      tags:
+        - intools-stock-opname-configs
+      summary: Get stock opname configs
+      description: Returns stock opname configuration settings.
+      operationId: get_intools_v1_stock-opname-configs
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/stock_opname_GetConfigResponse'
+  /intools/v1/stock-opnames/{id}/open-access:
+    post:
+      tags:
+        - intools-stock-opnames
+      summary: Create open access
+      description: Grant open access review for a stock opname.
+      operationId: post_intools_v1_stock-opnames_id_open-access
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Opname ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/stock-opname-open-access-categories:
+    get:
+      tags:
+        - intools-stock-opname-open-access-categories
+      summary: Get open access categories
+      description: Returns available open access categories.
+      operationId: get_intools_v1_stock-opname-open-access-categories
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/stock_opname_GetOpenAccessCategoriesResponse'
+  /intools/v1/check-stock-opname-statuses:
+    get:
+      tags:
+        - intools-check-stock-opname-statuses
+      summary: Check stock opname statuses
+      description: Check stock opname statuses by branch.
+      operationId: get_intools_v1_check-stock-opname-statuses
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Operation result.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/stock_opname_GetStatusByBranchResponse'
+  /intools/v1/inventory-reports:
+    get:
+      tags:
+        - intools-inventory-reports
+      summary: List inventory reports
+      description: Returns a paginated list of inventory reports.
+      operationId: get_intools_v1_inventory-reports
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Paginated inventory report list.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/inventory_report_GetListResponse'
+  /intools/v1/print/inventory-reports:
+    get:
+      tags:
+        - intools-print
+      summary: Print inventory report
+      description: Generate printable inventory report data.
+      operationId: get_intools_v1_print_inventory-reports
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Printable inventory report data.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/inventory_report_GetPrintResponse'
+  /intools/v1/inventory-report-stats:
+    get:
+      tags:
+        - intools-inventory-report-stats
+      summary: Inventory report stats
+      description: Returns aggregated inventory report statistics.
+      operationId: get_intools_v1_inventory-report-stats
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Inventory report statistics.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/inventory_report_GetStatsResponse'
+  /intools/v1/transaction-report-stats:
+    get:
+      tags:
+        - intools-transaction-report-stats
+      summary: Transaction report stats
+      description: Returns aggregated transaction report statistics.
+      operationId: get_intools_v1_transaction-report-stats
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Transaction report statistics.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/transaction_report_GetStatsResponse'
+  /intools/v1/transactions:
+    post:
+      tags:
+        - intools-transactions
+      summary: Create transaction V1
+      description: Save a new loan transaction (V1). Protected by internal API key.
+      operationId: post_intools_v1_transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/transaction_SaveTransactionRequest'
+      responses:
+        "200":
+          description: Transaction saved.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/transaction_SaveTransactionResponse'
+  /intools/v2/transactions:
+    post:
+      tags:
+        - intools-transactions
+      summary: Create transaction V2
+      description: Save a new loan transaction (V2).
+      operationId: post_intools_v2_transactions
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/transaction_SaveTransactionRequest'
+      responses:
+        "200":
+          description: V2 transaction saved.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/transaction_SaveTransactionResponse'
+  /intools/v3/transactions:
+    post:
+      tags:
+        - intools-transactions
+      summary: Create transaction V3
+      description: Save a new loan transaction (V3).
+      operationId: post_intools_v3_transactions
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/transaction_SaveTransactionRequest'
+      responses:
+        "200":
+          description: V3 transaction saved.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/transaction_SaveTransactionResponse'
+  /intools/v4/transactions:
+    post:
+      tags:
+        - intools-transactions
+      summary: Create transaction V4
+      description: Save a new loan transaction (V4).
+      operationId: post_intools_v4_transactions
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/transaction_SaveTransactionRequest'
+      responses:
+        "200":
+          description: V4 transaction saved.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/transaction_SaveTransactionResponse'
+  /intools/v1/dashboard/important-link:
+    get:
+      tags:
+        - intools-dashboard
+      summary: Get important links
+      description: Returns dashboard important links.
+      operationId: get_intools_v1_dashboard_important-link
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Important links list.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/dashboard_GetImportantLinksResponse'
+  /intools/v1/event-scheduler/send-loan-reminders:
+    post:
+      tags:
+        - intools-event-scheduler
+      summary: Send loan reminders
+      description: Trigger loan payment reminder notifications. Protected by scheduler auth.
+      operationId: post_intools_v1_event-scheduler_send-loan-reminders
+      security:
+        - SchedulerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/event_scheduler_SendLoanReminderEventsRequest'
+      responses:
+        "200":
+          description: Reminder events sent.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/event_scheduler_SendLoanReminderEventsResponse'
+  /intools/v1/event-scheduler/send-booking-reminders:
+    post:
+      tags:
+        - intools-event-scheduler
+      summary: Send booking reminders
+      description: Trigger appointment booking reminder notifications.
+      operationId: post_intools_v1_event-scheduler_send-booking-reminders
+      security:
+        - SchedulerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/event_scheduler_SendBookingReminderEventsRequest'
+      responses:
+        "200":
+          description: Reminder events sent.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/event_scheduler_SendBookingReminderEventsResponse'
+  /intools/v1/event-scheduler/send-ppob-reminders:
+    post:
+      tags:
+        - intools-event-scheduler
+      summary: Send PPOB reminders
+      description: Trigger PPOB bill payment reminder notifications.
+      operationId: post_intools_v1_event-scheduler_send-ppob-reminders
+      security:
+        - SchedulerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/event_scheduler_SendPPOBReminderEventsRequest'
+      responses:
+        "200":
+          description: Reminder events sent.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/event_scheduler_SendPPOBReminderEventsResponse'
+  /intools/v1/gold-rewards/process-expired-claims:
+    post:
+      tags:
+        - intools-gold-rewards
+      summary: Process expired gold claims
+      description: Process and settle expired gold reward claims.
+      operationId: post_intools_v1_gold-rewards_process-expired-claims
+      security:
+        - SchedulerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/gold_reward_ProcessExpiredClaimsRequest'
+      responses:
+        "200":
+          description: Expired claims processed.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/gold_reward_ProcessExpiredClaimsResponse'
+  /intools/v1/gold-rewards/process-expired-balances:
+    post:
+      tags:
+        - intools-gold-rewards
+      summary: Process expired gold balances
+      description: Process and settle expired gold reward balances.
+      operationId: post_intools_v1_gold-rewards_process-expired-balances
+      security:
+        - SchedulerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/gold_reward_ProcessExpiredBalancesRequest'
+      responses:
+        "200":
+          description: Expired balances processed.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/gold_reward_ProcessExpiredBalancesResponse'
+  /intools/v1/point-rewards/process-expired-claims:
+    post:
+      tags:
+        - intools-point-rewards
+      summary: Process expired point claims
+      description: Process and settle expired point reward claims.
+      operationId: post_intools_v1_point-rewards_process-expired-claims
+      security:
+        - SchedulerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/point_reward_ProcessExpiredClaimsRequest'
+      responses:
+        "200":
+          description: Expired claims processed.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/point_reward_ProcessExpiredClaimsResponse'
+  /intools/v1/point-rewards/process-expired-balances:
+    post:
+      tags:
+        - intools-point-rewards
+      summary: Process expired point balances
+      description: Process and settle expired point reward balances.
+      operationId: post_intools_v1_point-rewards_process-expired-balances
+      security:
+        - SchedulerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/point_reward_ProcessExpiredBalancesRequest'
+      responses:
+        "200":
+          description: Expired balances processed.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/point_reward_ProcessExpiredBalancesResponse'
+  /intools/v1/golds/voucher/calculate:
+    post:
+      tags:
+        - intools-gold
+      summary: Calculate gold voucher
+      description: Calculate the gold-to-voucher conversion rate before redemption.
+      operationId: post_intools_v1_golds_voucher_calculate
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Gold voucher conversion calculation.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/gold_voucher_CalculateResponse'
+  /intools/v1/golds/voucher/redeem:
+    post:
+      tags:
+        - intools-gold
+      summary: Redeem gold voucher
+      description: Execute gold redemption into a voucher for the customer.
+      operationId: post_intools_v1_golds_voucher_redeem
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Gold voucher redeemed.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/gold_voucher_RedeemResponse'
+  /intools/v1/points/voucher/calculate:
+    post:
+      tags:
+        - intools-point
+      summary: Calculate point voucher
+      description: Calculate the point-to-voucher conversion rate before redemption.
+      operationId: post_intools_v1_points_voucher_calculate
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Point voucher conversion calculation.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/point_voucher_CalculateResponse'
+  /intools/v1/points/voucher/redeem:
+    post:
+      tags:
+        - intools-point
+      summary: Redeem point voucher
+      description: Execute point redemption into a voucher for the customer.
+      operationId: post_intools_v1_points_voucher_redeem
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Point voucher redeemed.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/point_voucher_RedeemResponse'
+  /intools/v1/pricing-engines/calculate:
+    post:
+      tags:
+        - intools-pricing-engine
+      summary: Calculate pricing V1
+      description: Calculate loan pricing with interest, fees, and promotions. Protected by internal API key.
+      operationId: post_intools_v1_pricing-engines_calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/pricing_engine_CalculatePricingRequest'
+      responses:
+        "200":
+          description: Pricing calculation result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/pricing_engine_CalculatePricingResponse'
+  /intools/v2/pricing-engines/calculate:
+    post:
+      tags:
+        - intools-pricing-engine
+      summary: Calculate pricing V2
+      description: Calculate loan pricing (V2) with updated pricing model.
+      operationId: post_intools_v2_pricing-engines_calculate
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/pricing_engine_CalculatePricingRequest'
+      responses:
+        "200":
+          description: V2 pricing calculation.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/pricing_engine_CalculatePricingResponseV2'
+  /intools/v3/pricing-engines/calculate:
+    post:
+      tags:
+        - intools-pricing-engine
+      summary: Calculate pricing V3
+      description: Calculate loan pricing (V3) with gold reward support.
+      operationId: post_intools_v3_pricing-engines_calculate
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/pricing_engine_CalculatePricingRequest'
+      responses:
+        "200":
+          description: V3 pricing calculation.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/pricing_engine_CalculatePricingResponseV3'
+  /intools/v4/pricing-engines/calculate:
+    post:
+      tags:
+        - intools-pricing-engine
+      summary: Calculate pricing V4
+      description: Calculate loan pricing (V4) with point reward support.
+      operationId: post_intools_v4_pricing-engines_calculate
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/pricing_engine_CalculatePricingRequest'
+      responses:
+        "200":
+          description: V4 pricing calculation.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/pricing_engine_CalculatePricingResponseV4'
+  /intools/v1/promotion-redemptions:
+    put:
+      tags:
+        - intools-promotion-redemptions
+      summary: Save promotion redemption
+      description: Record a promotion code redemption for a transaction.
+      operationId: put_intools_v1_promotion-redemptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/pricing_engine_SavePromotionRedemptionRequest'
+      responses:
+        "200":
+          description: Promotion redemption saved.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/price-references/{uuid}/photos:
+    post:
+      tags:
+        - intools-price-references
+      summary: Upload price reference photos
+      description: Upload device photos for a price reference entry.
+      operationId: post_intools_v1_price-references_uuid_photos
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Price reference UUID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Photos uploaded.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/price-references:
+    get:
+      tags:
+        - intools-price-references
+      summary: List price references V1
+      description: Returns a paginated list of device price references for collateral appraisal.
+      operationId: get_intools_v1_price-references
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Paginated price reference list.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/price_reference_GetListResponse'
+  /intools/v2/price-references:
+    get:
+      tags:
+        - intools-price-references
+      summary: List price references V2
+      description: Returns price references (V2) with extended filters including fuzzy search.
+      operationId: get_intools_v2_price-references
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: V2 paginated price reference list.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/price_reference_GetListResponse'
+  /intools/v1/promotion/get-eligible-promos:
+    post:
+      tags:
+        - intools-promotion
+      summary: Get eligible promotions
+      description: Returns promotions applicable to a specific transaction scenario based on customer, item, branch, and loan amount.
+      operationId: post_intools_v1_promotion_get-eligible-promos
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/promos_GetEligiblePromotionsRequest'
+      responses:
+        "200":
+          description: List of eligible promotions.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/promos_GetEligiblePromotionsResponse'
+  /intools/v1/guest-books:
+    post:
+      tags:
+        - intools-guest-books
+      summary: Create guest book
+      description: Create a new guest book entry for walk-in visitors.
+      operationId: post_intools_v1_guest-books
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Guest book entry created.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/guest_book_GetDetailResponse'
+  /intools/v1/guest-book-lists:
+    get:
+      tags:
+        - intools-guest-book-lists
+      summary: List guest books
+      description: Returns a paginated list of guest book entries.
+      operationId: get_intools_v1_guest-book-lists
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Paginated guest book list.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/guest_book_GetListResponse'
+  /intools/v1/guest-books/{id}:
+    get:
+      tags:
+        - intools-guest-books
+      summary: Get guest book
+      description: Returns a specific guest book entry by ID.
+      operationId: get_intools_v1_guest-books_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Entry ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Guest book detail.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/guest_book_GetDetailResponse'
+
+    put:
+      tags:
+        - intools-guest-books
+      summary: Update guest book
+      description: Update an existing guest book entry.
+      operationId: put_intools_v1_guest-books_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Entry ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Guest book updated.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/guest_book_GetDetailResponse'
+
+    delete:
+      tags:
+        - intools-guest-books
+      summary: Delete guest book
+      description: Delete a guest book entry.
+      operationId: delete_intools_v1_guest-books_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Entry ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Guest book deleted.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/guest_book_GetDetailResponse'
+  /intools/v1/print/sbg/{loan_id}:
+    get:
+      tags:
+        - intools-print
+      summary: Print SBG
+      description: Generate printable SBG (loan document) data.
+      operationId: get_intools_v1_print_sbg_loan_id
+      parameters:
+        - name: loan_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Printable SBG data.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/print_GetSBGDataResponse'
+  /intools/v1/print/receipt/{loan_id}:
+    get:
+      tags:
+        - intools-print
+      summary: Print receipt V1
+      description: Generate printable receipt data for a loan transaction.
+      operationId: get_intools_v1_print_receipt_loan_id
+      security:
+        - IntoolsAuth: []
+      parameters:
+        - name: loan_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      responses:
+        "200":
+          description: Printable receipt data.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/print_GetReceiptDataResponse'
+  /intools/v2/print/receipt/{loan_id}:
+    get:
+      tags:
+        - intools-print
+      summary: Print receipt V2
+      description: Generate printable receipt data (V2).
+      operationId: get_intools_v2_print_receipt_loan_id
+      security:
+        - IntoolsAuth: []
+      parameters:
+        - name: loan_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      responses:
+        "200":
+          description: V2 printable receipt data.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/print_GetReceiptDataResponse'
+  /intools/v1/print/plombir/{loan_id}:
+    get:
+      tags:
+        - intools-print
+      summary: Print plombir
+      description: Generate printable plombir (seal) label data.
+      operationId: get_intools_v1_print_plombir_loan_id
+      security:
+        - IntoolsAuth: []
+      parameters:
+        - name: loan_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Loan ID
+      responses:
+        "200":
+          description: Printable plombir data.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/print_GetPlombirDataResponse'
+  /intools/v1/metabase/dashboard/{id}:
+    get:
+      tags:
+        - intools-metabase
+      summary: Get dashboard embed URL
+      description: Generate a signed Metabase dashboard embed URL for branch performance.
+      operationId: get_intools_v1_metabase_dashboard_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dashboard ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Dashboard embed URL.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/metabase_GetEmbedURLResponse'
+  /intools/v1/metabase/dashboard-branch/{id}:
+    get:
+      tags:
+        - intools-metabase
+      summary: Get branch dashboard URL
+      description: Generate a signed Metabase dashboard embed URL for branch-specific data.
+      operationId: get_intools_v1_metabase_dashboard-branch_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dashboard ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Branch dashboard embed URL.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/metabase_GetEmbedURLResponse'
+  /intools/v1/metabase/dashboard-fl/{id}:
+    get:
+      tags:
+        - intools-metabase
+      summary: Get FL dashboard URL
+      description: Generate a signed Metabase dashboard embed URL for frontliner performance.
+      operationId: get_intools_v1_metabase_dashboard-fl_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Dashboard ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Frontliner dashboard embed URL.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/metabase_GetEmbedURLResponse'
+  /intools/v1/talenta/users/{id}:
+    put:
+      tags:
+        - intools-talenta
+      summary: Update talenta employee ID
+      description: Associate a talenta employee ID with a user.
+      operationId: put_intools_v1_talenta_users_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Employee ID updated.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/talenta/employees-export:
+    post:
+      tags:
+        - intools-talenta
+      summary: Export employees
+      description: Export employee data from talenta.
+      operationId: post_intools_v1_talenta_employees-export
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Employee export data.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/talenta_GetExportResponse'
+  /intools/v1/talenta/attendances-export:
+    post:
+      tags:
+        - intools-talenta
+      summary: Export attendances
+      description: Export attendance data from talenta.
+      operationId: post_intools_v1_talenta_attendances-export
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Attendance export data.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/talenta_GetExportResponse'
+  /intools/v1/talenta/attendances-report-import:
+    post:
+      tags:
+        - intools-talenta
+      summary: Import attendance report
+      description: Import attendance report data into the system.
+      operationId: post_intools_v1_talenta_attendances-report-import
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Attendance report imported.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/httphelper_SuccessResponse'
+  /intools/v1/visitor-verification:
+    post:
+      tags:
+        - intools-visitor-verification
+      summary: Verify visitor
+      description: Verify a visitor identity by name and branch.
+      operationId: post_intools_v1_visitor-verification
+      security:
+        - IntoolsAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../model/openapi.yaml#/components/schemas/visitor_VisitorVerificationRequest'
+      responses:
+        "200":
+          description: Visitor verification result.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/visitor_VisitorVerificationResponse'
+  /intools/v1/appointments/{booking_code}/verify:
+    post:
+      tags:
+        - intools-appointments
+      summary: Verify appointment
+      description: Verify a customer appointment booking by scanning the booking code. Used by frontliners.
+      operationId: post_intools_v1_appointments_booking_code_verify
+      parameters:
+        - name: booking_code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Appointment booking code
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Appointment verification with customer, item, and promotion details.
+          content:
+            application/json:
+              schema:
+                $ref: '../model/openapi.yaml#/components/schemas/appointment_VerifyAppointmentResponse'
+  /intools/v1/menus:
+    get:
+      tags:
+        - intools-menus
+      summary: Get menus
+      description: Returns the sidebar menu configuration for the authenticated user based on their permissions.
+      operationId: get_intools_v1_menus
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: User menu configuration.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/menus_GetMenusResponse'
+  /intools/v1/plombir/find:
+    get:
+      tags:
+        - intools-plombir
+      summary: Find plombir
+      description: Search for a plombir (seal) record.
+      operationId: get_intools_v1_plombir_find
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Plombir search results.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/plombir_GetFindResponse'
+  /intools/v1/access-user-fl-performance:
+    get:
+      tags:
+        - intools-access-user-fl-performance
+      summary: Get FL performance
+      description: Returns frontliner performance data for the access user.
+      operationId: get_intools_v1_access-user-fl-performance
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Frontliner performance data.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/access_user_GetFLPerformanceResponse'
+  /intools/v1/account-codes:
+    get:
+      tags:
+        - intools-account-codes
+      summary: Get account codes
+      description: Returns a list of available account codes.
+      operationId: get_intools_v1_account-codes
+      security:
+        - IntoolsAuth: []
+      responses:
+        "200":
+          description: Account codes list.
+          content:
+            application/json:
+              schema:
+                  $ref: '../model/openapi.yaml#/components/schemas/account_codes_GetResponse'
